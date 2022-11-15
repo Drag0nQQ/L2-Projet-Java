@@ -2,10 +2,15 @@ package files;
 import java.io.File;
 
 public class FileAnalyze {
+    //TODO: faire en sorte que le nombre de parametre est légal + préparer -title , -h ,-f -d -subject  
     public static void main(String[] args) {
-        System.out.println("Hello");
-        File dir = new File(args[0]);
+        System.out.println(args[0]);
+        System.out.println(args[1]);
+        if (args.length>0 && args[0].equalsIgnoreCase("-t"))
+        {
+        File dir = new File(args[1]);
         showFiles(dir.listFiles());
+        }
     }
 
     public static void showFiles(File[] files) {
