@@ -1,18 +1,14 @@
 package extraction;
 
-import files.FileManager;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 public class ExtractMeta {
@@ -21,15 +17,20 @@ public class ExtractMeta {
     // Ajouter ou retirer des tags
     // --title et --subject
 
+    //Attributes
     private ZipFile zipFile;
 
+    //Constructors
     public ExtractMeta(ZipFile zipFile){
         this.zipFile = zipFile;
     }
 
-    public ZipFile getZipFile(){
-        return zipFile;
-    }
+    //Methods
+    /**
+     * Grab the meta.xml file in the ZipFile of the class
+     * @return meta.xml file of the zip file
+     * @throws IOException zipFile could be null or we didn't find the meta.xml file
+     */
     public File getMetaFile() throws IOException {
         try {
             File fileTmp = null;
@@ -48,7 +49,10 @@ public class ExtractMeta {
             throw new RuntimeException(e);
         }
     }
-
+    /**
+     * Print every available xml tags values of the given file, file should be "meta.xml"
+     * @param f
+     */
     public void getMetaInfo(File f){
             try {
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -79,5 +83,10 @@ public class ExtractMeta {
             } catch (Exception exception){
                 exception.printStackTrace();
             }
+    }
+
+    //Getters Setters
+    public ZipFile getZipFile(){
+        return zipFile;
     }
 }
