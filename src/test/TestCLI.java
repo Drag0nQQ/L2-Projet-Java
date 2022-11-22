@@ -15,17 +15,18 @@ public class TestCLI {
         }
         else{
             if (i==FileAnalyze.FILE_OPTION) {
-                //TODO showFile meta
+                System.out.println("On appele showFile(File)");
+                //TODO showFile meta6
                 //try{
-                //call FileAnalyze.showFile(args[0]);
+                //call FileAnalyze.showFile(args[1]);
                 //}catch (NoSuchFileException e){
                 //    System.err.println(e.getMessage());
                 //}
             } else {
                 if (i==FileAnalyze.SHOW_OPTION) {
-                    //TODO call FileAnalyze.showOption();
+                    FileAnalyze.showOption();
                 } else {
-                    //TODO call FileAnalyze.showHelp();
+                    FileAnalyze.showHelp();
                 }
             }
         }
