@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 
+
 public class FileAnalyze {
     
     public static final int SHOW_OPTION=0;
@@ -126,8 +127,8 @@ public class FileAnalyze {
         public static void showFile(String filename) throws NoSuchFileException {
             try {
                 //TODO call Axel's class
-                FileManager fm= new FileManager();
-                fm.transformation(filename);
+                // FileManager fm= new FileManager();
+                // fm.transformation(filename);
                 
             } catch (Exception e) {
                 e.printStackTrace();
