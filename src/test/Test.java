@@ -9,12 +9,11 @@ public class Test {
     public static void main(String[] args) {
         try {
             FileManager tmp = new FileManager();
-            File file = new File("/Users/axel/Dev/TestProjet/Sans_nom_1.odt");
+            File file = new File("testing.odt");
             System.out.println( tmp.getTmp());
-            tmp.transformation(file.getAbsolutePath());
-            System.out.println( tmp.getTmp());
-            ExtractMeta extractMeta = new ExtractMeta(tmp.getTmp());
-            extractMeta.getMetaInfo(extractMeta.getMetaFile());
+            tmp.transformation(file);
+            tmp.unzip(file);
+
         } catch (Exception exception){
             exception.printStackTrace();
         }

@@ -1,8 +1,11 @@
 package files;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.NoSuchElementException;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 public class FileManager {
     //Attributes
@@ -18,16 +21,14 @@ public class FileManager {
 
     /**
      * Transform a given fileName and store in his class the ZipFile of the fileName.zip 
-     * @param fileName Absolute path to the file
      * @see #changeExt(File, String)
      * @exception NoSuchElementException The filename was not found or don't exist
      */
-    public void transformation(String fileName)  throws NoSuchElementException{
-        File file = new File(fileName);
+    public void transformation(File file)  throws NoSuchElementException{
         try {
-            File test=  changeExt(file, "zip");
+            File test = changeExt(file, "zip");
             System.out.println(test);
-            this.tmp= new ZipFile(test);
+            ZipFile tmp = new ZipFile(test);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,10 +48,41 @@ public class FileManager {
             filename = filename.substring(0, filename.lastIndexOf('.'));
         }
         filename += "." + extension;
-        file.renameTo(new File(file.getParentFile(), filename));
-        return file;
+        File newFile = new File(file.getParentFile(), filename);
+        file.renameTo(newFile);
+        return newFile;
     }
 
+
+    public void unzip(File file) throws IOException {
+        String fileZip = file.getAbsolutePath();
+        File directory = new File(file.getAbsolutePath());
+        byte[] buffer = new byte[1024];
+        ZipInputStream zis = new ZipInputStream(new FileInputStream(fileZip));
+        ZipEntry zipEntry = zis.getNextEntry();
+        while (zipEntry != null){
+            File newFile = new File(directory, String.valueOf(zipEntry));
+            if (zipEntry.isDirectory()){
+                if (!newFile.isDirectory() && !newFile.mkdirs()){
+                    throw new IOException("Impossible de créer le répertoire " + newFile);
+                }
+            } else {
+                File fileParent = newFile.getParentFile();
+                if (!fileParent.isDirectory() && !fileParent.mkdirs()){
+                    throw new IOException("Impossible de créer le répertoire " + fileParent);
+                }
+                FileOutputStream fos = new FileOutputStream(newFile);
+                int len;
+                while ((len = zis.read(buffer)) > 0){
+                    fos.write(buffer, 0, len);
+                }
+                fos.close();
+            }
+            zipEntry = zis.getNextEntry();
+        }
+        zis.closeEntry();
+        zis.close();
+    }
 
     //Getters Setters
     public ZipFile getTmp() {
