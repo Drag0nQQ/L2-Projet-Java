@@ -109,7 +109,7 @@ public class FileAnalyze {
                 } else {
                     if (file.getName().endsWith("odt")){
                         try {
-                            System.out.println("File: " + file.getCanonicalPath());
+                            System.out.println("Size: " +"\t"+file.length()/1024 +"kB"+"\t File: "+ file.getCanonicalPath());
                             
                         } catch (Exception e) {
                             System.err.println("Access denied, no permission to access it.");
