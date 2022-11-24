@@ -34,8 +34,9 @@ public class FileAnalyze {
                 return FILE_OPTION;
                 
                 case "-d":
-                return DIRECTORY_OPTION;
-                
+                if (args.length==2) {
+                    return DIRECTORY_OPTION;
+                }
                 default:
                 return HELP_OPTION;
             }
