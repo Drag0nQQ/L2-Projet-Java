@@ -7,7 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
+/**
+ * Cette classe permet de manipuler les fichiers zip et plus généralement les fichiers dans le sens brut
+ */
 public class ZipEtUnzip {
     /**
     * <p>Dézip un fichier et le stocke dans un dossier (crée le dossier s'il n'existe pas)</p>

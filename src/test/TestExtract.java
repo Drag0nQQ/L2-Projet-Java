@@ -12,7 +12,8 @@ public class TestExtract {
             ExtractMeta.showMeta(dossierTravail);
             ExtractPicture.showPicture(dossierTravail);
             ExtractContent.showLink(dossierTravail);
-            ZipEtUnzip.supprDossier(new File(dossierTravail.toString()));
+            ExtractMeta.setTitle(dossierTravail, "Je suis beau");
+            
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -3,7 +3,15 @@ import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+import javax.xml.crypto.dsig.Transform;
 import javax.xml.parsers.*;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -11,7 +19,7 @@ import org.xml.sax.SAXException;
 
 
 /**
-* Classe permettant de récupérer spécifiquement le fichier meta.xml et affiche le contenu utile
+* Cette classe permet de manipuler spécifiquement le fichier meta.xml
 * @author Laurent LIN
 * @author Axel OLIVEIRA
 */
@@ -81,6 +89,94 @@ public class ExtractMeta{
         
     }
     
+    public static void setTitle(Path mainDirectory,String texte){
+        String toMetaFile= mainDirectory.toString()+File.separator+"meta.xml";
+        File metaFile= new File(toMetaFile);
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            try {
+                Document doc = builder.parse(new FileInputStream(metaFile));
+                NodeList offDoc= doc.getElementsByTagName("dc:title");
+                System.out.println(doc.getDocumentElement().getNodeName());
+                if (offDoc.getLength()>0) {
+                    offDoc.item(0).setTextContent(texte);
+                }else{
+                    NodeList addNode=doc.getElementsByTagName("office:meta");
+                    System.out.println(addNode.item(0).getNodeName());
+                    if (addNode.getLength()>0) {
+                        Element temp= doc.createElement("dc:title");
+                        temp.setTextContent(texte);
+                        System.out.println(temp.getNodeName());
+                        addNode.item(0).insertBefore(temp, addNode.item(0).getChildNodes().item(0));  
+                    }
+                }
+                try {
+                    Transformer transform= TransformerFactory.newInstance().newTransformer();
+                    transform.setOutputProperty(OutputKeys.METHOD, "xml");
+                    transform.transform(new DOMSource(doc), new StreamResult(metaFile));
+                } catch (TransformerConfigurationException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                ExtractMeta.showMeta(mainDirectory);
+            } catch (SAXException | IOException e) {
+                System.err.println("Problème lors de l'ouverture du fichier");
+            }
+            
+        } catch (ParserConfigurationException e) {
+            System.err.println("Problème lors de la création d'un Document");
+        }
+    }
+    
+    public static void setSubject(Path mainDirectory,String texte){
+        String toMetaFile= mainDirectory.toString()+File.separator+"meta.xml";
+        File metaFile= new File(toMetaFile);
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            try {
+                Document doc = builder.parse(new FileInputStream(metaFile));
+                NodeList offDoc= doc.getElementsByTagName("dc:subject");
+                System.out.println(doc.getDocumentElement().getNodeName());
+                if (offDoc.getLength()>0) {
+                    offDoc.item(0).setTextContent(texte);
+                }else{
+                    NodeList addNode=doc.getElementsByTagName("office:meta");
+                    System.out.println(addNode.item(0).getNodeName());
+                    if (addNode.getLength()>0) {
+                        //TODO ajouter la nouvelle node avant le meta:generator
+                        // Element temp= doc.createElement("dc:subject");
+                        // temp.setTextContent(texte);
+                        // System.out.println(temp.getNodeName());
+                        // addNode.item(0).insertBefore(temp, addNode.item(0));  
+                    }
+                }
+                try {
+                    Transformer transform= TransformerFactory.newInstance().newTransformer();
+                    transform.setOutputProperty(OutputKeys.METHOD, "xml");
+                    transform.transform(new DOMSource(doc), new StreamResult(metaFile));
+                } catch (TransformerConfigurationException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                ExtractMeta.showMeta(mainDirectory);
+            } catch (SAXException | IOException e) {
+                System.err.println("Problème lors de l'ouverture du fichier");
+            }
+            
+        } catch (ParserConfigurationException e) {
+            System.err.println("Problème lors de la création d'un Document");
+        }
+    }
     
     //Getter Setter
     
