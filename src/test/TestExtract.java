@@ -7,8 +7,8 @@ import java.nio.file.Path;
 public class TestExtract {
     public static void main(String[] args) {
         try {
-            Path dossierTravail= Path.of("C:\\Users\\Laurent\\Desktop\\VS Code\\test");
-            ZipEtUnzip.unzip(new FileInputStream(new File("sujet_projet_L2-I_POO-java_2022-2023_v1.1.odt")), dossierTravail);
+            Path dossierTravail= Path.of("C:\\Users\\Laurent\\Desktop\\VS Code\\impossibleQueCeDossierSAppelleCommeCaVraimentSiJLeTrouveCestChaud");
+            ZipEtUnzip.unzip(new FileInputStream(new File(args[0])), dossierTravail);
             ExtractMeta.showMeta(dossierTravail);
             ExtractPicture.showPicture(dossierTravail);
             ExtractContent.showLink(dossierTravail);

@@ -1,9 +1,7 @@
 package extraction;
 import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.zip.*;
 
 import javax.xml.parsers.*;
 
@@ -46,22 +44,22 @@ public class ExtractMeta{
                 for (int i=0 ; i < subNodeMeta.getLength();i++) {
                     switch (subNodeMeta.item(i).getNodeName()) {
                         case "dc:title":
-                            System.out.println("Titre: "+subNodeMeta.item(i).getTextContent());
+                        System.out.println("Titre: "+subNodeMeta.item(i).getTextContent());
                         break;
                         case "dc:subject":
-                            System.out.println("Sujet: "+subNodeMeta.item(i).getTextContent());
+                        System.out.println("Sujet: "+subNodeMeta.item(i).getTextContent());
                         break;
                         case "meta:creation-date":
-                            System.out.println("Date de création: "+subNodeMeta.item(i).getTextContent());
+                        System.out.println("Date de création: "+subNodeMeta.item(i).getTextContent());
                         break;
                         case "meta:document-statistic":
-                            System.out.println("Statistiques:");
-                            System.out.println("Nombre de pages: "+subNodeMeta.item(i).getAttributes().getNamedItem("meta:page-count").getTextContent());
-                            System.out.println("Nombre de mots: "+subNodeMeta.item(i).getAttributes().getNamedItem("meta:word-count").getTextContent());
-                            System.err.println("Nombre de caractères: "+subNodeMeta.item(i).getAttributes().getNamedItem("meta:character-count").getTextContent());
+                        System.out.println("Statistiques:");
+                        System.out.println("Nombre de pages: "+subNodeMeta.item(i).getAttributes().getNamedItem("meta:page-count").getTextContent());
+                        System.out.println("Nombre de mots: "+subNodeMeta.item(i).getAttributes().getNamedItem("meta:word-count").getTextContent());
+                        System.err.println("Nombre de caractères: "+subNodeMeta.item(i).getAttributes().getNamedItem("meta:character-count").getTextContent());
                         break;
                         case "meta:keyword":
-                            keyword.add(subNodeMeta.item(i).getTextContent());
+                        keyword.add(subNodeMeta.item(i).getTextContent());
                         break;
                         default:
                         break;

@@ -13,13 +13,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 /**
- * Cette classe permet de chercher des informations dans le content.xml
- */
+* Cette classe permet de chercher des informations dans le content.xml
+*/
 public class ExtractContent {
     /**
-     * Affiche tous les liens internet du fichier content.xml
-     * @param mainDirectory chemin vers le dossier temporaire
-     */
+    * Affiche tous les liens internet du fichier content.xml
+    * @param mainDirectory chemin vers le dossier temporaire
+    */
     public static void showLink(Path mainDirectory) {
         String toContentFile= mainDirectory.toString()+File.separator+"content.xml";
         File linkList= new File(toContentFile);
@@ -31,9 +31,11 @@ public class ExtractContent {
                 Document doc = builder.parse(new FileInputStream(linkList));
                 NodeList offDocLink= doc.getElementsByTagName("text:a");
                 ArrayList<String> arrayLink= new ArrayList<String>();
+                String txtcontent=null;
                 for (int i=0; i < offDocLink.getLength();i++) {
-                    if (!arrayLink.contains(offDocLink.item(i).getAttributes().getNamedItem("xlink:href").getTextContent())){
-                        arrayLink.add(offDocLink.item(i).getAttributes().getNamedItem("xlink:href").getTextContent());
+                    txtcontent=offDocLink.item(i).getAttributes().getNamedItem("xlink:href").getTextContent();
+                    if (!arrayLink.contains(txtcontent)&& (txtcontent.contains("http")||txtcontent.contains("www"))){
+                        arrayLink.add(txtcontent);
                     }
                 }
                 if (arrayLink.size()>0) {

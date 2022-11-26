@@ -3,13 +3,13 @@ import java.io.*;
 import java.nio.file.Path;
 
 /**
- * Cette classe permet de chercher les images du dossier media
- */
+* Cette classe permet de chercher les images du dossier media
+*/
 public class ExtractPicture {
     /**
-     * Permet d'afficher le nom des images, leur taille et leur extension
-     * @param mainDirectory chemin vers le dossier temporaire
-     */
+    * Permet d'afficher le nom des images, leur taille et leur extension
+    * @param mainDirectory chemin vers le dossier temporaire
+    */
     public static void showPicture(Path mainDirectory) {
         String toPicFiles= mainDirectory.toString()+"\\media";
         File[] picList= new File(toPicFiles).listFiles();
