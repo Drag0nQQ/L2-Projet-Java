@@ -99,16 +99,13 @@ public class ExtractMeta{
             try {
                 Document doc = builder.parse(new FileInputStream(metaFile));
                 NodeList offDoc= doc.getElementsByTagName("dc:title");
-                System.out.println(doc.getDocumentElement().getNodeName());
                 if (offDoc.getLength()>0) {
                     offDoc.item(0).setTextContent(texte);
                 }else{
                     NodeList addNode=doc.getElementsByTagName("office:meta");
-                    System.out.println(addNode.item(0).getNodeName());
                     if (addNode.getLength()>0) {
                         Element temp= doc.createElement("dc:title");
                         temp.setTextContent(texte);
-                        System.out.println(temp.getNodeName());
                         addNode.item(0).insertBefore(temp, addNode.item(0).getChildNodes().item(0));  
                     }
                 }
@@ -123,7 +120,6 @@ public class ExtractMeta{
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                ExtractMeta.showMeta(mainDirectory);
             } catch (SAXException | IOException e) {
                 System.err.println("Problème lors de l'ouverture du fichier");
             }
@@ -143,18 +139,20 @@ public class ExtractMeta{
             try {
                 Document doc = builder.parse(new FileInputStream(metaFile));
                 NodeList offDoc= doc.getElementsByTagName("dc:subject");
-                System.out.println(doc.getDocumentElement().getNodeName());
                 if (offDoc.getLength()>0) {
                     offDoc.item(0).setTextContent(texte);
                 }else{
                     NodeList addNode=doc.getElementsByTagName("office:meta");
-                    System.out.println(addNode.item(0).getNodeName());
                     if (addNode.getLength()>0) {
-                        //TODO ajouter la nouvelle node avant le meta:generator
-                        // Element temp= doc.createElement("dc:subject");
-                        // temp.setTextContent(texte);
-                        // System.out.println(temp.getNodeName());
-                        // addNode.item(0).insertBefore(temp, addNode.item(0));  
+                        NodeList subNodeList= doc.getElementsByTagName("meta:generator");
+                        Node tmp= subNodeList.item(0);
+                        Element newElement=doc.createElement("tmp");
+                        String newString= newElement.getTextContent();
+                        addNode.item(0).insertBefore(newElement, tmp);
+                        newElement.setNodeValue("meta:generator");
+                        newElement.setTextContent(newString);
+                        tmp.setTextContent(texte);
+                        tmp.setNodeValue("dc:subject"); 
                     }
                 }
                 try {
@@ -168,7 +166,6 @@ public class ExtractMeta{
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                ExtractMeta.showMeta(mainDirectory);
             } catch (SAXException | IOException e) {
                 System.err.println("Problème lors de l'ouverture du fichier");
             }
