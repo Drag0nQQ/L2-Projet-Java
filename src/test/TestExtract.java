@@ -13,7 +13,7 @@ public class TestExtract {
             ExtractPicture.showPicture(dossierTravail);
             ExtractContent.showLink(dossierTravail);
             ExtractMeta.setTitle(dossierTravail, "Je suis beau");
-            
+            ExtractMeta.setSubject(dossierTravail, "JE SAIS PAS SI CA MARCHEEE");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -3,13 +3,11 @@ import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-import javax.xml.crypto.dsig.Transform;
 import javax.xml.parsers.*;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
