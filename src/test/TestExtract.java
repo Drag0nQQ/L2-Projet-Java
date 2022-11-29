@@ -21,7 +21,7 @@ public class TestExtract {
             ZipOutputStream zipOut = new ZipOutputStream(fos);
             
             File fileToZip = new File(sourceFile);
-            ZipEtUnzip.zipFile(fileToZip, fileToZip.getName(), zipOut);
+            ZipEtUnzip.zipFile(fileToZip,fileToZip.getName(), zipOut);
             zipOut.close();
             fos.close();
             ZipEtUnzip.supprDossier(dossierTravail.toFile());

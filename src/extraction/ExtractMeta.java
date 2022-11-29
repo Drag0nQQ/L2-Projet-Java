@@ -7,6 +7,7 @@ import javax.xml.parsers.*;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -112,10 +113,10 @@ public class ExtractMeta{
                     transform.setOutputProperty(OutputKeys.METHOD, "xml");
                     transform.transform(new DOMSource(doc), new StreamResult(metaFile));
                 } catch (TransformerConfigurationException e) {
-                    // TODO Auto-generated catch block
+                    System.err.println("Problème rencontré lors de l'instanciation de l'exporteur.");
                     e.printStackTrace();
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
+                } catch (TransformerException e) {
+                    System.err.println("Problème rencontré lors de l'exportation du document");
                     e.printStackTrace();
                 }
             } catch (SAXException | IOException e) {
@@ -158,10 +159,10 @@ public class ExtractMeta{
                     transform.setOutputProperty(OutputKeys.METHOD, "xml");
                     transform.transform(new DOMSource(doc), new StreamResult(metaFile));
                 } catch (TransformerConfigurationException e) {
-                    // TODO Auto-generated catch block
+                    System.err.println("Problème lors de l'instanciation de l'exporteur");
                     e.printStackTrace();
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
+                } catch (TransformerException e) {
+                    System.err.println("Problème rencontré lors de l'exportation du document");
                     e.printStackTrace();
                 }
             } catch (SAXException | IOException e) {

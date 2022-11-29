@@ -16,7 +16,7 @@ import java.util.zip.ZipOutputStream;
 public class ZipEtUnzip {
     /**
     * <p>Dézip un fichier et le stocke dans un dossier (crée le dossier s'il n'existe pas)</p>
-    * <p><i>Probkème de l'attaque Zip Slip résolu en comparant le chemin avant et après normalisation (retire les "./" et "../")</i></p>
+    * <p><i>Problème de l'attaque Zip Slip résolu en comparant le chemin avant et après normalisation (retire les "./" et "../")</i></p>
     * @param is InputStream of the file/directory
     * @param targetDir Save all the files in this directory
     * @throws IOException tried to open a non-existant file or directory
@@ -27,7 +27,7 @@ public class ZipEtUnzip {
             for (ZipEntry ze; (ze = zipIn.getNextEntry()) != null; ) {
                 Path resolvedPath = targetDir.resolve(ze.getName()).normalize();
                 if (!resolvedPath.startsWith(targetDir)) {
-                    throw new RuntimeException("Entry with an illegal path: "+ ze.getName());
+                    throw new IOException("Entry with an illegal path: "+ ze.getName());
                 }
                 if (ze.isDirectory()) {
                     Files.createDirectories(resolvedPath);
