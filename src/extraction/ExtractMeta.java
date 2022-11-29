@@ -63,7 +63,7 @@ public class ExtractMeta{
                         System.out.println("Statistiques:");
                         System.out.println("Nombre de pages: "+subNodeMeta.item(i).getAttributes().getNamedItem("meta:page-count").getTextContent());
                         System.out.println("Nombre de mots: "+subNodeMeta.item(i).getAttributes().getNamedItem("meta:word-count").getTextContent());
-                        System.err.println("Nombre de caractères: "+subNodeMeta.item(i).getAttributes().getNamedItem("meta:character-count").getTextContent());
+                        System.out.println("Nombre de caractères: "+subNodeMeta.item(i).getAttributes().getNamedItem("meta:character-count").getTextContent());
                         break;
                         case "meta:keyword":
                         keyword.add(subNodeMeta.item(i).getTextContent());
