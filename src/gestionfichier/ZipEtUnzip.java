@@ -1,12 +1,15 @@
 package gestionfichier;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 /**
  * Cette classe permet de manipuler les fichiers zip et plus généralement les fichiers dans le sens brut
  */
@@ -52,5 +55,64 @@ public class ZipEtUnzip {
             }
         }
         return dossierAsupprimer.delete();
+    }
+
+    public static void zip(File file, Path Dir,ZipOutputStream os) throws IOException{
+        if (file.isHidden()) {
+            return;
+        }
+        if (file.isDirectory()) {
+            if (Dir.toString().endsWith("/")) {
+                os.putNextEntry(new ZipEntry(Dir.toString()));
+                os.closeEntry();
+            } else {
+                os.putNextEntry(new ZipEntry(Dir.toString() + "/"));
+                os.closeEntry();
+            }
+            File[] children = file.listFiles();
+            for (File childFile : children) {
+                zip(childFile, Path.of( Dir.toString() + "/" + childFile.getName()), os);
+            }
+            return;
+        }
+        FileInputStream fis = new FileInputStream(file);
+        ZipEntry zipEntry = new ZipEntry(Dir.toString());
+        os.putNextEntry(zipEntry);
+        byte[] bytes = new byte[1024];
+        int length;
+        while ((length = fis.read(bytes)) >= 0) {
+            os.write(bytes, 0, length);
+        }
+        fis.close();
+        
+    }
+    //TODO JAVADOC afire
+    public static void zipFile(File fileToZip, String fileName, ZipOutputStream zipOut) throws IOException {
+        if (fileToZip.isHidden()) {
+            return;
+        }
+        if (fileToZip.isDirectory()) {
+            if (fileName.endsWith("/")) {
+                zipOut.putNextEntry(new ZipEntry(fileName));
+                zipOut.closeEntry();
+            } else {
+                zipOut.putNextEntry(new ZipEntry(fileName + "/"));
+                zipOut.closeEntry();
+            }
+            File[] children = fileToZip.listFiles();
+            for (File childFile : children) {
+                zipFile(childFile, fileName + "/" + childFile.getName(), zipOut);
+            }
+            return;
+        }
+        FileInputStream fis = new FileInputStream(fileToZip);
+        ZipEntry zipEntry = new ZipEntry(fileName);
+        zipOut.putNextEntry(zipEntry);
+        byte[] bytes = new byte[1024];
+        int length;
+        while ((length = fis.read(bytes)) >= 0) {
+            zipOut.write(bytes, 0, length);
+        }
+        fis.close();
     }
 }
