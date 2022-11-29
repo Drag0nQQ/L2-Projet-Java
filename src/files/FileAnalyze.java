@@ -2,6 +2,8 @@ package files;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLConnection;
+import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 
 
@@ -32,7 +34,6 @@ public class FileAnalyze {
             switch (args[0]) {
                 case "-f":
                 return FILE_OPTION;
-                
                 case "-d":
                 if (args.length==2) {
                     return DIRECTORY_OPTION;
@@ -83,20 +84,9 @@ public class FileAnalyze {
         
         
         //TODO: faire en sorte que le nombre de parametre est légal + préparer -title , -subject  
-        public void menu(String[] args) {
-            System.out.println(args[0]);
-            System.out.println(args[1]);
-            if (args.length>0 && args[0].equalsIgnoreCase("-d"))
-            {
-                File dir = new File(args[1]);
-                showDirectories(dir.listFiles());
-            }
-        }
-        
-        
         /**
         * <p>Permet l'affichage d'un dossier sur la console.<br/></p>
-        * <p>Affiche le nom du dossier, les sous dossiers et fichiers</p>
+        * <p>Affiche le nom du dossier, les sous dossiers et fichiers (uniquement</p>
         * <p><i>méthode récursive</i></p>
         * @version 0.1
         * @param files : liste de tous les fichiers (dans le sens brut)
@@ -110,8 +100,9 @@ public class FileAnalyze {
                 } else {
                     if (file.getName().endsWith("odt")){
                         try {
-                            System.out.println("Size: " +"\t"+file.length()/1024 +"kB"+"\t File: "+ file.getCanonicalPath());
-                            
+                            if (Files.probeContentType(file.toPath()).contains("vnd.oasis.opendocument.text")){
+                                System.out.println("Size: " +"\t"+file.length()/1024 +"kB"+"\t File: "+ file.getCanonicalPath());
+                            }
                         } catch (Exception e) {
                             System.err.println("Access denied, no permission to access it.");
                         }
@@ -128,8 +119,6 @@ public class FileAnalyze {
         public static void showFile(String filename) throws NoSuchFileException {
             try {
                 //TODO call Axel's class
-                // FileManager fm= new FileManager();
-                // fm.transformation(filename);
                 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -155,7 +144,7 @@ public class FileAnalyze {
             System.out.println("\t \t -f :specify that the [path] is a file");
             System.out.println("\t \t -d :specify that the [path] is a directory");
             System.out.println("\t [path] :should be the absolute path to the file or directory");
-            System.out.println("\t [args] :specify which meta tag to modify.");
+            System.out.println("\t [args] :only for <-f> option :specify which meta tag to modify.");
             System.out.println("\t \t --title :set title meta tag to [text]");
             System.out.println("\t \t --subject :set subject meta tag to [text]");
             System.out.println("\t [text]: replace the current text with this new text (expected one after each modifiers)");
