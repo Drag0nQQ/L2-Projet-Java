@@ -2,6 +2,7 @@ package test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -43,8 +44,8 @@ public class TestCLI {
                         default:
                             break;
                     }
-                    ExtractMeta.showMeta(dossierTravail);
-                    //ZipEtUnzip.zip(args[1],dossierTravail)
+                    FileAnalyze.showFile(dossierTravail.toString());
+                    //ZipEtUnzip.zip(new FileOutputStream(new File("C:/Users/Laurent/Desktop/outzip.odt")),dossierTravail);
                     ZipEtUnzip.supprDossier(new File(dossierTravail.toString()));
                 } catch (Exception e) {
                     System.err.println(e.getMessage());

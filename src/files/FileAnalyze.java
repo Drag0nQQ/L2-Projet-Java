@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+
+import extraction.ExtractContent;
+import extraction.ExtractMeta;
+import extraction.ExtractPicture;
 
 
 public class FileAnalyze {
@@ -73,7 +78,7 @@ public class FileAnalyze {
                     return TITLE_OPTION;
                 }
                 //Si c'est aucun des 3 options, c'est que je n'ai pas pensé a la cette particularité
-                //TODO si la personne marque "-f test.odt -huh "blabla" -jjj "raté" "
+                //si la personne marque "-f test.odt -huh "blabla" -jjj "raté" "
                 throw new IllegalArgumentException("FileAnalyze.checkModifier erreur : Aucun des 3 options, utiliser l'option [-h] pour plus d'information.");
             }
             else{
@@ -82,10 +87,9 @@ public class FileAnalyze {
         }
         
         
-        //TODO: faire en sorte que le nombre de parametre est légal + préparer -title , -subject  
         /**
         * <p>Permet l'affichage d'un dossier sur la console.<br/></p>
-        * <p>Affiche le nom du dossier, les sous dossiers et fichiers (uniquement</p>
+        * <p>Affiche le nom du dossier, les sous dossiers et fichiers (uniquement .odt)</p>
         * <p><i>méthode récursive</i></p>
         * @version 0.1
         * @param files : liste de tous les fichiers (dans le sens brut)
@@ -112,13 +116,18 @@ public class FileAnalyze {
         
         /**
         * Affiche les métadonnées du fichier en question
+        * <ul><li>Les métadonnées principales</li><li>Les liens internet</li><li>Les images utilisées</li></ul>
         * @see #ExtractMeta
         * @throws NoSuchFileException  File n'existe pas ou non trouvé
+        * @param filename chemin vers le dossier contenant les données
         */
         public static void showFile(String filename) throws NoSuchFileException {
             try {
                 //TODO call Axel's class
-                
+                Path tofile= Path.of(filename);
+                ExtractMeta.showMeta(tofile);
+                ExtractContent.showLink(tofile);
+                ExtractPicture.showPicture(tofile);
             } catch (Exception e) {
                 e.printStackTrace();
                 // TODO: handle exception

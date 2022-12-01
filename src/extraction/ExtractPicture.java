@@ -9,6 +9,7 @@ public class ExtractPicture {
     /**
     * Permet d'afficher le nom des images, leur taille et leur extension
     * @param mainDirectory chemin vers le dossier temporaire
+    * @see gestionfichier.ZipEtUnzip#unzip pour créer le dossier temporaire
     */
     public static void showPicture(Path mainDirectory) {
         String toPicFiles= mainDirectory.toString()+"\\media";

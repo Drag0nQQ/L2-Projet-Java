@@ -7,6 +7,7 @@ import javax.xml.parsers.*;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -111,13 +112,10 @@ public class ExtractMeta{
                     Transformer transform= TransformerFactory.newInstance().newTransformer();
                     transform.setOutputProperty(OutputKeys.METHOD, "xml");
                     transform.transform(new DOMSource(doc), new StreamResult(metaFile));
-                } catch (TransformerConfigurationException e) {
-                    // TODO Auto-generated catch block
+                } catch (TransformerException e) {
+                    System.err.println("Problème rencontré lors de la configuration de l'exporter");
                     e.printStackTrace();
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                } 
             } catch (SAXException | IOException e) {
                 System.err.println("Problème lors de l'ouverture du fichier");
             }
