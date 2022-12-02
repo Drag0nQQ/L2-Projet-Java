@@ -2,9 +2,6 @@ package test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.nio.charset.Charset;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Random;
 

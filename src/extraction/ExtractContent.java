@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,6 +17,7 @@ import org.xml.sax.SAXException;
 * Cette classe permet de chercher des informations dans le content.xml
 */
 public class ExtractContent {
+    private ArrayList<String> hyperlink=new ArrayList<String>();
     /**
     * Affiche tous les liens internet du fichier content.xml
     * @param mainDirectory chemin vers le dossier temporaire
@@ -50,6 +52,29 @@ public class ExtractContent {
             
         } catch (ParserConfigurationException e) {
             System.err.println("Problème lors de la création d'un Document");
+        }
+    }
+    
+    //GETTERS SETTERS
+    public void setHyperlink(ArrayList<String> hyperlink) {
+        this.hyperlink = hyperlink;
+    }
+    public void addHyperlink(String link) {
+        if (!hyperlink.contains(link)){
+            hyperlink.add(link);
+        }
+    }
+    public ArrayList<String> getHyperlink() {
+        return hyperlink;
+    }
+    public void clearHyperlink(){
+        hyperlink.clear();
+    }
+    public void removeLink(String link) throws NoSuchElementException{
+        if (hyperlink.contains(link)){
+        hyperlink.remove(link);
+        }else{
+            throw new NoSuchElementException("Lien non existant");
         }
     }
 }
