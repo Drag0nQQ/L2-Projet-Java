@@ -50,7 +50,7 @@ public class TestCLI {
                         ZipEtUnzip.zip("",new File(dossierTravail.toString()),fin); 
                         fin.close();  
                     } catch (Exception e) {
-                        System.err.println("Fichier de sortie erronée.");
+                        System.err.println("Fichier de sortie erroné.");
                     }
                     ZipEtUnzip.supprDossier(new File(dossierTravail.toString()));
                 } catch (Exception e) {

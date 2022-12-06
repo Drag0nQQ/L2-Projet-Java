@@ -10,16 +10,44 @@ import extraction.ExtractContent;
 import extraction.ExtractMeta;
 import extraction.ExtractPicture;
 
-
+/**
+ * Cette classe sert d'intermédiaire entre le main et les fonctions sur les extractions
+ * @author Laurent LIN
+ * @author Axel OLIVEIRA
+ * @see {@link extraction.ExtractContent ExtractContent}
+ * @see {@link extraction.ExtractMeta ExtractMeta} 
+ * @see {@link extraction.ExtractPicture ExtractPicture}
+ */
 public class FileAnalyze {
-    
+    /**
+     * Utilisé dans {@link #checkOption(String[])}
+     */
     public static final int SHOW_OPTION=0;
+    /**
+     * Utilisé dans {@link #checkOption(String[])}
+     */
     public static final int FILE_OPTION=1;
+    /**
+     * Utilisé dans {@link #checkOption(String[])}
+     */
     public static final int DIRECTORY_OPTION=2;
+    /**
+     * Utilisé dans {@link #checkOption(String[])}
+     */
     public static final int HELP_OPTION=3;
-    
+
+
+    /**
+     * Utilisé dans {@link #checkModifier(String[])}
+     */
     public static final int SUBJECT_OPTION=4;
+    /**
+     * Utilisé dans {@link #checkModifier(String[])}
+     */
     public static final int TITLE_OPTION=5;
+    /**
+     * Utilisé dans {@link #checkModifier(String[])}
+     */
     public static final int SUBJECT_AND_TITLE_OPTION=6;
     /**
     * Filtre et renvoie l'option sélectionné sous forme de int

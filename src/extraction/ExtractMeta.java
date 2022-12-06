@@ -32,7 +32,8 @@ public class ExtractMeta{
     /**
     * Affiche les metadata du fichier, pour les photos voir methodes
     * @param mainDirectory should be the path to the meta.xml
-    * @see 
+    * @see {@link extraction.ExtractPicture pour les pictures}
+    * @see {@link extraction.ExtractContent pour les liens}
     */
     public static void showMeta(Path mainDirectory){
         DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
@@ -88,6 +89,15 @@ public class ExtractMeta{
         
     }
     
+    /**
+     * Modifie le titre du meta.xml dans le dossier temporaire
+     * on cherche la node "dc:title" s'il n'existe pas, on crée
+     *  ce node et on le pose avant le "dc:generator" pour garder
+     *  l'ordre d'apparition.
+     * @param mainDirectory chemin vers le dossier temporaire
+     * @param texte remplace le texte actuel par ce {@code texte}
+     * @see {@link #setSubject(Path, String)} pour modifier le sujet.
+     */
     public static void setTitle(Path mainDirectory,String texte){
         String toMetaFile= mainDirectory.toString()+File.separator+"meta.xml";
         File metaFile= new File(toMetaFile);
@@ -126,7 +136,7 @@ public class ExtractMeta{
     }
     
     /**
-     * Permet de changer le sujet du fichier meta.xml, créer le noeud <dc:subject> s'il n'existe pas.
+     * Permet de changer le sujet du fichier meta.xml, créer le noeud <dc:subject> après le tag "dc:generator" s'il n'existe pas.
      * @param mainDirectory chemin vers le dossier temporaire du .odt
      * @param texte texte à mettre à la place de l'ancien texte
      * @see {@link #setTitle(Path, String)} pour changer le titre.
