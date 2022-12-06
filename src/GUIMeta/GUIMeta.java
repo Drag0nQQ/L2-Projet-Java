@@ -1,10 +1,8 @@
 package GUIMeta;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.net.URL;
+import java.awt.event.*;
 
 public class GUIMeta extends JFrame{
 
@@ -22,6 +20,7 @@ public class GUIMeta extends JFrame{
     private JMenuItem ouvrir;
     private JMenu enregistrer;
     private JMenuItem sous;
+    private JMenuItem quitter;
     private JFileChooser chooser;
 
     public GUIMeta(){
@@ -38,22 +37,42 @@ public class GUIMeta extends JFrame{
         this.date = new JTextField(20);
         this.statistic = new JTextField(20);
 
+        titre.setEditable(false);
+        auteur.setEditable(false);
+        sujet.setEditable(false);
+        keyword.setEditable(false);
+        date.setEditable(false);
+        statistic.setEditable(false);
+
+        titre.setBackground(Color.decode("#3e4e81"));
+        titre.setForeground(Color.decode("#ffffff"));
+        auteur.setBackground(Color.decode("#3e4e81"));
+        auteur.setForeground(Color.decode("#ffffff"));
+        sujet.setBackground(Color.decode("#3e4e81"));
+        sujet.setForeground(Color.decode("#ffffff"));
+        keyword.setBackground(Color.decode("#3e4e81"));
+        keyword.setForeground(Color.decode("#ffffff"));
+        date.setBackground(Color.decode("#3e4e81"));
+        date.setForeground(Color.decode("#ffffff"));
+        statistic.setBackground(Color.decode("#3e4e81"));
+        statistic.setForeground(Color.decode("#ffffff"));
+
         ImageIcon imageIcon = new ImageIcon("/Users/axel/Dev/TestProjet/Test/media/image3.png");
 
-        ImageIcon imgAnnuler = new ImageIcon("/Users/axel/Downloads/signal.png");
+        ImageIcon imgAnnuler = new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/signal.png");
         this.jbAnnuler = new JButton("Annuler", imgAnnuler);
         jbAnnuler.setVerticalTextPosition(AbstractButton.CENTER);
         jbAnnuler.setHorizontalTextPosition(AbstractButton.LEADING);
 
-        ImageIcon imgModifier = new ImageIcon("/Users/axel/Downloads/edit.png");
+        ImageIcon imgModifier = new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/edit.png");
         this.jbModifier = new JButton("Modifier", imgModifier);
         jbModifier.setVerticalTextPosition(AbstractButton.CENTER);
         jbModifier.setHorizontalTextPosition(AbstractButton.LEADING);
 
-        ImageIcon imgAppliquer = new ImageIcon("/Users/axel/Downloads/checked.png");
+        ImageIcon imgAppliquer = new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/checked.png");
         this.jbAppliquer = new JButton("Appliquer", imgAppliquer);
 
-        ImageIcon imgClear = new ImageIcon("/Users/axel/Downloads/rubber.png");
+        ImageIcon imgClear = new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/rubber.png");
         this.jbClear = new JButton("Clear", imgClear);
         jbClear.setVerticalTextPosition(AbstractButton.CENTER);
         jbClear.setHorizontalTextPosition(AbstractButton.LEADING);
@@ -81,6 +100,9 @@ public class GUIMeta extends JFrame{
         this.sous = new JMenuItem("Enregistrer sous");
         sous.setToolTipText("Enregistre sous le fichier qui est ouvert actuellement");
         enregistrer.add(sous);
+        this.quitter = new JMenuItem("Quitter");
+        quitter.setToolTipText("Permet de quitter la fenêtre");
+        quitter.addActionListener(new ActionQuitter());
 
         JPanel jpTitre = new JPanel();
         titre.setPreferredSize(new Dimension(75, 25));
@@ -130,7 +152,6 @@ public class GUIMeta extends JFrame{
         jpStatistic.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpStatistic.setBackground(Color.decode("#3e4e81"));
 
-
         JPanel caseHG = new JPanel();
         caseHG.setLayout(new BoxLayout(caseHG,BoxLayout.Y_AXIS));
         caseHG.setPreferredSize(new Dimension(830, 576));
@@ -148,13 +169,19 @@ public class GUIMeta extends JFrame{
 
         JPanel panelBouton = new JPanel();
         panelBouton.add(jbAnnuler);
+        jbAnnuler.setVisible(false);
         panelBouton.add(jbModifier);
         panelBouton.add(jbAppliquer);
+        jbAppliquer.setVisible(false);
+        jbAnnuler.addActionListener(new ActionAnnuler());
+        jbModifier.addActionListener(new ActionModifier());
+        jbAppliquer.addActionListener(new ActionAppliquer());
         panelBouton.setPreferredSize(new Dimension(277, 40));
         panelBouton.setBackground(Color.decode("#777da7"));
 
         JPanel panelEnDessousBouton = new JPanel();
         panelEnDessousBouton.add(jbClear);
+        jbClear.addActionListener(new ActionClear());
         panelEnDessousBouton.setPreferredSize(new Dimension(277, 40));
         panelEnDessousBouton.setBackground(Color.decode("#777da7"));
 
@@ -194,6 +221,7 @@ public class GUIMeta extends JFrame{
         jMenu.addSeparator();
         jMenu.add(enregistrer);
         jMenu.addSeparator();
+        jMenu.add(quitter);
         jMenuBar.add(jMenu);
         this.setJMenuBar(jMenuBar);
 
@@ -204,8 +232,90 @@ public class GUIMeta extends JFrame{
         Container main = super.getContentPane();
         main.add(tout);
 
+        this.setResizable(true);
+        this.setLocationRelativeTo(null);
         this.pack();
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new ActionWindowClosing());
+    }
+
+
+    class ActionClear implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            titre.setText("");
+            auteur.setText("");
+            sujet.setText("");
+            keyword.setText("");
+            date.setText("");
+            statistic.setText("");
+        }
+    }
+
+    class ActionModifier implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            titre.setEditable(true);
+            sujet.setEditable(true);
+            jbAnnuler.setVisible(true);
+            jbAppliquer.setVisible(true);
+            jbModifier.setVisible(false);
+        }
+    }
+
+    class ActionAnnuler implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            jbAnnuler.setVisible(false);
+            jbModifier.setVisible(true);
+            jbAppliquer.setVisible(false);
+            int reponse = JOptionPane.showConfirmDialog(jbAnnuler, "Voulez-vous annuler les changements effectués ?", "Annuler les changements ?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/crayon.png"));
+            if (reponse == JOptionPane.YES_OPTION) {
+                titre.setEditable(false);
+                sujet.setEditable(false);
+                JOptionPane.showMessageDialog(jbAnnuler, "L'annulation des changements a bien été faite.", "Annulation des changements", JOptionPane.OK_OPTION, new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/crayon.png"));
+            } else if (reponse == JOptionPane.NO_OPTION){
+                titre.setEditable(false);
+                sujet.setEditable(false);
+                JOptionPane.showMessageDialog(jbAnnuler, "Vous devrez réactiver la modification si vous voulez changer quelque chose.", "Refus de l'annulation des changements", JOptionPane.OK_OPTION, new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/crayon.png"));
+            }
+        }
+    }
+
+    class ActionAppliquer implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            jbAnnuler.setVisible(false);
+            jbModifier.setVisible(true);
+            jbAppliquer.setVisible(false);
+            int reponse = JOptionPane.showConfirmDialog(jbAppliquer, "Êtes-vous sûr de bien vouloir appliquer les changements ?", "Appliquer les changements ?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/crayon.png"));
+            if (reponse == JOptionPane.YES_OPTION){
+                titre.setEditable(false);
+                sujet.setEditable(false);
+                JOptionPane.showMessageDialog(jbAppliquer, "Les changements ont bien été effectués.", "Changements effectués", JOptionPane.OK_OPTION, new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/checked.png"));
+            } else if (reponse == JOptionPane.NO_OPTION) {
+                titre.setEditable(false);
+                sujet.setEditable(false);
+                JOptionPane.showMessageDialog(jbAppliquer, "Vous devrez réactiver la modification si vous voulez changer quelque chose.", "Refus de l'application des changements", JOptionPane.OK_OPTION, new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/crayon.png"));
+            }
+        }
+    }
+
+    class ActionQuitter implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int reponse = JOptionPane.showConfirmDialog(quitter, "Voulez-vous quitter la page ?", "Sortir ?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/sortie.png"));
+            if (reponse == JOptionPane.YES_OPTION){
+                System.exit(0);
+            }
+        }
+    }
+
+    class ActionWindowClosing extends WindowAdapter{
+        @Override
+        public void windowClosing(WindowEvent e) {
+            new ActionQuitter().actionPerformed(null);
+        }
     }
 }
