@@ -55,11 +55,13 @@ public class ZipEtUnzip {
         }
         return dossierAsupprimer.delete();
     }
-    
-    public static void zip2(String base, File tmp, ZipOutputStream destination){
-
-    }
-
+    /**
+     * Permet de mettre le contenu d'un dossier dans un fichier zip.
+     * @param basePath pour garder la hiérachie dossiers, sous dossiers et fichiers
+     * @param dir chemin vers le dossier à zip
+     * @param zout sortie du fichier vers ce chemin
+     * @throws IOException apparait lors d'un soucis d'ouverture du fichier
+     */
     public static void zip(String basePath, File dir, ZipOutputStream zout) throws IOException {
         byte[] buffer = new byte[1024];
         File[] files = dir.listFiles();

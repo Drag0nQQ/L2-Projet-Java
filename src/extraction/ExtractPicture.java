@@ -12,16 +12,20 @@ public class ExtractPicture {
     * @see gestionfichier.ZipEtUnzip#unzip pour créer le dossier temporaire
     */
     public static void showPicture(Path mainDirectory) {
+        //TODO Pictures/ ou media/ à chercher
         String toPicFiles= mainDirectory.toString()+"\\media";
         File[] picList= new File(toPicFiles).listFiles();
         try{
-            System.out.println("Nombre d'images: "+picList.length);
-            for (File file : picList) {
-                System.out.println("Nom: "+file.getName().substring(0,file.getName().lastIndexOf("."))+"\t\tTaille:"+file.length()/1024+"kB"+"\tExt: "+file.getName().substring(file.getName().lastIndexOf(".")+1));
-                
+            if (picList!=null){
+                System.out.println("Nombre d'images: "+picList.length);
+                for (File file : picList) {
+                    System.out.println("Nom: "+file.getName().substring(0,file.getName().lastIndexOf("."))+"\t\tTaille:"+file.length()/1024+"kB"+"\tExt: "+file.getName().substring(file.getName().lastIndexOf(".")+1));
+                }
             }
         }catch(Exception e){
             e.printStackTrace();
         }
     }
+    
+    //TODO méthode pour le thumbnail
 }

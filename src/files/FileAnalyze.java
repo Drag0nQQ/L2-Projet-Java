@@ -68,8 +68,10 @@ public class FileAnalyze {
         */
         public static int checkModifier(String[] args)throws Exception{
             if (args.length%2==0 && args.length/2<=3 && args.length>1){
-                if ((args[2].equalsIgnoreCase("--subject")&&args[4].equalsIgnoreCase("--title"))||args[4].equalsIgnoreCase("--subject")&&args[2].equalsIgnoreCase("--title")) {
-                    return SUBJECT_AND_TITLE_OPTION;
+                if (args.length>4) {
+                    if ((args[2].equalsIgnoreCase("--subject")&&args[4].equalsIgnoreCase("--title"))||args[4].equalsIgnoreCase("--subject")&&args[2].equalsIgnoreCase("--title")) {
+                        return SUBJECT_AND_TITLE_OPTION;
+                    }
                 }
                 if ((args[2].equalsIgnoreCase("--subject")&& args.length==4)){
                     return SUBJECT_OPTION;
@@ -93,8 +95,6 @@ public class FileAnalyze {
         * <p><i>méthode récursive</i></p>
         * @version 0.1
         * @param files : liste de tous les fichiers (dans le sens brut)
-        * 
-        * 
         */
         public static void showDirectories(File[] files) {
             for (File file : files) {
@@ -123,14 +123,13 @@ public class FileAnalyze {
         */
         public static void showFile(String filename) throws NoSuchFileException {
             try {
-                //TODO call Axel's class
                 Path tofile= Path.of(filename);
                 ExtractMeta.showMeta(tofile);
                 ExtractContent.showLink(tofile);
                 ExtractPicture.showPicture(tofile);
             } catch (Exception e) {
+                System.err.println("Le chemin vers le fichier est incorrecte ou erronée :");
                 e.printStackTrace();
-                // TODO: handle exception
             }
         }
         
