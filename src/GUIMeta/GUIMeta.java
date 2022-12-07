@@ -3,6 +3,7 @@ package GUIMeta;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FilenameFilter;
 
 public class GUIMeta extends JFrame{
 
@@ -12,6 +13,13 @@ public class GUIMeta extends JFrame{
     private JTextField keyword;
     private JTextField date;
     private JTextField statistic;
+    private JTextField nbCaracteres;
+    private JTextField nbMots;
+    private JTextField nbImages;
+    private JTextField nbPages;
+    private JTextField tailleImage;
+    private JTextField poidImage;
+    private JTextField lienHypertxt;
     private JButton jbAnnuler;
     private JButton jbModifier;
     private JButton jbAppliquer;
@@ -36,6 +44,13 @@ public class GUIMeta extends JFrame{
         this.keyword = new JTextField(20);
         this.date = new JTextField(20);
         this.statistic = new JTextField(20);
+        this.nbMots = new JTextField(5);
+        this.nbCaracteres = new JTextField(5);
+        this.nbPages = new JTextField(5);
+        this.nbImages = new JTextField(5);
+        this.tailleImage = new JTextField(5);
+        this.poidImage = new JTextField(5);
+        this.lienHypertxt = new JTextField(60);
 
         titre.setEditable(false);
         auteur.setEditable(false);
@@ -43,6 +58,13 @@ public class GUIMeta extends JFrame{
         keyword.setEditable(false);
         date.setEditable(false);
         statistic.setEditable(false);
+        nbMots.setEditable(false);
+        nbCaracteres.setEditable(false);
+        nbPages.setEditable(false);
+        nbImages.setEditable(false);
+        tailleImage.setEditable(false);
+        poidImage.setEditable(false);
+        lienHypertxt.setEditable(false);
 
         titre.setBackground(Color.decode("#3e4e81"));
         titre.setForeground(Color.decode("#ffffff"));
@@ -56,6 +78,20 @@ public class GUIMeta extends JFrame{
         date.setForeground(Color.decode("#ffffff"));
         statistic.setBackground(Color.decode("#3e4e81"));
         statistic.setForeground(Color.decode("#ffffff"));
+        nbMots.setBackground(Color.decode("#3e4e81"));
+        nbMots.setForeground(Color.decode("#ffffff"));
+        nbCaracteres.setBackground(Color.decode("#3e4e81"));
+        nbCaracteres.setForeground(Color.decode("#ffffff"));
+        nbPages.setBackground(Color.decode("#3e4e81"));
+        nbPages.setForeground(Color.decode("#ffffff"));
+        nbImages.setBackground(Color.decode("#3e4e81"));
+        nbImages.setForeground(Color.decode("#ffffff"));
+        tailleImage.setBackground(Color.decode("#3e4e81"));
+        tailleImage.setForeground(Color.decode("#ffffff"));
+        poidImage.setBackground(Color.decode("#3e4e81"));
+        poidImage.setForeground(Color.decode("#ffffff"));
+        lienHypertxt.setBackground(Color.decode("#3e4e81"));
+        lienHypertxt.setForeground(Color.decode("#ffffff"));
 
         ImageIcon imageIcon = new ImageIcon("/Users/axel/Dev/TestProjet/Test/media/image3.png");
 
@@ -89,6 +125,13 @@ public class GUIMeta extends JFrame{
         JLabel jlKeyword = new JLabel("Keyword : ");
         JLabel jlDate = new JLabel("Date : ");
         JLabel jlStatistic = new JLabel("Statistic : ");
+        JLabel jlNbMots = new JLabel("Nombre de mots : ");
+        JLabel jlNbCaracteres = new JLabel("Nombre de caractères : ");
+        JLabel jlNbPages = new JLabel("Nombre de pages : ");
+        JLabel jlNbImages = new JLabel("Nombre d'images : ");
+        JLabel jlTailleImg = new JLabel("Taille des images : ");
+        JLabel jlPoidsImg = new JLabel("Poids des images : ");
+        JLabel jlLienHypTxt = new JLabel("Liens hypertext : ");
         JLabel imageLabel = new JLabel(imageIcon);
 
         JMenuBar jMenuBar = new JMenuBar();
@@ -109,6 +152,7 @@ public class GUIMeta extends JFrame{
         jlTitre.setForeground(Color.decode("#ffffff"));
         jpTitre.add(jlTitre);
         jpTitre.add(titre);
+        titre.setText("Mon super titre");
         jpTitre.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpTitre.setBackground(Color.decode("#3e4e81"));
 
@@ -117,6 +161,7 @@ public class GUIMeta extends JFrame{
         jlAuteur.setForeground(Color.decode("#ffffff"));
         jpAuteur.add(jlAuteur);
         jpAuteur.add(auteur);
+        auteur.setText("Laurent / Axel");
         jpAuteur.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpAuteur.setBackground(Color.decode("#3e4e81"));
 
@@ -125,6 +170,7 @@ public class GUIMeta extends JFrame{
         jlSujet.setForeground(Color.decode("#ffffff"));
         jpSujet.add(jlSujet);
         jpSujet.add(sujet);
+        sujet.setText("Projet POO");
         jpSujet.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpSujet.setBackground(Color.decode("#3e4e81"));
 
@@ -133,6 +179,7 @@ public class GUIMeta extends JFrame{
         jlKeyword.setForeground(Color.decode("#ffffff"));
         jpKeyword.add(jlKeyword);
         jpKeyword.add(keyword);
+        keyword.setText("Salut \n Coucou \n Salut \n");
         jpKeyword.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpKeyword.setBackground(Color.decode("#3e4e81"));
 
@@ -141,16 +188,72 @@ public class GUIMeta extends JFrame{
         jlDate.setForeground(Color.decode("#ffffff"));
         jpDate.add(jlDate);
         jpDate.add(date);
+        date.setText("07/12/2022");
         jpDate.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpDate.setBackground(Color.decode("#3e4e81"));
 
-        JPanel jpStatistic = new JPanel();
-        statistic.setPreferredSize(new Dimension(75, 25));
-        jlStatistic.setForeground(Color.decode("#ffffff"));
-        jpStatistic.add(jlStatistic);
-        jpStatistic.add(statistic);
-        jpStatistic.setLayout(new FlowLayout(FlowLayout.LEFT));
-        jpStatistic.setBackground(Color.decode("#3e4e81"));
+        JPanel jpCaracteres = new JPanel();
+        nbCaracteres.setPreferredSize(new Dimension(75, 25));
+        jlNbCaracteres.setForeground(Color.decode("#ffffff"));
+        jpCaracteres.add(jlNbCaracteres);
+        jpCaracteres.add(nbCaracteres);
+        nbCaracteres.setText("245934");
+        jpCaracteres.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jpCaracteres.setBackground(Color.decode("#3e4e81"));
+
+        JPanel jpMots = new JPanel();
+        nbMots.setPreferredSize(new Dimension(75, 25));
+        jlNbMots.setForeground(Color.decode("#ffffff"));
+        jpMots.add(jlNbMots);
+        jpMots.add(nbMots);
+        nbMots.setText("12000");
+        jpMots.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jpMots.setBackground(Color.decode("#3e4e81"));
+
+        JPanel jpPages = new JPanel();
+        nbPages.setPreferredSize(new Dimension(75, 25));
+        jlNbPages.setForeground(Color.decode("#ffffff"));
+        jpPages.add(jlNbPages);
+        jpPages.add(nbPages);
+        nbPages.setText("6");
+        jpPages.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jpPages.setBackground(Color.decode("#3e4e81"));
+
+        JPanel jpImages = new JPanel();
+        nbImages.setPreferredSize(new Dimension(75, 25));
+        jlNbImages.setForeground(Color.decode("#ffffff"));
+        jpImages.add(jlNbImages);
+        jpImages.add(nbImages);
+        nbImages.setText("6");
+        jpImages.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jpImages.setBackground(Color.decode("#3e4e81"));
+
+        JPanel jpTailleImage = new JPanel();
+        tailleImage.setPreferredSize(new Dimension(75, 25));
+        jlTailleImg.setForeground(Color.decode("#ffffff"));
+        jpTailleImage.add(jlTailleImg);
+        jpTailleImage.add(tailleImage);
+        tailleImage.setText("60x34");
+        jpTailleImage.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jpTailleImage.setBackground(Color.decode("#3e4e81"));
+
+        JPanel jpPoidImg = new JPanel();
+        poidImage.setPreferredSize(new Dimension(75, 25));
+        jlPoidsImg.setForeground(Color.decode("#ffffff"));
+        jpPoidImg.add(jlPoidsImg);
+        jpPoidImg.add(poidImage);
+        poidImage.setText("6" + "Ko");
+        jpPoidImg.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jpPoidImg.setBackground(Color.decode("#3e4e81"));
+
+        JPanel jpLienHyptxt = new JPanel();
+        lienHypertxt.setPreferredSize(new Dimension(75, 25));
+        jlLienHypTxt.setForeground(Color.decode("#ffffff"));
+        jpLienHyptxt.add(jlLienHypTxt);
+        jpLienHyptxt.add(lienHypertxt);
+        lienHypertxt.setText("6" + "Ko");
+        jpLienHyptxt.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jpLienHyptxt.setBackground(Color.decode("#3e4e81"));
 
         JPanel caseHG = new JPanel();
         caseHG.setLayout(new BoxLayout(caseHG,BoxLayout.Y_AXIS));
@@ -160,8 +263,18 @@ public class GUIMeta extends JFrame{
         caseHG.add(jpSujet);
         caseHG.add(jpKeyword);
         caseHG.add(jpDate);
-        caseHG.add(jpStatistic);
+        caseHG.add(jpCaracteres);
+        caseHG.add(jpMots);
+        caseHG.add(jpPages);
+        caseHG.add(jpImages);
+        caseHG.add(jpTailleImage);
+        caseHG.add(jpPoidImg);
+        caseHG.add(jpLienHyptxt);
         caseHG.setBackground(Color.decode("#3e4e81"));
+
+        JScrollPane scrollHG = new JScrollPane(caseHG);
+        scrollHG.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollHG.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         JPanel panelAuDessusBouton = new JPanel();
         panelAuDessusBouton.setPreferredSize(new Dimension(277, 40));
@@ -196,7 +309,8 @@ public class GUIMeta extends JFrame{
         JPanel gauche = new JPanel();
         gauche.setPreferredSize(new Dimension(830, 700));
         gauche.setLayout(new BoxLayout(gauche, BoxLayout.Y_AXIS));
-        gauche.add(caseHG);
+        gauche.add(scrollHG);
+        scrollHG.setBorder(BorderFactory.createLineBorder(Color.decode("#3e4e81")));
         gauche.add(caseBG);
 
         JPanel caseHD = new JPanel();
@@ -227,6 +341,7 @@ public class GUIMeta extends JFrame{
 
         JPanel tout = new JPanel();
         tout.add(gauche);
+        tout.setBackground(Color.decode("#232323"));
         tout.add(droit);
 
         Container main = super.getContentPane();
@@ -240,6 +355,8 @@ public class GUIMeta extends JFrame{
         this.addWindowListener(new ActionWindowClosing());
     }
 
+
+    private String texteTitre;
 
     class ActionClear implements ActionListener {
         @Override
@@ -267,6 +384,7 @@ public class GUIMeta extends JFrame{
     class ActionAnnuler implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+            String pourTitre = titre.getText();
             jbAnnuler.setVisible(false);
             jbModifier.setVisible(true);
             jbAppliquer.setVisible(false);
@@ -278,6 +396,7 @@ public class GUIMeta extends JFrame{
             } else if (reponse == JOptionPane.NO_OPTION){
                 titre.setEditable(false);
                 sujet.setEditable(false);
+                titre.setText(pourTitre);
                 JOptionPane.showMessageDialog(jbAnnuler, "Vous devrez réactiver la modification si vous voulez changer quelque chose.", "Refus de l'annulation des changements", JOptionPane.OK_OPTION, new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/crayon.png"));
             }
         }
