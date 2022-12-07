@@ -4,17 +4,50 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 
+import extraction.ExtractContent;
+import extraction.ExtractMeta;
+import extraction.ExtractPicture;
 
+/**
+ * Cette classe sert d'intermédiaire entre le main et les fonctions sur les extractions
+ * @author Laurent LIN
+ * @author Axel OLIVEIRA
+ * @see {@link extraction.ExtractContent ExtractContent}
+ * @see {@link extraction.ExtractMeta ExtractMeta} 
+ * @see {@link extraction.ExtractPicture ExtractPicture}
+ */
 public class FileAnalyze {
-    
+    /**
+     * Utilisé dans {@link #checkOption(String[])}
+     */
     public static final int SHOW_OPTION=0;
+    /**
+     * Utilisé dans {@link #checkOption(String[])}
+     */
     public static final int FILE_OPTION=1;
+    /**
+     * Utilisé dans {@link #checkOption(String[])}
+     */
     public static final int DIRECTORY_OPTION=2;
+    /**
+     * Utilisé dans {@link #checkOption(String[])}
+     */
     public static final int HELP_OPTION=3;
-    
+
+
+    /**
+     * Utilisé dans {@link #checkModifier(String[])}
+     */
     public static final int SUBJECT_OPTION=4;
+    /**
+     * Utilisé dans {@link #checkModifier(String[])}
+     */
     public static final int TITLE_OPTION=5;
+    /**
+     * Utilisé dans {@link #checkModifier(String[])}
+     */
     public static final int SUBJECT_AND_TITLE_OPTION=6;
     /**
     * Filtre et renvoie l'option sélectionné sous forme de int
@@ -63,8 +96,10 @@ public class FileAnalyze {
         */
         public static int checkModifier(String[] args)throws Exception{
             if (args.length%2==0 && args.length/2<=3 && args.length>1){
-                if ((args[2].equalsIgnoreCase("--subject")&&args[4].equalsIgnoreCase("--title"))||args[4].equalsIgnoreCase("--subject")&&args[2].equalsIgnoreCase("--title")) {
-                    return SUBJECT_AND_TITLE_OPTION;
+                if (args.length>4) {
+                    if ((args[2].equalsIgnoreCase("--subject")&&args[4].equalsIgnoreCase("--title"))||args[4].equalsIgnoreCase("--subject")&&args[2].equalsIgnoreCase("--title")) {
+                        return SUBJECT_AND_TITLE_OPTION;
+                    }
                 }
                 if ((args[2].equalsIgnoreCase("--subject")&& args.length==4)){
                     return SUBJECT_OPTION;
@@ -73,7 +108,7 @@ public class FileAnalyze {
                     return TITLE_OPTION;
                 }
                 //Si c'est aucun des 3 options, c'est que je n'ai pas pensé a la cette particularité
-                //TODO si la personne marque "-f test.odt -huh "blabla" -jjj "raté" "
+                //si la personne marque "-f test.odt -huh "blabla" -jjj "raté" "
                 throw new IllegalArgumentException("FileAnalyze.checkModifier erreur : Aucun des 3 options, utiliser l'option [-h] pour plus d'information.");
             }
             else{
@@ -82,15 +117,12 @@ public class FileAnalyze {
         }
         
         
-        //TODO: faire en sorte que le nombre de parametre est légal + préparer -title , -subject  
         /**
         * <p>Permet l'affichage d'un dossier sur la console.<br/></p>
-        * <p>Affiche le nom du dossier, les sous dossiers et fichiers (uniquement</p>
+        * <p>Affiche le nom du dossier, les sous dossiers et fichiers (uniquement .odt)</p>
         * <p><i>méthode récursive</i></p>
         * @version 0.1
         * @param files : liste de tous les fichiers (dans le sens brut)
-        * 
-        * 
         */
         public static void showDirectories(File[] files) {
             for (File file : files) {
@@ -112,16 +144,20 @@ public class FileAnalyze {
         
         /**
         * Affiche les métadonnées du fichier en question
+        * <ul><li>Les métadonnées principales</li><li>Les liens internet</li><li>Les images utilisées</li></ul>
         * @see #ExtractMeta
         * @throws NoSuchFileException  File n'existe pas ou non trouvé
+        * @param filename chemin vers le dossier contenant les données
         */
         public static void showFile(String filename) throws NoSuchFileException {
             try {
-                //TODO call Axel's class
-                
+                Path tofile= Path.of(filename);
+                ExtractMeta.showMeta(tofile);
+                ExtractContent.showLink(tofile);
+                ExtractPicture.showPicture(tofile);
             } catch (Exception e) {
+                System.err.println("Le chemin vers le fichier est incorrecte ou erronée :");
                 e.printStackTrace();
-                // TODO: handle exception
             }
         }
         
