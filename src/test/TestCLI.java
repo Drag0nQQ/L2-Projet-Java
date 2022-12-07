@@ -2,10 +2,10 @@ package test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.nio.charset.Charset;
-import java.nio.file.NoSuchFileException;
+import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.util.Random;
+import java.util.zip.ZipOutputStream;
 
 import extraction.*;
 import files.*;
@@ -21,7 +21,8 @@ public class TestCLI {
                 break;
             case FileAnalyze.FILE_OPTION:
                 try {
-                    int j= FileAnalyze.checkOption(args);
+                    int j= FileAnalyze.checkModifier(args);
+                    //Generer un dossier temporaire unique pour travailler dessus
                     Path dossierTravail= Path.of(new String(new Random().ints(97, 122 + 1).limit(30).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString()));
                     ZipEtUnzip.unzip(new FileInputStream(new File(args[1])), dossierTravail);
                     switch (j) {
@@ -43,8 +44,14 @@ public class TestCLI {
                         default:
                             break;
                     }
-                    ExtractMeta.showMeta(dossierTravail);
-                    //ZipEtUnzip.zip(args[1],dossierTravail)
+                    FileAnalyze.showFile(dossierTravail.toString());
+                    try {
+                        ZipOutputStream fin= new ZipOutputStream(new FileOutputStream(new File(Path.of(args[1]).getParent().toString()+"/Copie_"+Path.of(args[1]).getFileName())));
+                        ZipEtUnzip.zip("",new File(dossierTravail.toString()),fin); 
+                        fin.close();  
+                    } catch (Exception e) {
+                        System.err.println("Fichier de sortie erroné.");
+                    }
                     ZipEtUnzip.supprDossier(new File(dossierTravail.toString()));
                 } catch (Exception e) {
                     System.err.println(e.getMessage());
