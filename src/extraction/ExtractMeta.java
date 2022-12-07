@@ -188,5 +188,52 @@ public class ExtractMeta{
     }
     
     //Getter Setter
-    
+    public static String getTitle(Path mainDirectory){
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
+            NodeList offDoc= doc.getElementsByTagName("dc:title");
+            if (offDoc.getLength()>0){
+                return offDoc.item(0).getTextContent();
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return null;
+    }
+    public static String getSubject(Path mainDirectory){
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
+            NodeList offDoc= doc.getElementsByTagName("dc:subject");
+            if (offDoc.getLength()>0){
+                return offDoc.item(0).getTextContent();
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return null;
+    }
+    public static String getCreation_date(Path mainDirectory){
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
+            NodeList offDoc= doc.getElementsByTagName("meta:creation-date");
+            if (offDoc.getLength()>0){
+                return offDoc.item(0).getTextContent();
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return null;
+    }
 }

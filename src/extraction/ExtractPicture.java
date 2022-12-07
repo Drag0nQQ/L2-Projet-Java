@@ -1,7 +1,7 @@
 package extraction;
 import java.io.*;
 import java.nio.file.Path;
-import java.awt.Image;
+
 
 /**
 * Cette classe permet de chercher les images du dossier media
