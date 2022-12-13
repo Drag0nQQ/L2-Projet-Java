@@ -236,4 +236,64 @@ public class ExtractMeta{
         }
         return null;
     }
+    public static String getAuthor(Path mainDirectory){
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
+            NodeList offDoc= doc.getElementsByTagName("meta:initial-creator");
+            if (offDoc.getLength()>0){
+                return offDoc.item(0).getTextContent();
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return null;
+    }
+
+    //TODO Pour éviter la redondance de code on peut créer cette méthode suivante avec ces constantes
+    /*
+    public static final String AUTHOR="meta:initial-creator"
+    public static final String SUBJECT="dc:subject"
+    public static final String TITLE="dc:title"
+    public static final String =""
+    public static String getInfo(Path mainDirectory,String nodeName){
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
+            NodeList offDoc= doc.getElementsByTagName("nodeName");
+            if (offDoc.getLength()>0){
+                return offDoc.item(0).getTextContent();
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return null;
+    }
+     */
+    public static ArrayList<String> getKeywords(Path mainDirectory){
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
+        ArrayList<String> listKeyword= new ArrayList<String>();
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
+            NodeList offDoc= doc.getElementsByTagName("meta:keyword");
+            if (offDoc.getLength()>0){
+                for (int i=0; i<offDoc.getLength();i++) {
+                    listKeyword.add(offDoc.item(i).getTextContent());
+                }
+                return listKeyword;
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return null;
+    }
 }

@@ -1,6 +1,7 @@
 package extraction;
 import java.io.*;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 
 /**
@@ -11,19 +12,27 @@ public class ExtractPicture {
     * Permet d'afficher le nom des images, leur taille et leur extension
     * <b>Attention les documents .odt créés par Word ont un dossier "media"
     tandis que les documents par OpenOffice ou LibreOffice ont un dossier "Pictures"
-     ce dernier cas n'est pas traité.</b>
+    ce dernier cas n'est pas traité.</b>
     * @param mainDirectory chemin vers le dossier temporaire
     * @see gestionfichier.ZipEtUnzip#unzip pour créer le dossier temporaire
     * @version 0.1
     */
     public static void showPicture(Path mainDirectory) {
         //TODO Pictures/ ou media/ à chercher
-        String toPicFiles= mainDirectory.toString()+"\\media";
+        String toPicFiles= mainDirectory.toString()+File.separator+"media";
+        String toPicFilesBis= mainDirectory.toString()+File.separator+"Pictures";
         File[] picList= new File(toPicFiles).listFiles();
+        File[] picListBis= new File(toPicFilesBis).listFiles();
         try{
             if (picList!=null){
                 System.out.println("Nombre d'images: "+picList.length);
                 for (File file : picList) {
+                    System.out.println("Nom: "+file.getName().substring(0,file.getName().lastIndexOf("."))+"\t\tTaille:"+file.length()/1024+"kB"+"\tExt: "+file.getName().substring(file.getName().lastIndexOf(".")+1));
+                }
+            }
+            if (picListBis!=null){
+                System.out.println("Nombre d'images: "+picList.length);
+                for (File file : picListBis) {
                     System.out.println("Nom: "+file.getName().substring(0,file.getName().lastIndexOf("."))+"\t\tTaille:"+file.length()/1024+"kB"+"\tExt: "+file.getName().substring(file.getName().lastIndexOf(".")+1));
                 }
             }
@@ -32,14 +41,14 @@ public class ExtractPicture {
         }
     }
     
-
+    
     //GETTERS SETTERS
     //TODO méthode pour le thumbnail
     /**
-     * Retourne le chemin aboslu vers le thumbnail, sinon {@code null} si on le trouve pas
-     * @param mainDirectory
-     * @return
-     */
+    * Retourne le chemin aboslu vers le thumbnail, sinon {@code null} si on le trouve pas
+    * @param mainDirectory
+    * @return
+    */
     public static String getThumbnails(Path mainDirectory){
         String toThumb= mainDirectory.toString()+File.separator+"Thumbnails";
         File[] thumbFolder= new File(toThumb).listFiles();
@@ -55,5 +64,27 @@ public class ExtractPicture {
             System.err.println("Thumbnail pas trouvé.");
         }
         return null;
+    }
+    
+    public static ArrayList<String> getPictures(Path mainDirectory){
+        ArrayList<String> picList=new ArrayList<String>(); 
+        String tomedia= mainDirectory.toString()+File.separator+"media";
+        String toPictures= mainDirectory.toString()+File.separator+"Pictures";
+        File[] FileList=new File(tomedia).listFiles();
+        File[] FileListBis=new File(toPictures).listFiles();
+        if (FileList!=null){
+            for (File file : FileList) {
+                picList.add("Nom: "+file.getName().substring(0,file.getName().lastIndexOf("."))+"\t\tTaille:"+file.length()/1024+"kB"+"\tExt: "+file.getName().substring(file.getName().lastIndexOf(".")+1));
+            }
+        }else{
+            if (FileListBis!=null){
+                for (File file : FileListBis) {
+                    picList.add("Nom: "+file.getName().substring(0,file.getName().lastIndexOf("."))+"\t\tTaille:"+file.length()/1024+"kB"+"\tExt: "+file.getName().substring(file.getName().lastIndexOf(".")+1));
+                }
+            }
+        }
+        return picList;
+        
+        
     }
 }

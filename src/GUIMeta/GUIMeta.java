@@ -1,9 +1,17 @@
 package GUIMeta;
 
 import javax.swing.*;
+
+import extraction.ExtractMeta;
+import extraction.ExtractPicture;
+import gestionfichier.ZipEtUnzip;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FilenameFilter;
+import java.nio.file.Path;
 
 public class GUIMeta extends JFrame{
 
@@ -30,7 +38,8 @@ public class GUIMeta extends JFrame{
     private JMenuItem sous;
     private JMenuItem quitter;
     private JFileChooser chooser;
-
+    private Path dossierTravail=Path.of("C:/Users/Laurent/Desktop/VS Code/odttest");
+    private File tmp= new File("C:/Users/Laurent/Desktop/VS Code/sujet_projet_L2-I_POO-java_2022-2023_v1.1.odt");
     public GUIMeta(){
         this("GUI MEtadonnees");
     }
@@ -38,7 +47,16 @@ public class GUIMeta extends JFrame{
     public GUIMeta(String title){
         super(title);
 
+        try {
+            ZipEtUnzip.unzip(new FileInputStream(tmp), dossierTravail);
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+
+
         this.titre = new JTextField(20);
+        this.titre.setBorder(BorderFactory.createLineBorder(Color.decode("#3e4e81")));
         this.auteur = new JTextField(20);
         this.sujet = new JTextField(20);
         this.keyword = new JTextField(20);
@@ -93,22 +111,22 @@ public class GUIMeta extends JFrame{
         lienHypertxt.setBackground(Color.decode("#3e4e81"));
         lienHypertxt.setForeground(Color.decode("#ffffff"));
 
-        ImageIcon imageIcon = new ImageIcon("/Users/axel/Dev/TestProjet/Test/media/image3.png");
-
-        ImageIcon imgAnnuler = new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/signal.png");
+        ImageIcon imageIcon = new ImageIcon(ExtractPicture.getThumbnails(dossierTravail));
+        
+        ImageIcon imgAnnuler = new ImageIcon("C:/Users/Laurent/Desktop/VS Code/branch_extract/ImagePourLeProjetJava/signal.png");
         this.jbAnnuler = new JButton("Annuler", imgAnnuler);
         jbAnnuler.setVerticalTextPosition(AbstractButton.CENTER);
         jbAnnuler.setHorizontalTextPosition(AbstractButton.LEADING);
 
-        ImageIcon imgModifier = new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/edit.png");
+        ImageIcon imgModifier = new ImageIcon("C:/Users/Laurent/Desktop/VS Code/branch_extract/ImagePourLeProjetJava/edit.png");
         this.jbModifier = new JButton("Modifier", imgModifier);
         jbModifier.setVerticalTextPosition(AbstractButton.CENTER);
         jbModifier.setHorizontalTextPosition(AbstractButton.LEADING);
 
-        ImageIcon imgAppliquer = new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/checked.png");
+        ImageIcon imgAppliquer = new ImageIcon("C:/Users/Laurent/Desktop/VS Code/branch_extract/ImagePourLeProjetJava/checked.png");
         this.jbAppliquer = new JButton("Appliquer", imgAppliquer);
 
-        ImageIcon imgClear = new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/rubber.png");
+        ImageIcon imgClear = new ImageIcon("C:/Users/Laurent/Desktop/VS Code/branch_extract/ImagePourLeProjetJava/rubber.png");
         this.jbClear = new JButton("Clear", imgClear);
         jbClear.setVerticalTextPosition(AbstractButton.CENTER);
         jbClear.setHorizontalTextPosition(AbstractButton.LEADING);
@@ -152,7 +170,7 @@ public class GUIMeta extends JFrame{
         jlTitre.setForeground(Color.decode("#ffffff"));
         jpTitre.add(jlTitre);
         jpTitre.add(titre);
-        titre.setText("Mon super titre");
+        titre.setText(ExtractMeta.getTitle(dossierTravail));
         jpTitre.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpTitre.setBackground(Color.decode("#3e4e81"));
 
@@ -348,7 +366,7 @@ public class GUIMeta extends JFrame{
         main.add(tout);
 
         this.setResizable(true);
-        this.setLocationRelativeTo(null);
+   
         this.pack();
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -388,16 +406,16 @@ public class GUIMeta extends JFrame{
             jbAnnuler.setVisible(false);
             jbModifier.setVisible(true);
             jbAppliquer.setVisible(false);
-            int reponse = JOptionPane.showConfirmDialog(jbAnnuler, "Voulez-vous annuler les changements effectués ?", "Annuler les changements ?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/crayon.png"));
+            int reponse = JOptionPane.showConfirmDialog(jbAnnuler, "Voulez-vous annuler les changements effectués ?", "Annuler les changements ?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("C:/Users/Laurent/Desktop/VS Code/branch_extract/ImagePourLeProjetJava/crayon.png"));
             if (reponse == JOptionPane.YES_OPTION) {
                 titre.setEditable(false);
                 sujet.setEditable(false);
-                JOptionPane.showMessageDialog(jbAnnuler, "L'annulation des changements a bien été faite.", "Annulation des changements", JOptionPane.OK_OPTION, new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/crayon.png"));
+                JOptionPane.showMessageDialog(jbAnnuler, "L'annulation des changements a bien été faite.", "Annulation des changements", JOptionPane.OK_OPTION, new ImageIcon("C:/Users/Laurent/Desktop/VS Code/branch_extract/ImagePourLeProjetJava/crayon.png"));
             } else if (reponse == JOptionPane.NO_OPTION){
                 titre.setEditable(false);
                 sujet.setEditable(false);
                 titre.setText(pourTitre);
-                JOptionPane.showMessageDialog(jbAnnuler, "Vous devrez réactiver la modification si vous voulez changer quelque chose.", "Refus de l'annulation des changements", JOptionPane.OK_OPTION, new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/crayon.png"));
+                JOptionPane.showMessageDialog(jbAnnuler, "Vous devrez réactiver la modification si vous voulez changer quelque chose.", "Refus de l'annulation des changements", JOptionPane.OK_OPTION, new ImageIcon("C:/Users/Laurent/Desktop/VS Code/branch_extract/ImagePourLeProjetJava/crayon.png"));
             }
         }
     }
