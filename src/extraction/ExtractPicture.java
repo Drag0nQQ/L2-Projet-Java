@@ -40,13 +40,13 @@ public class ExtractPicture {
      * @param mainDirectory
      * @return
      */
-    public String getThumbnails(Path mainDirectory){
-        String toThumb= mainDirectory.toString()+"\\Thumbnails";
+    public static String getThumbnails(Path mainDirectory){
+        String toThumb= mainDirectory.toString()+File.separator+"Thumbnails";
         File[] thumbFolder= new File(toThumb).listFiles();
         try {
             if (thumbFolder != null){
                 for (File file : thumbFolder) {
-                    if (file.toString().equals("thumbnail.png")){
+                    if (file.getName().equals("thumbnail.png")){
                         return file.getAbsolutePath().toString();
                     }
                 }
