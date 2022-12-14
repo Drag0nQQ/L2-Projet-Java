@@ -18,7 +18,7 @@ public class EncoreuneTree extends JFrame{
     public EncoreuneTree() {
         super("ENCORE DES ARBRES N-Aires");
         noeud=new DefaultMutableTreeNode("Root du noeud");
-        creatFeuille(noeud, new File("C:/Users/Laurent/Desktop"));
+        creatFeuille(noeud, new File("/Users/axel/Documents/ABCD"));
         jtree=new JTree(noeud);
         scrollpane=new JScrollPane(jtree);
         

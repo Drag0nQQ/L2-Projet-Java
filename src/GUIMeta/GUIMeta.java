@@ -7,7 +7,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Path;
-import java.util.Date;
+import java.util.ArrayList;
 
 import files.*;
 import extraction.*;
@@ -24,10 +24,8 @@ public class GUIMeta extends JFrame{
     private JTextField date;
     private JTextField nbCaracteres;
     private JTextField nbMots;
-    private JTextField nbImages;
     private JTextField nbPages;
-    private JTextField tailleImage;
-    private JTextField poidImage;
+    private JTextArea images;
     private JTextArea lienHypertxt;
     private JButton jbAnnuler;
     private JButton jbModifier;
@@ -47,6 +45,28 @@ public class GUIMeta extends JFrame{
         this("GUI MEtadonnees");
     }
 
+    public void creatFeuille(DefaultMutableTreeNode noeud, File f){
+        DefaultMutableTreeNode fil=new DefaultMutableTreeNode(f.getName());
+        if (f.isFile()&&f.getName().endsWith(".odt")){
+            //TODO checker via mimeType
+            noeud.add(fil);
+        }
+        if (f.isDirectory()) {
+            File[] liste=f.listFiles();
+            DefaultMutableTreeNode node=new DefaultMutableTreeNode(f.getName());
+            assert liste != null;
+            if (liste.length>0){
+                for (File iterateurFile : liste) {
+                    creatFeuille( node, iterateurFile);
+                }
+            }
+            if (!node.isLeaf()) {
+                noeud.add(node);
+            }
+        }
+
+    }
+
     public GUIMeta(String title){
         super(title);
         try {
@@ -62,7 +82,7 @@ public class GUIMeta extends JFrame{
         auteur.setBorder(BorderFactory.createLineBorder(Color.decode("#3e4e81")));
         this.sujet = new JTextField(20);
         sujet.setBorder(BorderFactory.createLineBorder(Color.decode("#3e4e81")));
-        this.keyword = new JTextField(20);
+        this.keyword = new JTextField(50);
         keyword.setBorder(BorderFactory.createLineBorder(Color.decode("#3e4e81")));
         this.date = new JTextField(20);
         date.setBorder(BorderFactory.createLineBorder(Color.decode("#3e4e81")));
@@ -72,12 +92,8 @@ public class GUIMeta extends JFrame{
         nbCaracteres.setBorder(BorderFactory.createLineBorder(Color.decode("#3e4e81")));
         this.nbPages = new JTextField(5);
         nbPages.setBorder(BorderFactory.createLineBorder(Color.decode("#3e4e81")));
-        this.nbImages = new JTextField(5);
-        nbImages.setBorder(BorderFactory.createLineBorder(Color.decode("#3e4e81")));
-        this.tailleImage = new JTextField(5);
-        tailleImage.setBorder(BorderFactory.createLineBorder(Color.decode("#3e4e81")));
-        this.poidImage = new JTextField(5);
-        poidImage.setBorder(BorderFactory.createLineBorder(Color.decode("#3e4e81")));
+        this.images = new JTextArea();
+        images.setBorder(BorderFactory.createLineBorder(Color.decode("#3e4e81")));
         this.lienHypertxt = new JTextArea();
         lienHypertxt.setBorder(BorderFactory.createLineBorder(Color.decode("#3e4e81")));
         this.chooser = new JFileChooser();
@@ -91,9 +107,7 @@ public class GUIMeta extends JFrame{
         nbMots.setEditable(false);
         nbCaracteres.setEditable(false);
         nbPages.setEditable(false);
-        nbImages.setEditable(false);
-        tailleImage.setEditable(false);
-        poidImage.setEditable(false);
+        images.setEditable(false);
         lienHypertxt.setEditable(false);
 
         titre.setBackground(Color.decode("#3e4e81"));
@@ -112,12 +126,8 @@ public class GUIMeta extends JFrame{
         nbCaracteres.setForeground(Color.decode("#ffffff"));
         nbPages.setBackground(Color.decode("#3e4e81"));
         nbPages.setForeground(Color.decode("#ffffff"));
-        nbImages.setBackground(Color.decode("#3e4e81"));
-        nbImages.setForeground(Color.decode("#ffffff"));
-        tailleImage.setBackground(Color.decode("#3e4e81"));
-        tailleImage.setForeground(Color.decode("#ffffff"));
-        poidImage.setBackground(Color.decode("#3e4e81"));
-        poidImage.setForeground(Color.decode("#ffffff"));
+        images.setBackground(Color.decode("#3e4e81"));
+        images.setForeground(Color.decode("#ffffff"));
         lienHypertxt.setBackground(Color.decode("#3e4e81"));
         lienHypertxt.setForeground(Color.decode("#ffffff"));
 
@@ -155,9 +165,7 @@ public class GUIMeta extends JFrame{
         JLabel jlNbMots = new JLabel("<HTML><U>Nombre de mots</U></HTML>");
         JLabel jlNbCaracteres = new JLabel("<HTML><U>Nombre de caractères</U></HTML>");
         JLabel jlNbPages = new JLabel("<HTML><U>Nombre de pages</U></HTML>");
-        JLabel jlNbImages = new JLabel("<HTML><U>Nombre d'images</U></HTML>");
-        JLabel jlTailleImg = new JLabel("<HTML><U>Taille des images</U></HTML>");
-        JLabel jlPoidsImg = new JLabel("<HTML><U>Poids des images</U></HTML>");
+        JLabel jlImages = new JLabel("<HTML><U>Images</U></HTML>");
         JLabel jlLienHypTxt = new JLabel("<HTML><U>Lien(s) hypertext</U></HTML>");
         this.imageLabel = new JLabel(imageIcon);
 
@@ -191,7 +199,7 @@ public class GUIMeta extends JFrame{
         jlAuteur.setFont(new Font("Arial", Font.BOLD, 18));
         jpAuteur.add(jlAuteur);
         jpAuteur.add(auteur);
-        auteur.setText("Laurent / Axel");
+        auteur.setText(ExtractMeta.getAuthor(dossierTravail));
         auteur.setFont(new Font("Arial", Font.PLAIN, 18));
         jpAuteur.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpAuteur.setBackground(Color.decode("#3e4e81"));
@@ -208,12 +216,18 @@ public class GUIMeta extends JFrame{
         jpSujet.setBackground(Color.decode("#3e4e81"));
 
         JPanel jpKeyword = new JPanel();
+        StringBuilder kw = new StringBuilder();
+        ArrayList<String> al = ExtractMeta.getKeywords(dossierTravail);
         keyword.setPreferredSize(new Dimension(75, 25));
         jlKeyword.setForeground(Color.decode("#ffffff"));
         jlKeyword.setFont(new Font("Arial", Font.BOLD, 18));
         jpKeyword.add(jlKeyword);
         jpKeyword.add(keyword);
-        keyword.setText("Salut \n Coucou \n Salut \n");
+        assert al != null;
+        for (String tmp : al) {
+            kw.append(tmp).append(", ");
+        }
+        keyword.setText(kw.toString());
         keyword.setFont(new Font("Arial", Font.PLAIN, 18));
         jpKeyword.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpKeyword.setBackground(Color.decode("#3e4e81"));
@@ -257,43 +271,30 @@ public class GUIMeta extends JFrame{
         jlNbPages.setFont(new Font("Arial", Font.BOLD, 18));
         jpPages.add(jlNbPages);
         jpPages.add(nbPages);
-        nbPages.setText(ExtractMeta.getNbPages(dossierTravail));
         nbPages.setFont(new Font("Arial", Font.PLAIN, 18));
         jpPages.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpPages.setBackground(Color.decode("#3e4e81"));
 
         JPanel jpImages = new JPanel();
-        nbImages.setPreferredSize(new Dimension(75, 25));
-        jlNbImages.setForeground(Color.decode("#ffffff"));
-        jlNbImages.setFont(new Font("Arial", Font.BOLD, 18));
-        jpImages.add(jlNbImages);
-        jpImages.add(nbImages);
-        nbImages.setText("6");
-        nbImages.setFont(new Font("Arial", Font.PLAIN, 18));
+        StringBuilder resImg = new StringBuilder();
+        images.setPreferredSize(new Dimension(400, 60));
+        jlImages.setForeground(Color.decode("#ffffff"));
+        jlImages.setFont(new Font("Arial", Font.BOLD, 18));
+        jpImages.add(jlImages);
+        jpImages.add(images);
+        images.setLineWrap(true);
+        ArrayList<String> arrayListImg = ExtractPicture.getPictures(dossierTravail);
+        String nbImg = "Nombre d'images : " + arrayListImg.size();
+        resImg.append(nbImg).append("\n");
+        for (String tmpImg : arrayListImg){
+            resImg.append(tmpImg).append("\n");
+        }
+        images.setText(resImg.toString());
+        images.setFont(new Font("Arial", Font.PLAIN, 12));
         jpImages.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpImages.setBackground(Color.decode("#3e4e81"));
 
-        JPanel jpTailleImage = new JPanel();
-        tailleImage.setPreferredSize(new Dimension(75, 25));
-        jlTailleImg.setForeground(Color.decode("#ffffff"));
-        jlTailleImg.setFont(new Font("Arial", Font.BOLD, 18));
-        jpTailleImage.add(jlTailleImg);
-        jpTailleImage.add(tailleImage);
-        tailleImage.setText("60x34");
-        tailleImage.setFont(new Font("Arial", Font.PLAIN, 18));
-        jpTailleImage.setLayout(new FlowLayout(FlowLayout.LEFT));
-        jpTailleImage.setBackground(Color.decode("#3e4e81"));
 
-        JPanel jpPoidImg = new JPanel();
-        poidImage.setPreferredSize(new Dimension(75, 25));
-        jlPoidsImg.setForeground(Color.decode("#ffffff"));
-        jlPoidsImg.setFont(new Font("Arial", Font.BOLD, 18));
-        jpPoidImg.add(jlPoidsImg);
-        jpPoidImg.add(poidImage);
-        poidImage.setText("6" + "Ko");
-        poidImage.setFont(new Font("Arial", Font.PLAIN, 18));
-        jpPoidImg.setLayout(new FlowLayout(FlowLayout.LEFT));
-        jpPoidImg.setBackground(Color.decode("#3e4e81"));
 
         lienHypertxt.setPreferredSize(new Dimension(500, 84));
         JScrollBar scrollBarLiens = new JScrollBar(JScrollBar.VERTICAL);
@@ -327,8 +328,6 @@ public class GUIMeta extends JFrame{
         caseHG.add(jpMots);
         caseHG.add(jpPages);
         caseHG.add(jpImages);
-        caseHG.add(jpTailleImage);
-        caseHG.add(jpPoidImg);
         caseHG.add(jpLienHypertxt);
         caseHG.setBackground(Color.decode("#3e4e81"));
 
@@ -337,8 +336,13 @@ public class GUIMeta extends JFrame{
         scrollHG.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         JPanel panelAuDessusBouton = new JPanel();
+        JLabel Boutons = new JLabel("<HTML><U>Boutons pour la modification et pour effacer toutes les données de l'écran</U></HTML>");
+        Boutons.setForeground(Color.decode("#1f2740"));
+        Boutons.setFont(new Font("Arial", Font.PLAIN, 15));
+        panelAuDessusBouton.add(Boutons);
         panelAuDessusBouton.setPreferredSize(new Dimension(277, 40));
-        panelAuDessusBouton.setBackground(Color.decode("#777da7"));
+        panelAuDessusBouton.setBackground(Color.decode("#c5c9d9"));
+        panelAuDessusBouton.setBorder(BorderFactory.createLineBorder(Color.decode("#ffffff")));
 
         JPanel panelBouton = new JPanel();
         panelBouton.add(jbAnnuler);
@@ -350,13 +354,13 @@ public class GUIMeta extends JFrame{
         jbModifier.addActionListener(new ActionModifier());
         jbAppliquer.addActionListener(new ActionAppliquer());
         panelBouton.setPreferredSize(new Dimension(277, 40));
-        panelBouton.setBackground(Color.decode("#777da7"));
+        panelBouton.setBackground(Color.decode("#3e4e81"));
 
         JPanel panelEnDessousBouton = new JPanel();
         panelEnDessousBouton.add(jbClear);
         jbClear.addActionListener(new ActionClear());
         panelEnDessousBouton.setPreferredSize(new Dimension(277, 40));
-        panelEnDessousBouton.setBackground(Color.decode("#777da7"));
+        panelEnDessousBouton.setBackground(Color.decode("#3e4e81"));
 
         JPanel caseBG = new JPanel();
         caseBG.add(panelAuDessusBouton);
@@ -364,7 +368,7 @@ public class GUIMeta extends JFrame{
         caseBG.add(panelEnDessousBouton);
         caseBG.setPreferredSize(new Dimension(830, 120));
         caseBG.setLayout(new BoxLayout(caseBG, BoxLayout.Y_AXIS));
-        caseBG.setBackground(Color.decode("#777da7"));
+        caseBG.setBackground(Color.decode("#3e4e81"));
 
         JPanel gauche = new JPanel();
         gauche.setPreferredSize(new Dimension(830, 700));
@@ -380,16 +384,36 @@ public class GUIMeta extends JFrame{
         caseHD.setPreferredSize(new Dimension(450, 410));
         caseHD.setBackground(Color.decode("#3e4e81"));
 
+        JPanel auDessusBD = new JPanel();
+        JLabel jlAuDessusBD = new JLabel("<HTML><U>Arborescence du dossier</U></HTML>");
+        jlAuDessusBD.setFont(new Font("Arial", Font.PLAIN, 15));
+        auDessusBD.add(jlAuDessusBD);
+        jlAuDessusBD.setForeground(Color.decode("#1f2740"));
+        auDessusBD.setPreferredSize(new Dimension(277, 40));
+        auDessusBD.setBackground(Color.decode("#c5c9d9"));
+        auDessusBD.setBorder(BorderFactory.createLineBorder(Color.decode("#ffffff")));
+
+        JPanel panelJTree = new JPanel();
+        panelJTree.setPreferredSize(new Dimension(450, 300));
+        panelJTree.setBackground(Color.decode("#3e4e81"));
+        DefaultMutableTreeNode noeud = new DefaultMutableTreeNode("MonDossier");
+        creatFeuille(noeud, new File("/Users/axel/Documents/monBordel"));
+        JTree jTree = new JTree(noeud);
+        jTree.setPreferredSize(new Dimension(370, 250));
+        jTree.setBackground(Color.decode("#ffffff"));
+        panelJTree.add(jTree);
+        panelJTree.setVisible(true);
+
+        JPanel enDessousBD = new JPanel();
+        enDessousBD.setPreferredSize(new Dimension(277, 40));
+        enDessousBD.setBackground(Color.decode("#3e4e81"));
+
         JPanel caseBD = new JPanel();
-        caseBD.setPreferredSize(new Dimension(450, 300));
-        caseBD.setBackground(Color.CYAN);
-        DefaultMutableTreeNode framework = new DefaultMutableTreeNode(dossierTravail.getFileName());
-        DefaultMutableTreeNode autres = new DefaultMutableTreeNode("Salut");
-        framework.add(autres);
-        JTree jTree = new JTree(framework);
-        caseBD.add(new JScrollPane(jTree));
-        caseBD.setSize(new Dimension(300, 200));
-        caseBD.setVisible(true);
+        caseBD.add(auDessusBD);
+        caseBD.add(panelJTree);
+        caseBD.add(enDessousBD);
+        caseBD.setLayout(new BoxLayout(caseBD, BoxLayout.Y_AXIS));
+        caseBD.setBackground(Color.decode("#3e4e81"));
 
         JPanel droit = new JPanel();
         droit.setPreferredSize(new Dimension(450, 700));
@@ -408,7 +432,7 @@ public class GUIMeta extends JFrame{
 
         JPanel tout = new JPanel();
         tout.add(gauche);
-        tout.setBackground(Color.decode("#232323"));
+        tout.setBackground(Color.decode("#3e4e81"));
         tout.add(droit);
 
         Container main = super.getContentPane();
@@ -444,9 +468,7 @@ public class GUIMeta extends JFrame{
             nbMots.setText("");
             nbCaracteres.setText("");
             nbPages.setText("");
-            nbImages.setText("");
-            tailleImage.setText("");
-            poidImage.setText("");
+            images.setText("");
             lienHypertxt.setText("");
             imageLabel.setIcon(new ImageIcon("/Users/axel/Documents/ImagePourLeProjetJava/noImg.png"));
         }
