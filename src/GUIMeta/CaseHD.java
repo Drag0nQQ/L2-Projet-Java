@@ -22,7 +22,7 @@ public class CaseHD extends JPanel {
         imageLabel.add(Box.createRigidArea(new Dimension(100, 0)));
         add(imageLabel);
         setPreferredSize(new Dimension(450, 410));
-        setBackground(Color.decode("#3e4e81"));
+        setBackground(Color.decode(GUIMeta.mainColor));
     }
     /**
      * Permet de modifier l'image (miniature) du JLabel de notre classe

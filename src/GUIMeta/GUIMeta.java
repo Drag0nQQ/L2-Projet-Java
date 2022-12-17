@@ -1,7 +1,6 @@
 package GUIMeta;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -20,6 +19,8 @@ public class GUIMeta extends JFrame{
     * Code Hex pour la couleur utilisé
     */
     public static final String mainColor="#3e4e81";
+    public static final String secondaryColor="#576db4";
+    public static final String tertiaryColor="#7997fa";
     /**
     * Code Hex pour la couleur utilisé
     */
@@ -123,8 +124,8 @@ public class GUIMeta extends JFrame{
         this.setJMenuBar(jMenuBar);
         
         JPanel tout = new JPanel();
+        tout.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         tout.add(gauche);
-        tout.setBackground(Color.decode(mainColor));
         tout.add(droit);
         
         Container main = super.getContentPane();

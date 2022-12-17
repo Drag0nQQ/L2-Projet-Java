@@ -135,7 +135,7 @@ public class ExtractMeta{
     }
     
     /**
-     * Permet de changer le sujet du fichier meta.xml, créer le noeud <dc:subject> après le tag "dc:generator" s'il n'existe pas.
+     * Permet de changer le sujet du fichier meta.xml, créer le noeud &#60;dc:subject> après le tag "dc:generator" s'il n'existe pas.
      * @param mainDirectory chemin vers le dossier temporaire du .odt
      * @param texte texte à mettre à la place de l'ancien texte
      * @see {@link #setTitle(Path, String)} pour changer le titre.
