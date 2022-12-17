@@ -53,35 +53,36 @@ public class CaseHG extends JPanel {
         setAuteurField(ExtractMeta.getAuthor(mainDirectory));
         setSujetField(ExtractMeta.getSubject(mainDirectory));
         ArrayList<String> al=ExtractMeta.getKeywords(mainDirectory);
-        String kw="";
+        StringBuilder kw= new StringBuilder();
         if (al!=null){
             for (String tmp : al) {
-                kw=kw + tmp+", ";
+                kw.append(tmp).append(", ");
             }
         }
         
-        setKeywordField(kw);
+        setKeywordField(kw.toString());
         setDateField(ExtractMeta.getCreation_date(mainDirectory));
         setnbMotsField(ExtractMeta.getnbMots(mainDirectory));
         setnbPagesField(ExtractMeta.getnbPages(mainDirectory));
         setNbCaracteresField(ExtractMeta.getnbCaracteres(mainDirectory));
-        kw="";
+        kw = new StringBuilder();
         al=ExtractContent.getLink(mainDirectory);
         if (al!=null){
             for (String tmp: al){
-                kw=kw + tmp+"\n";
+                kw.append(tmp).append("\n");
             }
         }
-        setLienField(kw);
-        kw="";
+        setLienField(kw.toString());
         al=ExtractPicture.getPictures(mainDirectory);
-        if (al!=null){
-            kw="Nombre d'images:"+ al.size()+"\n";
+        kw = new StringBuilder();
+        if (al != null){
+            kw = new StringBuilder("Nombre d'images:" + al.size() + "\n");
             for (String string : al) {
-                kw=kw+string+"\n";
+                kw.append(string).append("\n");
             }
         }
-        setImageField(kw);
+
+        setImageField(kw.toString());
     }
     
     //Setup
@@ -165,7 +166,7 @@ public class CaseHG extends JPanel {
         jpTitre.add(jlTitre);
         jpTitre.add(titre);
         //TODO
-        titre.setText(ExtractMeta.getTitle(GUIMeta.dossierTravail));
+        titre.setText("");
         titre.setFont(new Font("Arial", Font.PLAIN, 18));
         jpTitre.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpTitre.setBackground(Color.decode(GUIMeta.mainColor));
@@ -179,7 +180,7 @@ public class CaseHG extends JPanel {
         jpAuteur.add(jlAuteur);
         jpAuteur.add(auteur);
         //TODO 
-        auteur.setText(ExtractMeta.getAuthor(GUIMeta.dossierTravail));
+        auteur.setText("");
         auteur.setFont(new Font("Arial", Font.PLAIN, 18));
         jpAuteur.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpAuteur.setBackground(Color.decode(GUIMeta.mainColor));
@@ -193,7 +194,7 @@ public class CaseHG extends JPanel {
         jpSujet.add(jlSujet);
         jpSujet.add(sujet);
         //TODO
-        sujet.setText(ExtractMeta.getSubject(GUIMeta.dossierTravail));
+        sujet.setText("");
         sujet.setFont(new Font("Arial", Font.PLAIN, 18));
         jpSujet.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpSujet.setBackground(Color.decode(GUIMeta.mainColor));
@@ -201,19 +202,13 @@ public class CaseHG extends JPanel {
     
     public void InitPanelKeyword(){
         jpKeyword=new JPanel();
-        StringBuilder kw = new StringBuilder();
         //TODO
-        ArrayList<String> al = ExtractMeta.getKeywords(GUIMeta.dossierTravail);
         keyword.setPreferredSize(new Dimension(75, 25));
         jlKeyword.setForeground(Color.decode(GUIMeta.fontColor));
         jlKeyword.setFont(new Font("Arial", Font.BOLD, 18));
         jpKeyword.add(jlKeyword);
         jpKeyword.add(keyword);
-        assert al != null;
-        for (String tmp : al) {
-            kw.append(tmp).append(", ");
-        }
-        keyword.setText(kw.toString());
+        keyword.setText("");
         keyword.setFont(new Font("Arial", Font.PLAIN, 18));
         jpKeyword.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpKeyword.setBackground(Color.decode(GUIMeta.mainColor));
@@ -227,7 +222,7 @@ public class CaseHG extends JPanel {
         jpDate.add(jlDate);
         jpDate.add(date);
         //TODO
-        date.setText(ExtractMeta.getCreation_date(GUIMeta.dossierTravail));
+        date.setText("");
         date.setFont(new Font("Arial", Font.PLAIN, 18));
         jpDate.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpDate.setBackground(Color.decode(GUIMeta.mainColor));
@@ -241,7 +236,7 @@ public class CaseHG extends JPanel {
         jpCaracteres.add(jlNbCaracteres);
         jpCaracteres.add(nbCaracteres);
         //TODO
-        nbCaracteres.setText(ExtractMeta.getnbCaracteres(GUIMeta.dossierTravail));
+        nbCaracteres.setText("");
         nbCaracteres.setFont(new Font("Arial", Font.PLAIN, 18));
         jpCaracteres.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpCaracteres.setBackground(Color.decode(GUIMeta.mainColor));
@@ -255,7 +250,7 @@ public class CaseHG extends JPanel {
         jpMots.add(jlNbMots);
         jpMots.add(nbMots);
         //TODO
-        nbMots.setText(ExtractMeta.getnbMots(GUIMeta.dossierTravail));
+        nbMots.setText("");
         nbMots.setFont(new Font("Arial", Font.PLAIN, 18));
         jpMots.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpMots.setBackground(Color.decode(GUIMeta.mainColor));
@@ -269,7 +264,7 @@ public class CaseHG extends JPanel {
         jpPages.add(jlNbPages);
         jpPages.add(nbPages);
         //TODO
-        nbPages.setText(ExtractMeta.getnbPages(GUIMeta.dossierTravail));
+        nbPages.setText("");
         nbPages.setFont(new Font("Arial", Font.PLAIN, 18));
         jpPages.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpPages.setBackground(Color.decode(GUIMeta.mainColor));
@@ -277,7 +272,6 @@ public class CaseHG extends JPanel {
     
     public void InitPanelImages(){
         jpImages=new JPanel();
-        StringBuilder resImg = new StringBuilder();
         images.setPreferredSize(new Dimension(400, 60));
         jlImages.setForeground(Color.decode(GUIMeta.fontColor));
         jlImages.setFont(new Font("Arial", Font.BOLD, 18));
@@ -285,13 +279,7 @@ public class CaseHG extends JPanel {
         jpImages.add(images);
         images.setLineWrap(true);
         //TODO et en dessous aussi
-        ArrayList<String> arrayListImg = ExtractPicture.getPictures(GUIMeta.dossierTravail);
-        String nbImg = "Nombre d'images : " + arrayListImg.size();
-        resImg.append(nbImg).append("\n");
-        for (String tmpImg : arrayListImg){
-            resImg.append(tmpImg).append("\n");
-        }
-        images.setText(resImg.toString());
+        images.setText("");
         images.setFont(new Font("Arial", Font.PLAIN, 12));
         jpImages.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpImages.setBackground(Color.decode(GUIMeta.mainColor));
@@ -305,14 +293,7 @@ public class CaseHG extends JPanel {
         jpLienHypTxt.add(lienHypertxt);
         lienHypertxt.setLineWrap(true);
         //TODO
-        ArrayList<String> lienArray=ExtractContent.getLink(GUIMeta.dossierTravail);
-        String res="";
-        if (lienArray!=null) {
-            for (String string : lienArray) {
-                res= res + string + "\n";
-            }
-        }
-        lienHypertxt.append(res);
+        lienHypertxt.append("");
         lienHypertxt.setFont(new Font("Arial", Font.PLAIN, 12));
         jpLienHypTxt.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpLienHypTxt.setBackground(Color.decode(GUIMeta.mainColor));

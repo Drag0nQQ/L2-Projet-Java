@@ -6,25 +6,26 @@ import javax.swing.JMenuItem;
 import java.awt.event.*;
 public class CustomMenuBar extends JMenuBar {
     private JMenu jMenu,enregistrer;
-    private JMenuItem ouvrir, sous, quitter;
+    private JMenuItem ouvrir, save, sous, quitter;
     public CustomMenuBar() {
         super();
         jMenu = new JMenu("Fichier");
         ouvrir = new JMenuItem("Ouvrir");
-        enregistrer = new JMenu("Enregistrer");
+        save = new JMenuItem("Enregistrer");
         sous = new JMenuItem("Enregistrer sous");
-        enregistrer.add(sous);
         quitter = new JMenuItem("Quitter");
 
         //ToolTips
         ouvrir.setToolTipText("Ouvre le fichier sélectionner");
-        enregistrer.setToolTipText("Choisir entre enregistrer directement ou enregistrer sous");
         quitter.setToolTipText("Permet de quitter la fenêtre");
+        save.setToolTipText("Enregistre les changements dans le fichier actuel");
         sous.setToolTipText("Enregistre sous le fichier qui est ouvert actuellement");
 
         jMenu.add(ouvrir);
         jMenu.addSeparator();
-        jMenu.add(enregistrer);
+        jMenu.add(save);
+        jMenu.addSeparator();
+        jMenu.add(sous);
         jMenu.addSeparator();
         jMenu.add(quitter);
         
@@ -39,6 +40,9 @@ public class CustomMenuBar extends JMenuBar {
 
     public void AddActListenerOuvrir(ActionListener action){
         ouvrir.addActionListener(action);
+    }
+    public void AddActListenerSave(ActionListener action){
+        save.addActionListener(action);
     }
 
     public void AddActListenerSous(ActionListener action) {

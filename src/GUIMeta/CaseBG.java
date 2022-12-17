@@ -157,6 +157,9 @@ public class CaseBG extends JPanel {
     public void jbAppliquerVisible(boolean b){
         jbAppliquer.setVisible(b);
     }
-    
-    
+    /**
+     * Rend le button visible (true) ou invisible (false)
+     * @param b
+     */
+    public void jbClearVisible(boolean b){ jbClear.setVisible(b);}
 }

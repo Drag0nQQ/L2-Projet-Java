@@ -3,8 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="60f4cbd8-daaa-4090-afce-be18423b6de5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUIMeta/CaseBG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUIMeta/CaseBG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUIMeta/CaseHG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUIMeta/CaseHG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUIMeta/CustomMenuBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUIMeta/CustomMenuBar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUIMeta/GUIMeta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUIMeta/GUIMeta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/EncoreuneTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/EncoreuneTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/extraction/ExtractPicture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/extraction/ExtractPicture.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

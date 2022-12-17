@@ -3,18 +3,18 @@ package GUIMeta;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.Random;
+import java.util.zip.ZipOutputStream;
 
 import extraction.*;
 import gestionfichier.*;
 
 public class GUIMeta extends JFrame{
-    public static final String dossierJtreeTest="/Users/Laurent/Desktop/VS CODE/monBordel";
-    public static final String ImagePourLeProjetJava="/Users/Laurent/Documents/ImagePourLeProjetJava";
-    public static Path dossierTravail = Path.of("/Users/Laurent/Documents/ProjetTest");
+    public static final String dossierJtreeTest="/Users/axel/Documents/monBordel";
+    public static final String ImagePourLeProjetJava="/Users/axel/Documents/ImagePourLeProjetJava";
+    public static Path dossierTravail = Path.of("/Users/axel/Documents/ProjetTest");
     /**
     * Code Hex pour la couleur utilisé
     */
@@ -61,7 +61,8 @@ public class GUIMeta extends JFrame{
     private CustomMenuBar jMenuBar;
     private boolean modified=false;
     private boolean inEdit=false;
-    private File tmp = new File("/Users/Laurent/Documents/testing.odt");
+    private boolean opened=false;
+    private File tmp = new File("/Users/axel/Documents/testing.odt");
     
     private JFileChooser chooser;
     
@@ -120,6 +121,7 @@ public class GUIMeta extends JFrame{
         jMenuBar = new CustomMenuBar();
         jMenuBar.AddActListenerQuitter(new ActionQuitter());
         jMenuBar.AddActListenerOuvrir(new ActionOuvrir());
+        jMenuBar.AddActListenerSave(new ActionSave());
         jMenuBar.AddActListenerSous(new ActionSous());
         this.setJMenuBar(jMenuBar);
         
@@ -131,7 +133,7 @@ public class GUIMeta extends JFrame{
         Container main = super.getContentPane();
         main.add(tout);
         
-        this.setResizable(true);
+        this.setResizable(false);
         this.setLocation(100, 25);
         this.pack();
         this.setVisible(true);
@@ -145,7 +147,7 @@ public class GUIMeta extends JFrame{
             int fich = chooser.showOpenDialog(jMenuBar.getOuvrir());
             if (fich == JFileChooser.APPROVE_OPTION){
                 File file = chooser.getSelectedFile();
-                
+
                 //TODO
                 if (modified) {
                     int reponse = JOptionPane.showConfirmDialog(null, "Attention votre travail n'a pas été sauvegarder, voulez vous ouvrir sans sauvegarder ?", "Ouvrir", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
@@ -155,6 +157,7 @@ public class GUIMeta extends JFrame{
                         try {
                             ZipEtUnzip.unzip(new FileInputStream(file), dossierTravail);
                             caseHG.loadMeta(dossierTravail);
+                            opened = true;
                             if (ExtractPicture.getThumbnails(dossierTravail)!=null){
                                 caseHD.replaceImg(new ImageIcon(ExtractPicture.getThumbnails(dossierTravail)));
                             }else{
@@ -164,7 +167,7 @@ public class GUIMeta extends JFrame{
                             JOptionPane.showMessageDialog(null, err.getMessage(), "Erreur", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toAnnulerString));
                         }
                     }else{
-                        //TODO Enregistrer sous untruc dans le genre
+                        //TODO Enregistrer sous un truc dans le genre
                     }
                 }else{
                     dossierTravail=Path.of(new String(new Random().ints(97, 122 + 1).limit(30).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString()));
@@ -172,6 +175,7 @@ public class GUIMeta extends JFrame{
                     try {
                         ZipEtUnzip.unzip(new FileInputStream(file), dossierTravail);
                         caseHG.loadMeta(dossierTravail);
+                        opened = true;
                         if (ExtractPicture.getThumbnails(dossierTravail)!=null){
                             caseHD.replaceImg(new ImageIcon(ExtractPicture.getThumbnails(dossierTravail)));
                         }else{
@@ -190,6 +194,7 @@ public class GUIMeta extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             caseHG.TextFieldclear();
+            ZipEtUnzip.supprDossier(dossierTravail.toFile());
             if (!inEdit){
                 caseHD.replaceImg(new ImageIcon(GUIMeta.toNoImgString));
             }
@@ -204,6 +209,7 @@ public class GUIMeta extends JFrame{
             caseBG.jbAnnulerVisible(true);
             caseBG.jbModifierVisible(false);
             caseBG.jbAppliquerVisible(true);
+            caseBG.jbClearVisible(false);
             inEdit=true;
         }
     }
@@ -211,24 +217,17 @@ public class GUIMeta extends JFrame{
     class ActionAnnuler implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            String pourTitre = caseHG.getTitreField();
-            String pourSujet = caseHG.getSujetField();
-            caseBG.jbAnnulerVisible(false);
-            caseBG.jbModifierVisible(true);
-            caseBG.jbAppliquerVisible(false);
-            int reponse = JOptionPane.showConfirmDialog(caseBG.getJbAnnuler(), "Voulez-vous annuler les changements effectués ?", "Annuler les changements ?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(GUIMeta.toCrayonString));
-            if (reponse == JOptionPane.YES_OPTION) {
+            int reponse = JOptionPane.showConfirmDialog(caseBG.getJbAnnuler(), "Voulez-vous annuler les changements effectués ?", "Annuler les changements ?", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(GUIMeta.toCrayonString));
+            if (reponse == JOptionPane.OK_OPTION) {
+                caseBG.jbAnnulerVisible(false);
+                caseBG.jbModifierVisible(true);
+                caseBG.jbAppliquerVisible(false);
+                caseBG.jbClearVisible(true);
                 caseHG.setTitreField(ExtractMeta.getTitle(dossierTravail));
                 caseHG.setSujetField(ExtractMeta.getSubject(dossierTravail));
                 caseHG.titreEditable(false);
                 caseHG.sujetEditable(false);
-                JOptionPane.showMessageDialog(caseBG.getJbAnnuler(), "L'annulation des changements a bien été faite.", "Annulation des changements", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toCrayonString));
-            } else if (reponse == JOptionPane.NO_OPTION){
-                caseHG.titreEditable(false);
-                caseHG.sujetEditable(false);
-                caseHG.setTitreField(pourTitre);
-                caseHG.setSujetField(pourSujet);
-                JOptionPane.showMessageDialog(caseBG.getJbAnnuler(), "Vous devrez réactiver la modification si vous voulez changer quelque chose.", "Refus de l'annulation des changements", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toCrayonString));
+                JOptionPane.showMessageDialog(caseBG.getJbAnnuler(), "L'annulation des changements a bien été faite.", "Annulation des changements", JOptionPane.PLAIN_MESSAGE, new ImageIcon(GUIMeta.toCrayonString));
             }
             inEdit=false;
         }
@@ -244,8 +243,11 @@ public class GUIMeta extends JFrame{
             if (reponse == JOptionPane.YES_OPTION){
                 caseHG.titreEditable(false);
                 caseHG.sujetEditable(false);
+                ExtractMeta.setTitle(dossierTravail, caseHG.getTitreField());
+                ExtractMeta.setSubject(dossierTravail, caseHG.getSujetField());
                 JOptionPane.showMessageDialog(caseBG.getJbAppliquer(), "Les changements ont bien été effectués.", "Changements effectués", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toAppliquerString));
                 modified=true;
+                caseBG.jbClearVisible(true);
             } else if (reponse == JOptionPane.NO_OPTION) {
                 caseHG.setTitreField(ExtractMeta.getTitle(dossierTravail));
                 caseHG.setSujetField(ExtractMeta.getSubject(dossierTravail));
@@ -253,8 +255,23 @@ public class GUIMeta extends JFrame{
                 caseHG.sujetEditable(false);
                 JOptionPane.showMessageDialog(caseBG.getJbAppliquer(), "Vous devrez réactiver la modification si vous voulez changer quelque chose.", "Refus de l'application des changements", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toCrayonString));
                 modified=false;
+                caseBG.jbClearVisible(true);
             }
             inEdit=false;
+        }
+    }
+
+    class ActionSave implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ZipOutputStream zos = null;
+            try {
+                zos = new ZipOutputStream(new FileOutputStream(chooser.getSelectedFile()));
+                ZipEtUnzip.zip("", new File(dossierTravail.toString()), zos);
+                zos.close();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
     
@@ -270,7 +287,14 @@ public class GUIMeta extends JFrame{
         public void actionPerformed(ActionEvent e) {
             int reponse = JOptionPane.showConfirmDialog(jMenuBar.getQuitter(), "Voulez-vous quitter la page ?", "Sortir ?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(GUIMeta.toExitString));
             if (reponse == JOptionPane.YES_OPTION){
-                //TODO Effacer dossier temporaire
+                int rep2 = JOptionPane.showConfirmDialog(jMenuBar.getQuitter(), "Attention, vous n'avez pas sauvegardé vôtre travail. Voulez-vous sauvegarder ?", "Sauvegarde ?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, new ImageIcon(GUIMeta.toExitString));
+                if (rep2 == JOptionPane.YES_OPTION){
+                    //Appel JFileChooser pour savoir dans quel fichier on enregistre
+                    //TODO Appel ActionSous
+                }
+                if (opened){
+                    ZipEtUnzip.supprDossier(dossierTravail.toFile());
+                }
                 System.exit(0);
             }
         }

@@ -69,17 +69,19 @@ public class ExtractPicture {
 
 
     public static ArrayList<String> getPictures(Path mainDirectory){
-        ArrayList<String> picList=new ArrayList<String>(); 
-        String tomedia= mainDirectory.toString()+File.separator+"media";
+        ArrayList<String> picList = null;
+        String toMedia= mainDirectory.toString()+File.separator+"media";
         String toPictures= mainDirectory.toString()+File.separator+"Pictures";
-        File[] FileList=new File(tomedia).listFiles();
+        File[] FileList=new File(toMedia).listFiles();
         File[] FileListBis=new File(toPictures).listFiles();
         if (FileList!=null){
+            picList = new ArrayList<String>();
             for (File file : FileList) {
                 picList.add("Nom: "+file.getName().substring(0,file.getName().lastIndexOf("."))+"\t\tTaille:"+file.length()/1024+"kB"+"\tExt: "+file.getName().substring(file.getName().lastIndexOf(".")+1));
             }
         }else{
             if (FileListBis!=null){
+                picList = new ArrayList<String>();
                 for (File file : FileListBis) {
                     picList.add("Nom: "+file.getName().substring(0,file.getName().lastIndexOf("."))+"\t\tTaille:"+file.length()/1024+"kB"+"\tExt: "+file.getName().substring(file.getName().lastIndexOf(".")+1));
                 }
