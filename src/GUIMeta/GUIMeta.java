@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Path;
+import java.util.Random;
 
 import extraction.*;
 import gestionfichier.*;
@@ -16,50 +17,51 @@ public class GUIMeta extends JFrame{
     public static final String ImagePourLeProjetJava="/Users/Laurent/Documents/ImagePourLeProjetJava";
     public static Path dossierTravail = Path.of("/Users/Laurent/Documents/ProjetTest");
     /**
-     * Code Hex pour la couleur utilisé
-     */
+    * Code Hex pour la couleur utilisé
+    */
     public static final String mainColor="#3e4e81";
     /**
-     * Code Hex pour la couleur utilisé
-     */
+    * Code Hex pour la couleur utilisé
+    */
     public static final String fontColor="#ffffff";
     /**
-     * Chemin en String de l'icone 
-     */
+    * Chemin en String de l'icone 
+    */
     public static final String toNoImgString=ImagePourLeProjetJava+"/noImg.png";
     /**
-     * Chemin en String de l'icone 
-     */
+    * Chemin en String de l'icone 
+    */
     public static final String toAnnulerString=ImagePourLeProjetJava+"/signal.png";
     /**
-     * Chemin en String de l'icone 
-     */
+    * Chemin en String de l'icone 
+    */
     public static final String toModifierString=ImagePourLeProjetJava+"/edit.png";
     /**
-     * Chemin en String de l'icone 
-     */
+    * Chemin en String de l'icone 
+    */
     public static final String toAppliquerString=ImagePourLeProjetJava+"/checked.png";
     /**
-     * Chemin en String de l'icone 
-     */
+    * Chemin en String de l'icone 
+    */
     public static final String toClearString=ImagePourLeProjetJava+"/rubber.png";
     /**
-     * Chemin en String de l'icone 
-     */
+    * Chemin en String de l'icone 
+    */
     public static final String toCrayonString=ImagePourLeProjetJava+"/crayon.png";
     /**
-     * Chemin en String de l'icone 
-     */
+    * Chemin en String de l'icone 
+    */
     public static final String toExitString=ImagePourLeProjetJava+"/sortie.png";
     
-    CaseHG caseHG;
-    CaseHD caseHD;
-    CaseBD caseBD;
-    CaseBG caseBG;
-    CustomMenuBar jMenuBar;
-    
+    private CaseHG caseHG;
+    private CaseHD caseHD;
+    private CaseBD caseBD;
+    private CaseBG caseBG;
+    private CustomMenuBar jMenuBar;
+    private boolean modified=false;
+    private boolean inEdit=false;
     private File tmp = new File("/Users/Laurent/Documents/testing.odt");
-
+    
     private JFileChooser chooser;
     
     public GUIMeta(){
@@ -117,7 +119,7 @@ public class GUIMeta extends JFrame{
         jMenuBar = new CustomMenuBar();
         jMenuBar.AddActListenerQuitter(new ActionQuitter());
         jMenuBar.AddActListenerOuvrir(new ActionOuvrir());
-        jMenuBar.AddActListenerSous(null);
+        jMenuBar.AddActListenerSous(new ActionSous());
         this.setJMenuBar(jMenuBar);
         
         JPanel tout = new JPanel();
@@ -142,8 +144,43 @@ public class GUIMeta extends JFrame{
             int fich = chooser.showOpenDialog(jMenuBar.getOuvrir());
             if (fich == JFileChooser.APPROVE_OPTION){
                 File file = chooser.getSelectedFile();
+                
                 //TODO
-                System.out.println(file.getAbsolutePath());
+                if (modified) {
+                    int reponse = JOptionPane.showConfirmDialog(null, "Attention votre travail n'a pas été sauvegarder, voulez vous ouvrir sans sauvegarder ?", "Ouvrir", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    //TODO Effacer le dossier temporaire
+                    if (reponse==JOptionPane.YES_OPTION){
+                        dossierTravail=Path.of(new String(new Random().ints(97, 122 + 1).limit(30).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString()));
+                        try {
+                            ZipEtUnzip.unzip(new FileInputStream(file), dossierTravail);
+                            caseHG.loadMeta(dossierTravail);
+                            if (ExtractPicture.getThumbnails(dossierTravail)!=null){
+                                caseHD.replaceImg(new ImageIcon(ExtractPicture.getThumbnails(dossierTravail)));
+                            }else{
+                                caseHD.replaceImg(new ImageIcon(GUIMeta.toNoImgString));
+                            }
+                        } catch (Exception err) {
+                            JOptionPane.showMessageDialog(null, err.getMessage(), "Erreur", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toAnnulerString));
+                        }
+                    }else{
+                        //TODO Enregistrer sous untruc dans le genre
+                    }
+                }else{
+                    dossierTravail=Path.of(new String(new Random().ints(97, 122 + 1).limit(30).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString()));
+                    //TODO Effacer le dossier temporaire    
+                    try {
+                        ZipEtUnzip.unzip(new FileInputStream(file), dossierTravail);
+                        caseHG.loadMeta(dossierTravail);
+                        if (ExtractPicture.getThumbnails(dossierTravail)!=null){
+                            caseHD.replaceImg(new ImageIcon(ExtractPicture.getThumbnails(dossierTravail)));
+                        }else{
+                            caseHD.replaceImg(new ImageIcon(GUIMeta.toNoImgString));
+                        }
+                    } catch (Exception err) {
+                        JOptionPane.showMessageDialog(null, err.getMessage(), "Erreur", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toAnnulerString));
+                    }
+                }
+                modified=true;
             }
         }
     }
@@ -152,7 +189,9 @@ public class GUIMeta extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             caseHG.TextFieldclear();
-            caseHD.replaceImg(new ImageIcon(GUIMeta.toNoImgString));
+            if (!inEdit){
+                caseHD.replaceImg(new ImageIcon(GUIMeta.toNoImgString));
+            }
         }
     }
     
@@ -164,6 +203,7 @@ public class GUIMeta extends JFrame{
             caseBG.jbAnnulerVisible(true);
             caseBG.jbModifierVisible(false);
             caseBG.jbAppliquerVisible(true);
+            inEdit=true;
         }
     }
     
@@ -189,6 +229,7 @@ public class GUIMeta extends JFrame{
                 caseHG.setSujetField(pourSujet);
                 JOptionPane.showMessageDialog(caseBG.getJbAnnuler(), "Vous devrez réactiver la modification si vous voulez changer quelque chose.", "Refus de l'annulation des changements", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toCrayonString));
             }
+            inEdit=false;
         }
     }
     
@@ -203,13 +244,23 @@ public class GUIMeta extends JFrame{
                 caseHG.titreEditable(false);
                 caseHG.sujetEditable(false);
                 JOptionPane.showMessageDialog(caseBG.getJbAppliquer(), "Les changements ont bien été effectués.", "Changements effectués", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toAppliquerString));
+                modified=true;
             } else if (reponse == JOptionPane.NO_OPTION) {
                 caseHG.setTitreField(ExtractMeta.getTitle(dossierTravail));
                 caseHG.setSujetField(ExtractMeta.getSubject(dossierTravail));
                 caseHG.titreEditable(false);
                 caseHG.sujetEditable(false);
                 JOptionPane.showMessageDialog(caseBG.getJbAppliquer(), "Vous devrez réactiver la modification si vous voulez changer quelque chose.", "Refus de l'application des changements", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toCrayonString));
+                modified=false;
             }
+            inEdit=false;
+        }
+    }
+    
+    class ActionSous implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            
         }
     }
     
@@ -218,6 +269,7 @@ public class GUIMeta extends JFrame{
         public void actionPerformed(ActionEvent e) {
             int reponse = JOptionPane.showConfirmDialog(jMenuBar.getQuitter(), "Voulez-vous quitter la page ?", "Sortir ?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(GUIMeta.toExitString));
             if (reponse == JOptionPane.YES_OPTION){
+                //TODO Effacer dossier temporaire
                 System.exit(0);
             }
         }

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import javax.xml.parsers.*;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -171,11 +170,8 @@ public class ExtractMeta{
                     Transformer transform= TransformerFactory.newInstance().newTransformer();
                     transform.setOutputProperty(OutputKeys.METHOD, "xml");
                     transform.transform(new DOMSource(doc), new StreamResult(metaFile));
-                } catch (TransformerConfigurationException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
+                } catch (TransformerException e) {
+                    System.err.println("Problème rencontré lors de la configuration de l'exporter");
                     e.printStackTrace();
                 }
             } catch (SAXException | IOException e) {
@@ -188,6 +184,59 @@ public class ExtractMeta{
     }
     
     //Getter Setter
+    public static String getnbMots(Path mainDirectory) {
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
+            NodeList offDoc= doc.getElementsByTagName("meta:document-statistic");
+            if (offDoc.getLength()>0){
+                return offDoc.item(0).getAttributes().getNamedItem("meta:word-count").getTextContent();
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return null;
+        
+    }
+
+    public static String getnbCaracteres(Path mainDirectory){
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
+            NodeList offDoc= doc.getElementsByTagName("meta:document-statistic");
+            if (offDoc.getLength()>0){
+                return offDoc.item(0).getAttributes().getNamedItem("meta:character-count").getTextContent();
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return null;
+        
+    }
+
+    public static String getnbPages(Path mainDirectory){
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
+            NodeList offDoc= doc.getElementsByTagName("meta:document-statistic");
+            if (offDoc.getLength()>0){
+                return offDoc.item(0).getAttributes().getNamedItem("meta:page-count").getTextContent();
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return null;
+        
+    }
     public static String getTitle(Path mainDirectory){
         DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;

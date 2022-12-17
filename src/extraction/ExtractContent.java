@@ -55,6 +55,35 @@ public class ExtractContent {
         }
     }
     
+    public static ArrayList<String> getLink(Path mainDirectory) {
+        String toContentFile= mainDirectory.toString()+File.separator+"content.xml";
+        File linkList= new File(toContentFile);
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            try {
+                Document doc = builder.parse(new FileInputStream(linkList));
+                NodeList offDocLink= doc.getElementsByTagName("text:a");
+                ArrayList<String> arrayLink= new ArrayList<String>();
+                String txtcontent=null;
+                if (offDocLink==null) {
+                    return null;
+                }
+                for (int i=0; i < offDocLink.getLength();i++) {
+                    txtcontent=offDocLink.item(i).getAttributes().getNamedItem("xlink:href").getTextContent();
+                    if (!arrayLink.contains(txtcontent)&& (txtcontent.contains("http")||txtcontent.contains("www"))){
+                        arrayLink.add(txtcontent);
+                    }
+                }
+                if (arrayLink.size()>0) {
+                    return arrayLink;
+                }    
+            } catch (SAXException | IOException e) {}
+        }catch (Exception e){}
+        return null;
+    }
+    
     //GETTERS SETTERS
     public void setHyperlink(ArrayList<String> hyperlink) {
         this.hyperlink = hyperlink;
@@ -72,7 +101,7 @@ public class ExtractContent {
     }
     public void removeLink(String link) throws NoSuchElementException{
         if (hyperlink.contains(link)){
-        hyperlink.remove(link);
+            hyperlink.remove(link);
         }else{
             throw new NoSuchElementException("Lien non existant");
         }

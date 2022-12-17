@@ -2,11 +2,13 @@ package GUIMeta;
 
 import javax.swing.JPanel;
 
+import extraction.ExtractContent;
 import extraction.ExtractMeta;
 import extraction.ExtractPicture;
 
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Path;
 import java.util.ArrayList;
 public class CaseHG extends JPanel {
     private JTextField titre,auteur,sujet,keyword,date,nbCaracteres,nbMots,nbPages;
@@ -45,6 +47,43 @@ public class CaseHG extends JPanel {
         setBackground(Color.decode(GUIMeta.mainColor));
     }
     
+    //Methods
+    public void loadMeta(Path mainDirectory) {
+        setTitreField(ExtractMeta.getTitle(mainDirectory));
+        setAuteurField(ExtractMeta.getAuthor(mainDirectory));
+        setSujetField(ExtractMeta.getSubject(mainDirectory));
+        ArrayList<String> al=ExtractMeta.getKeywords(mainDirectory);
+        String kw="";
+        if (al!=null){
+            for (String tmp : al) {
+                kw=kw + tmp+", ";
+            }
+        }
+        
+        setKeywordField(kw);
+        setDateField(ExtractMeta.getCreation_date(mainDirectory));
+        setnbMotsField(ExtractMeta.getnbMots(mainDirectory));
+        setnbPagesField(ExtractMeta.getnbPages(mainDirectory));
+        setNbCaracteresField(ExtractMeta.getnbCaracteres(mainDirectory));
+        kw="";
+        al=ExtractContent.getLink(mainDirectory);
+        if (al!=null){
+            for (String tmp: al){
+                kw=kw + tmp+"\n";
+            }
+        }
+        setLienField(kw);
+        kw="";
+        al=ExtractPicture.getPictures(mainDirectory);
+        if (al!=null){
+            kw="Nombre d'images:"+ al.size()+"\n";
+            for (String string : al) {
+                kw=kw+string+"\n";
+            }
+        }
+        setImageField(kw);
+    }
+    
     //Setup
     
     public void formatTextField(){
@@ -57,7 +96,7 @@ public class CaseHG extends JPanel {
         nbMots = new JTextField(5);
         nbCaracteres = new JTextField(5);
         nbPages = new JTextField(5);
-        images = new JTextArea();
+        images = new JTextArea(6,60);
         lienHypertxt = new JTextArea(6,70);
         
         //EDITION
@@ -202,7 +241,7 @@ public class CaseHG extends JPanel {
         jpCaracteres.add(jlNbCaracteres);
         jpCaracteres.add(nbCaracteres);
         //TODO
-        nbCaracteres.setText("245934");
+        nbCaracteres.setText(ExtractMeta.getnbCaracteres(GUIMeta.dossierTravail));
         nbCaracteres.setFont(new Font("Arial", Font.PLAIN, 18));
         jpCaracteres.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpCaracteres.setBackground(Color.decode(GUIMeta.mainColor));
@@ -216,7 +255,7 @@ public class CaseHG extends JPanel {
         jpMots.add(jlNbMots);
         jpMots.add(nbMots);
         //TODO
-        nbMots.setText("12000");
+        nbMots.setText(ExtractMeta.getnbMots(GUIMeta.dossierTravail));
         nbMots.setFont(new Font("Arial", Font.PLAIN, 18));
         jpMots.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpMots.setBackground(Color.decode(GUIMeta.mainColor));
@@ -230,6 +269,7 @@ public class CaseHG extends JPanel {
         jpPages.add(jlNbPages);
         jpPages.add(nbPages);
         //TODO
+        nbPages.setText(ExtractMeta.getnbPages(GUIMeta.dossierTravail));
         nbPages.setFont(new Font("Arial", Font.PLAIN, 18));
         jpPages.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpPages.setBackground(Color.decode(GUIMeta.mainColor));
@@ -265,12 +305,14 @@ public class CaseHG extends JPanel {
         jpLienHypTxt.add(lienHypertxt);
         lienHypertxt.setLineWrap(true);
         //TODO
-        lienHypertxt.append("""
-        https://www.cyu.fr/medias/fichier/4-institut-st-mcc-licence-2022-2023-definitivement-definitif_1664525133013-pdf\s
-        https://www.ganttproject.biz/download/free
-        https://doc.ubuntu-fr.org/simplescreenrecorder
-        https://obsproject.com/
-        https://opendocumentformat.org""");
+        ArrayList<String> lienArray=ExtractContent.getLink(GUIMeta.dossierTravail);
+        String res="";
+        if (lienArray!=null) {
+            for (String string : lienArray) {
+                res= res + string + "\n";
+            }
+        }
+        lienHypertxt.append(res);
         lienHypertxt.setFont(new Font("Arial", Font.PLAIN, 12));
         jpLienHypTxt.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpLienHypTxt.setBackground(Color.decode(GUIMeta.mainColor));
@@ -289,7 +331,7 @@ public class CaseHG extends JPanel {
         images.setText("");
         lienHypertxt.setText("");
     }
-
+    
     //Getter Setter and Misc
     public String getTitreField(){
         return titre.getText();    
@@ -313,10 +355,15 @@ public class CaseHG extends JPanel {
         return nbMots.getText();    
     }
     public String getnbPagesField(){
-        return keyword.getText();    
+        return nbPages.getText();    
+    }
+    public String getLienField(){
+        return lienHypertxt.getText();
+    }
+    public String getImageField(){
+        return images.getText();
     }
     
-
     public void setTitreField(String txt){
         titre.setText(txt);    
     }
@@ -339,8 +386,15 @@ public class CaseHG extends JPanel {
         nbMots.setText(txt);    
     }
     public void setnbPagesField(String txt){
-        keyword.setText(txt);    
+        nbPages.setText(txt);    
     }
+    public void setLienField(String txt){
+        lienHypertxt.setText(txt);
+    }
+    public void setImageField(String txt){
+        images.setText(txt);
+    }
+
     public void titreEditable(boolean b) {
         titre.setEditable(b);
     }
