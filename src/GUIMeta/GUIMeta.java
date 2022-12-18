@@ -1,6 +1,8 @@
 package GUIMeta;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -12,9 +14,10 @@ import extraction.*;
 import gestionfichier.*;
 
 public class GUIMeta extends JFrame{
-    public static final String dossierJtreeTest="/Users/axel/Documents/monBordel";
-    public static final String ImagePourLeProjetJava="/Users/axel/Documents/ImagePourLeProjetJava";
-    public static Path dossierTravail = Path.of("/Users/axel/Documents/ProjetTest");
+    public static final String dossierJtreeTest="/Users/Laurent/Desktop/VS Code/monBordel";
+    public static final String ImagePourLeProjetJava="/Users/Laurent/Documents/ImagePourLeProjetJava";
+    public static Path dossierTravail = Path.of("/Users/Laurent/Documents/ProjetTest");
+    private File tmp = new File("/Users/Laurent/Documents/testing.odt");
     /**
     * Code Hex pour la couleur utilisé
     */
@@ -62,7 +65,7 @@ public class GUIMeta extends JFrame{
     private boolean modified=false;
     private boolean inEdit=false;
     private boolean opened=false;
-    private File tmp = new File("/Users/axel/Documents/testing.odt");
+    private boolean firstTime=true;
     
     private JFileChooser chooser;
     
@@ -106,11 +109,9 @@ public class GUIMeta extends JFrame{
         
         //COTE DROIT
         
-        caseHD = new CaseHD(dossierTravail);
+        caseHD = new CaseHD();
         
         caseBD = new CaseBD();
-        //TODO changeJTREE ne marche pas
-        caseBD.changeJTree(new File("C:/Users/Laurent/Documents"));
         
         JPanel droit = new JPanel();
         droit.setPreferredSize(new Dimension(450, 700));
@@ -123,6 +124,7 @@ public class GUIMeta extends JFrame{
         jMenuBar.AddActListenerOuvrir(new ActionOuvrir());
         jMenuBar.AddActListenerSave(new ActionSave());
         jMenuBar.AddActListenerSous(new ActionSous());
+        jMenuBar.AddActListenerDossier(new ActionDossier());
         this.setJMenuBar(jMenuBar);
         
         JPanel tout = new JPanel();
@@ -144,10 +146,15 @@ public class GUIMeta extends JFrame{
     class ActionOuvrir implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("OpenDocument Text", "odt");
+            chooser.addChoosableFileFilter(filter);
             int fich = chooser.showOpenDialog(jMenuBar.getOuvrir());
             if (fich == JFileChooser.APPROVE_OPTION){
                 File file = chooser.getSelectedFile();
-
+                if (firstTime){
+                    caseBG.jbClearVisible(true);
+                    caseBG.jbModifierVisible(true);
+                }
                 //TODO
                 if (modified) {
                     int reponse = JOptionPane.showConfirmDialog(null, "Attention votre travail n'a pas été sauvegarder, voulez vous ouvrir sans sauvegarder ?", "Ouvrir", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
@@ -217,7 +224,7 @@ public class GUIMeta extends JFrame{
     class ActionAnnuler implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            int reponse = JOptionPane.showConfirmDialog(caseBG.getJbAnnuler(), "Voulez-vous annuler les changements effectués ?", "Annuler les changements ?", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(GUIMeta.toCrayonString));
+            int reponse = JOptionPane.showConfirmDialog(null, "Voulez-vous annuler les changements effectués ?", "Annuler les changements ?", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(GUIMeta.toCrayonString));
             if (reponse == JOptionPane.OK_OPTION) {
                 caseBG.jbAnnulerVisible(false);
                 caseBG.jbModifierVisible(true);
@@ -260,17 +267,19 @@ public class GUIMeta extends JFrame{
             inEdit=false;
         }
     }
-
+    
     class ActionSave implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            ZipOutputStream zos = null;
-            try {
-                zos = new ZipOutputStream(new FileOutputStream(chooser.getSelectedFile()));
-                ZipEtUnzip.zip("", new File(dossierTravail.toString()), zos);
-                zos.close();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+            if (!firstTime){
+                ZipOutputStream zos = null;
+                try {
+                    zos = new ZipOutputStream(new FileOutputStream(chooser.getSelectedFile()));
+                    ZipEtUnzip.zip("", new File(dossierTravail.toString()), zos);
+                    zos.close();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
     }
@@ -282,18 +291,32 @@ public class GUIMeta extends JFrame{
         }
     }
     
+    class ActionDossier implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser chooseDir=new JFileChooser();
+            chooseDir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int choix = chooseDir.showDialog(jMenuBar.getDossier(),"Ouvrir");
+            if (choix==JFileChooser.APPROVE_OPTION){
+                caseBD.changeJTree(chooseDir.getSelectedFile());
+            }
+        }
+    }
+    
     class ActionQuitter implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
             int reponse = JOptionPane.showConfirmDialog(jMenuBar.getQuitter(), "Voulez-vous quitter la page ?", "Sortir ?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon(GUIMeta.toExitString));
             if (reponse == JOptionPane.YES_OPTION){
-                int rep2 = JOptionPane.showConfirmDialog(jMenuBar.getQuitter(), "Attention, vous n'avez pas sauvegardé vôtre travail. Voulez-vous sauvegarder ?", "Sauvegarde ?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, new ImageIcon(GUIMeta.toExitString));
-                if (rep2 == JOptionPane.YES_OPTION){
-                    //Appel JFileChooser pour savoir dans quel fichier on enregistre
-                    //TODO Appel ActionSous
-                }
-                if (opened){
-                    ZipEtUnzip.supprDossier(dossierTravail.toFile());
+                if (modified){
+                    int rep2 = JOptionPane.showConfirmDialog(jMenuBar.getQuitter(), "Attention, vous n'avez pas sauvegardé votre travail. Voulez-vous sauvegarder ?", "Sauvegarde ?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, new ImageIcon(GUIMeta.toExitString));
+                    if (rep2 == JOptionPane.YES_OPTION){
+                        //Appel JFileChooser pour savoir dans quel fichier on enregistre
+                        //TODO Appel ActionSous
+                    }
+                    if (opened){
+                        ZipEtUnzip.supprDossier(dossierTravail.toFile());
+                    }
                 }
                 System.exit(0);
             }

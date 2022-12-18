@@ -1,11 +1,9 @@
 package GUIMeta;
 
 import java.awt.Dimension;
-import java.nio.file.Path;
 import java.awt.*;
 import javax.swing.*;
 
-import extraction.ExtractPicture;
 /**
  * Cette classe permet de créer et gérer la case haut droit de notre GUI
  */
@@ -14,10 +12,10 @@ public class CaseHD extends JPanel {
     private JLabel imageLabel;
 
 
-    public CaseHD(Path mainDirectory) {
+    public CaseHD() {
         super();
         //TODO
-        imageLabel= new JLabel(new ImageIcon(ExtractPicture.getThumbnails(mainDirectory)));
+        imageLabel= new JLabel(new ImageIcon(GUIMeta.toNoImgString));
         imageLabel.setPreferredSize(new Dimension(400, 350));
         imageLabel.add(Box.createRigidArea(new Dimension(100, 0)));
         add(imageLabel);

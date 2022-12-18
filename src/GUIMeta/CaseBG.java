@@ -18,6 +18,7 @@ public class CaseBG extends JPanel {
         InitClear();
         InitAppliquer();
         InitTooltips();
+        InitInvisible();
         //Panel au dessus
         panelAuDessusBouton=new JPanel();
         Boutons = new JLabel("<HTML><U>Boutons pour la modification et pour effacer toutes les données de l'écran</U></HTML>");
@@ -52,6 +53,12 @@ public class CaseBG extends JPanel {
     }
     
     //Setup
+    private void InitInvisible(){
+        jbAnnuler.setVisible(false);
+        jbAppliquer.setVisible(false);
+        jbClear.setVisible(false);
+        jbModifier.setVisible(false);
+    }
     /**
      * Initialise les tooltips des boutons
      */

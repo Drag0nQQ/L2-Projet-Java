@@ -11,7 +11,7 @@ import java.io.File;
 public class CaseBD extends JPanel {
     private JPanel auDessusBD;
     private JLabel jlAuDessusBD;
-    private JPanel panelJTree;
+    private JScrollPane panelJTree;
     private JPanel enDessousBD;
     private DefaultMutableTreeNode noeud;
     private JTree jTree;
@@ -35,15 +35,14 @@ public class CaseBD extends JPanel {
         enDessousBD.setBackground(Color.decode(GUIMeta.mainColor));
         
         //JTree
-        panelJTree = new JPanel();
-        panelJTree.setPreferredSize(new Dimension(450, 300));
-        panelJTree.setBackground(Color.decode(GUIMeta.mainColor));
-        noeud = new DefaultMutableTreeNode("MonDossier");
+        noeud = new DefaultMutableTreeNode("Mon Dossier Sélectionné");
+        //TODO devra commencer a vide
         creatFeuille(noeud, new File(GUIMeta.dossierJtreeTest));
         jTree = new JTree(noeud);
-        jTree.setPreferredSize(new Dimension(370, 250));
         jTree.setBackground(Color.decode("#ffffff"));
-        panelJTree.add(jTree);
+        panelJTree = new JScrollPane(jTree);
+        panelJTree.setBackground(Color.decode(GUIMeta.mainColor));
+        panelJTree.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         
         
         add(auDessusBD);
@@ -56,10 +55,7 @@ public class CaseBD extends JPanel {
     public void changeJTree(File f){
         this.noeud.removeAllChildren();
         creatFeuille(noeud, f);
-        jTree.validate();
-        jTree.repaint();
-        panelJTree.validate();
-        panelJTree.repaint();
+        jTree.updateUI();
     }
     /**
     * <p>Ajoute à l'arborescence les fichiers en .odt ou dossiers contenant un .odt</p>

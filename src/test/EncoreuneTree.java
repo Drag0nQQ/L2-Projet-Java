@@ -5,8 +5,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.io.File;
-import java.io.FilenameFilter;
-
 import javax.swing.*;
 
 public class EncoreuneTree extends JFrame{
@@ -18,7 +16,7 @@ public class EncoreuneTree extends JFrame{
     public EncoreuneTree() {
         super("ENCORE DES ARBRES N-Aires");
         noeud=new DefaultMutableTreeNode("Root du noeud");
-        creatFeuille(noeud, new File("/Users/axel/Documents/ABCD"));
+        creatFeuille(noeud, new File("/Users/Laurent/Desktop/VS Code"));
         jtree=new JTree(noeud);
         scrollpane=new JScrollPane(jtree);
         
