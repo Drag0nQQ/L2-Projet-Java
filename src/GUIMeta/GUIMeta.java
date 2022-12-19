@@ -16,8 +16,8 @@ import gestionfichier.*;
 public class GUIMeta extends JFrame{
     public static final String dossierJtreeTest="/Users/Laurent/Desktop/VS Code/monBordel";
     public static final String ImagePourLeProjetJava="/Users/Laurent/Documents/ImagePourLeProjetJava";
-    public static Path dossierTravail = Path.of("/Users/Laurent/Documents/ProjetTest");
-    private File tmp = new File("/Users/Laurent/Documents/testing.odt");
+    public static Path dossierTravail = null;
+    public static final String splashscreen=ImagePourLeProjetJava+"/splashScreenB&W.gif";
     /**
     * Code Hex pour la couleur utilisé
     */
@@ -63,7 +63,6 @@ public class GUIMeta extends JFrame{
     private CaseBG caseBG;
     private CustomMenuBar jMenuBar;
     private boolean modified=false;
-    private boolean inEdit=false;
     private boolean opened=false;
     private boolean firstTime=true;
     
@@ -75,18 +74,9 @@ public class GUIMeta extends JFrame{
     
     public GUIMeta(String title){
         super(title);
-        try {
-            ZipEtUnzip.unzip(new FileInputStream(tmp),dossierTravail);
-            
-        } catch (Exception exception){
-            exception.printStackTrace();
-        }
         this.chooser = new JFileChooser();
-        
-        // lienHypertxt.setPreferredSize(new Dimension(500, 84));
-        // JScrollBar scrollBarLiens = new JScrollBar(JScrollBar.VERTICAL);
-        // lienHypertxt.add(scrollBarLiens);
-        
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("OpenDocument Text", "odt");
+        chooser.addChoosableFileFilter(filter);
         //Cote GAUCHE
         caseHG = new CaseHG();
         
@@ -118,7 +108,13 @@ public class GUIMeta extends JFrame{
         droit.setLayout(new BoxLayout(droit, BoxLayout.Y_AXIS));
         droit.add(caseHD);
         droit.add(caseBD);
-        
+        //POUR EXPORTER LES IMAGES EN JAR 
+        try{
+            ImageIcon tmp = new ImageIcon(getClass().getResource("/ImagePourLeProjetJava/edit.png"));
+            caseHD.replaceImg(tmp);
+        }catch(Exception e){
+            
+        }
         jMenuBar = new CustomMenuBar();
         jMenuBar.AddActListenerQuitter(new ActionQuitter());
         jMenuBar.AddActListenerOuvrir(new ActionOuvrir());
@@ -146,8 +142,6 @@ public class GUIMeta extends JFrame{
     class ActionOuvrir implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("OpenDocument Text", "odt");
-            chooser.addChoosableFileFilter(filter);
             int fich = chooser.showOpenDialog(jMenuBar.getOuvrir());
             if (fich == JFileChooser.APPROVE_OPTION){
                 File file = chooser.getSelectedFile();
@@ -157,7 +151,7 @@ public class GUIMeta extends JFrame{
                 }
                 //TODO
                 if (modified) {
-                    int reponse = JOptionPane.showConfirmDialog(null, "Attention votre travail n'a pas été sauvegarder, voulez vous ouvrir sans sauvegarder ?", "Ouvrir", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    int reponse = JOptionPane.showConfirmDialog(null, "Attention votre travail n'a pas été sauvegarder,\nOuvrir sans sauvegarder ?", "Ouvrir", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     //TODO Effacer le dossier temporaire
                     if (reponse==JOptionPane.YES_OPTION){
                         dossierTravail=Path.of(new String(new Random().ints(97, 122 + 1).limit(30).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString()));
@@ -202,9 +196,7 @@ public class GUIMeta extends JFrame{
         public void actionPerformed(ActionEvent e) {
             caseHG.TextFieldclear();
             ZipEtUnzip.supprDossier(dossierTravail.toFile());
-            if (!inEdit){
-                caseHD.replaceImg(new ImageIcon(GUIMeta.toNoImgString));
-            }
+            caseHD.replaceImg(new ImageIcon(GUIMeta.toNoImgString));
         }
     }
     
@@ -217,7 +209,6 @@ public class GUIMeta extends JFrame{
             caseBG.jbModifierVisible(false);
             caseBG.jbAppliquerVisible(true);
             caseBG.jbClearVisible(false);
-            inEdit=true;
         }
     }
     
@@ -236,7 +227,6 @@ public class GUIMeta extends JFrame{
                 caseHG.sujetEditable(false);
                 JOptionPane.showMessageDialog(caseBG.getJbAnnuler(), "L'annulation des changements a bien été faite.", "Annulation des changements", JOptionPane.PLAIN_MESSAGE, new ImageIcon(GUIMeta.toCrayonString));
             }
-            inEdit=false;
         }
     }
     
@@ -264,7 +254,6 @@ public class GUIMeta extends JFrame{
                 modified=false;
                 caseBG.jbClearVisible(true);
             }
-            inEdit=false;
         }
     }
     
@@ -314,9 +303,9 @@ public class GUIMeta extends JFrame{
                         //Appel JFileChooser pour savoir dans quel fichier on enregistre
                         //TODO Appel ActionSous
                     }
-                    if (opened){
-                        ZipEtUnzip.supprDossier(dossierTravail.toFile());
-                    }
+                }
+                if (opened){
+                    ZipEtUnzip.supprDossier(dossierTravail.toFile());
                 }
                 System.exit(0);
             }

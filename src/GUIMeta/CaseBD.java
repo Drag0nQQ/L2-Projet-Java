@@ -37,7 +37,7 @@ public class CaseBD extends JPanel {
         //JTree
         noeud = new DefaultMutableTreeNode("Mon Dossier Sélectionné");
         //TODO devra commencer a vide
-        creatFeuille(noeud, new File(GUIMeta.dossierJtreeTest));
+        // creatFeuille(noeud, new File(GUIMeta.dossierJtreeTest));
         jTree = new JTree(noeud);
         jTree.setBackground(Color.decode("#ffffff"));
         panelJTree = new JScrollPane(jTree);
@@ -55,6 +55,7 @@ public class CaseBD extends JPanel {
     public void changeJTree(File f){
         this.noeud.removeAllChildren();
         creatFeuille(noeud, f);
+        jTree.expandRow(0);
         jTree.updateUI();
     }
     /**
