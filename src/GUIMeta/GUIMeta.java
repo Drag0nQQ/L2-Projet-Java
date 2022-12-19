@@ -14,7 +14,6 @@ import extraction.*;
 import gestionfichier.*;
 
 public class GUIMeta extends JFrame{
-    public static final String dossierJtreeTest="/Users/Laurent/Desktop/VS Code/monBordel";
     public static final String ImagePourLeProjetJava="/Users/Laurent/Documents/ImagePourLeProjetJava";
     public static Path dossierTravail = null;
     public static final String splashscreen=ImagePourLeProjetJava+"/splashScreenB&W.gif";
@@ -57,11 +56,14 @@ public class GUIMeta extends JFrame{
     */
     public static final String toExitString=ImagePourLeProjetJava+"/sortie.png";
     
+    private static final String logoString=ImagePourLeProjetJava+"/logo.png";
+    
     private CaseHG caseHG;
     private CaseHD caseHD;
     private CaseBD caseBD;
     private CaseBG caseBG;
     private CustomMenuBar jMenuBar;
+    
     private boolean modified=false;
     private boolean opened=false;
     private boolean firstTime=true;
@@ -69,7 +71,7 @@ public class GUIMeta extends JFrame{
     private JFileChooser chooser;
     
     public GUIMeta(){
-        this("GUI Métadonnees");
+        this("Meta-Stealer.io");
     }
     
     public GUIMeta(String title){
@@ -134,9 +136,10 @@ public class GUIMeta extends JFrame{
         this.setResizable(false);
         this.setLocation(100, 25);
         this.pack();
-        this.setVisible(true);
+        this.setIconImage(new ImageIcon(logoString).getImage());
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new ActionWindowClosing());
+        this.setVisible(true);
     }
     
     class ActionOuvrir implements ActionListener{
@@ -148,12 +151,15 @@ public class GUIMeta extends JFrame{
                 if (firstTime){
                     caseBG.jbClearVisible(true);
                     caseBG.jbModifierVisible(true);
+                    firstTime=false;
                 }
                 //TODO
                 if (modified) {
                     int reponse = JOptionPane.showConfirmDialog(null, "Attention votre travail n'a pas été sauvegarder,\nOuvrir sans sauvegarder ?", "Ouvrir", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-                    //TODO Effacer le dossier temporaire
                     if (reponse==JOptionPane.YES_OPTION){
+                        if (opened) {
+                            ZipEtUnzip.supprDossier(dossierTravail.toFile());
+                        }
                         dossierTravail=Path.of(new String(new Random().ints(97, 122 + 1).limit(30).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString()));
                         try {
                             ZipEtUnzip.unzip(new FileInputStream(file), dossierTravail);
@@ -168,11 +174,13 @@ public class GUIMeta extends JFrame{
                             JOptionPane.showMessageDialog(null, err.getMessage(), "Erreur", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toAnnulerString));
                         }
                     }else{
-                        //TODO Enregistrer sous un truc dans le genre
+                        new ActionSous().actionPerformed(null);
                     }
                 }else{
+                    if (opened) {
+                        ZipEtUnzip.supprDossier(dossierTravail.toFile());
+                    }
                     dossierTravail=Path.of(new String(new Random().ints(97, 122 + 1).limit(30).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString()));
-                    //TODO Effacer le dossier temporaire    
                     try {
                         ZipEtUnzip.unzip(new FileInputStream(file), dossierTravail);
                         caseHG.loadMeta(dossierTravail);
@@ -186,7 +194,6 @@ public class GUIMeta extends JFrame{
                         JOptionPane.showMessageDialog(null, err.getMessage(), "Erreur", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toAnnulerString));
                     }
                 }
-                modified=true;
             }
         }
     }
@@ -195,7 +202,10 @@ public class GUIMeta extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             caseHG.TextFieldclear();
-            ZipEtUnzip.supprDossier(dossierTravail.toFile());
+            if (opened) {
+                ZipEtUnzip.supprDossier(dossierTravail.toFile());
+                opened=false;
+            }
             caseHD.replaceImg(new ImageIcon(GUIMeta.toNoImgString));
         }
     }
@@ -269,6 +279,7 @@ public class GUIMeta extends JFrame{
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+                modified=false;
             }
         }
     }
@@ -276,7 +287,20 @@ public class GUIMeta extends JFrame{
     class ActionSous implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            
+            int reponse = chooser.showOpenDialog(rootPane);
+            if (reponse==JFileChooser.APPROVE_OPTION) {
+                if (!firstTime) {
+                    ZipOutputStream zos=null;
+                    try {
+                        zos= new ZipOutputStream(new FileOutputStream(chooser.getSelectedFile()));
+                        ZipEtUnzip.zip("", new File(dossierTravail.toString()), zos);
+                        zos.close();
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    modified=false;
+                }
+            }
         }
     }
     
@@ -300,8 +324,7 @@ public class GUIMeta extends JFrame{
                 if (modified){
                     int rep2 = JOptionPane.showConfirmDialog(jMenuBar.getQuitter(), "Attention, vous n'avez pas sauvegardé votre travail. Voulez-vous sauvegarder ?", "Sauvegarde ?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, new ImageIcon(GUIMeta.toExitString));
                     if (rep2 == JOptionPane.YES_OPTION){
-                        //Appel JFileChooser pour savoir dans quel fichier on enregistre
-                        //TODO Appel ActionSous
+                        new ActionSous().actionPerformed(null);
                     }
                 }
                 if (opened){
