@@ -68,7 +68,6 @@ public class GUIMeta extends JFrame{
     private boolean modified=false;
     private boolean opened=false;
     private boolean firstTime=true;
-    private boolean dossierOpened=false;
     
     private JFileChooser chooser,chooseDir;
     

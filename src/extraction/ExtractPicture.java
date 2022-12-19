@@ -1,24 +1,24 @@
 package extraction;
-import java.io.*;
+import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-
 /**
-* Cette classe permet de chercher les images du dossier media
-*/
+ * Cette classe permet de chercher les images du dossier media ou Pictures.
+ * @author Laurent LIN
+ * @author Axel OLIVEIRA
+ */
 public class ExtractPicture {
     /**
     * Permet d'afficher le nom des images, leur taille et leur extension
     * <b>Attention les documents .odt créés par Word ont un dossier "media"
-    tandis que les documents par OpenOffice ou LibreOffice ont un dossier "Pictures"
-    ce dernier cas n'est pas traité.</b>
-    * @param mainDirectory chemin vers le dossier temporaire
-    * @see gestionfichier.ZipEtUnzip#unzip pour créer le dossier temporaire
-    * @version 0.1
+    tandis que les documents par OpenOffice ou LibreOffice ont un dossier "Pictures".</b>
+    <p>Traite maintenant les 2 cas depuis la {@code version 0.2}</p>
+    * @param mainDirectory chemin vers le dossier temporaire.
+    * @see gestionfichier.ZipEtUnzip#unzip pour créer le dossier temporaire.
+    * @version 0.2
     */
     public static void showPicture(Path mainDirectory) {
-        //TODO Pictures/ ou media/ à chercher
         String toPicFiles= mainDirectory.toString()+File.separator+"media";
         String toPicFilesBis= mainDirectory.toString()+File.separator+"Pictures";
         File[] picList= new File(toPicFiles).listFiles();
@@ -43,12 +43,11 @@ public class ExtractPicture {
     
     
     //GETTERS SETTERS
-    //TODO méthode pour le thumbnail
     /**
-     * Retourne le chemin aboslu vers le thumbnail, sinon {@code null} si on le trouve pas
-     * @param mainDirectory
-     * @return
-     */
+    * Retourne le chemin aboslu vers le thumbnail, sinon {@code null} si on le trouve pas.
+    * @param mainDirectory chemin vers le dossier temporaire.
+    * @return {@code null} si on ne le trouve pas.<li>{@code String file} si on l'a trouvé</li>
+    */
     public static String getThumbnails(Path mainDirectory){
         String toThumb= mainDirectory.toString()+File.separator+"Thumbnails";
         File[] thumbFolder= new File(toThumb).listFiles();
@@ -65,9 +64,15 @@ public class ExtractPicture {
         }
         return null;
     }
-
-
-
+    
+    
+    /**
+    * Retourne une ArrayList de chaque image avec leur extension et taille.
+    * @param mainDirectory chemin vers le dossier temporaire.
+    * @return {@code null} s'il n'y a pas d'image.
+    * <li>{@code arrayLink} ArrayList de chaque image.</li>
+    *
+    */
     public static ArrayList<String> getPictures(Path mainDirectory){
         ArrayList<String> picList = null;
         String toMedia= mainDirectory.toString()+File.separator+"media";
@@ -87,8 +92,6 @@ public class ExtractPicture {
                 }
             }
         }
-        return picList;
-        
-        
+        return picList; 
     }
 }
