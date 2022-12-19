@@ -2,6 +2,7 @@ package GUIMeta;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.TreePath;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -67,8 +68,9 @@ public class GUIMeta extends JFrame{
     private boolean modified=false;
     private boolean opened=false;
     private boolean firstTime=true;
+    private boolean dossierOpened=false;
     
-    private JFileChooser chooser;
+    private JFileChooser chooser,chooseDir;
     
     public GUIMeta(){
         this("Meta-Stealer.io");
@@ -77,6 +79,7 @@ public class GUIMeta extends JFrame{
     public GUIMeta(String title){
         super(title);
         this.chooser = new JFileChooser();
+        this.chooseDir = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("OpenDocument Text", "odt");
         chooser.addChoosableFileFilter(filter);
         //Cote GAUCHE
@@ -104,6 +107,7 @@ public class GUIMeta extends JFrame{
         caseHD = new CaseHD();
         
         caseBD = new CaseBD();
+        caseBD.AddMouseListenerJTree(new DoubleClicArbre());
         
         JPanel droit = new JPanel();
         droit.setPreferredSize(new Dimension(450, 700));
@@ -142,6 +146,26 @@ public class GUIMeta extends JFrame{
         this.setVisible(true);
     }
     
+    public void OpenFile(File file){
+        if (opened) {
+            ZipEtUnzip.supprDossier(dossierTravail.toFile());
+        }
+        dossierTravail=Path.of(new String(new Random().ints(97, 122 + 1).limit(30).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString()));
+        try {
+            ZipEtUnzip.unzip(new FileInputStream(file), dossierTravail);
+            caseHG.loadMeta(dossierTravail);
+            opened = true;
+            if (ExtractPicture.getThumbnails(dossierTravail)!=null){
+                caseHD.replaceImg(new ImageIcon(ExtractPicture.getThumbnails(dossierTravail)));
+            }else{
+                caseHD.replaceImg(new ImageIcon(GUIMeta.toNoImgString));
+            }
+            modified=false;
+        } catch (Exception err) {
+            JOptionPane.showMessageDialog(null, err.getMessage(), "Erreur", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toAnnulerString));
+        }
+    }
+
     class ActionOuvrir implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -157,42 +181,13 @@ public class GUIMeta extends JFrame{
                 if (modified) {
                     int reponse = JOptionPane.showConfirmDialog(null, "Attention votre travail n'a pas été sauvegarder,\nOuvrir sans sauvegarder ?", "Ouvrir", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     if (reponse==JOptionPane.YES_OPTION){
-                        if (opened) {
-                            ZipEtUnzip.supprDossier(dossierTravail.toFile());
-                        }
-                        dossierTravail=Path.of(new String(new Random().ints(97, 122 + 1).limit(30).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString()));
-                        try {
-                            ZipEtUnzip.unzip(new FileInputStream(file), dossierTravail);
-                            caseHG.loadMeta(dossierTravail);
-                            opened = true;
-                            if (ExtractPicture.getThumbnails(dossierTravail)!=null){
-                                caseHD.replaceImg(new ImageIcon(ExtractPicture.getThumbnails(dossierTravail)));
-                            }else{
-                                caseHD.replaceImg(new ImageIcon(GUIMeta.toNoImgString));
-                            }
-                        } catch (Exception err) {
-                            JOptionPane.showMessageDialog(null, err.getMessage(), "Erreur", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toAnnulerString));
-                        }
+                        OpenFile(file);
                     }else{
                         new ActionSous().actionPerformed(null);
                     }
+                    
                 }else{
-                    if (opened) {
-                        ZipEtUnzip.supprDossier(dossierTravail.toFile());
-                    }
-                    dossierTravail=Path.of(new String(new Random().ints(97, 122 + 1).limit(30).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString()));
-                    try {
-                        ZipEtUnzip.unzip(new FileInputStream(file), dossierTravail);
-                        caseHG.loadMeta(dossierTravail);
-                        opened = true;
-                        if (ExtractPicture.getThumbnails(dossierTravail)!=null){
-                            caseHD.replaceImg(new ImageIcon(ExtractPicture.getThumbnails(dossierTravail)));
-                        }else{
-                            caseHD.replaceImg(new ImageIcon(GUIMeta.toNoImgString));
-                        }
-                    } catch (Exception err) {
-                        JOptionPane.showMessageDialog(null, err.getMessage(), "Erreur", JOptionPane.OK_OPTION, new ImageIcon(GUIMeta.toAnnulerString));
-                    }
+                    OpenFile(file);
                 }
             }
         }
@@ -307,7 +302,7 @@ public class GUIMeta extends JFrame{
     class ActionDossier implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            JFileChooser chooseDir=new JFileChooser();
+            chooseDir=new JFileChooser();
             chooseDir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int choix = chooseDir.showDialog(jMenuBar.getDossier(),"Ouvrir");
             if (choix==JFileChooser.APPROVE_OPTION){
@@ -341,4 +336,42 @@ public class GUIMeta extends JFrame{
             new ActionQuitter().actionPerformed(null);
         }
     }
+    
+    class DoubleClicArbre extends MouseAdapter {
+        public void mousePressed(MouseEvent e) {
+            int selRow = caseBD.getjTree().getRowForLocation(e.getX(), e.getY());
+            TreePath selPath = caseBD.getjTree().getPathForLocation(e.getX(), e.getY());
+            if(selRow != -1) {
+                if(e.getClickCount() == 2) {
+                    String file = selPath.getLastPathComponent().toString();
+                    if (chooseDir.getSelectedFile()!=null){
+                        for (int i = selPath.getPathCount();i>2;i--){
+                            selPath = selPath.getParentPath();
+                            file = selPath.getLastPathComponent().toString() +File.separator+file;
+                        }
+                        file= chooseDir.getSelectedFile().getParent()+File.separator+file;
+                        if (CaseBD.checkPathIsFile(file)){
+                            if (firstTime){
+                                caseBG.jbClearVisible(true);
+                                caseBG.jbModifierVisible(true);
+                                firstTime=false;
+                            }
+                            //TODO
+                            if (modified) {
+                                int reponse = JOptionPane.showConfirmDialog(null, "Attention votre travail n'a pas été sauvegarder,\nOuvrir sans sauvegarder ?", "Ouvrir", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                                if (reponse==JOptionPane.YES_OPTION){
+                                    OpenFile(new File(file));
+                                }else{
+                                    new ActionSous().actionPerformed(null);
+                                }
+                            }else{
+                                OpenFile(new File(file));
+                            }
+                        }
+                    }
+                }
+            }   
+        }
+    }
+    
 }

@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import java.awt.*;
+import java.awt.event.MouseListener;
 import java.io.File;
 /**
  * Cette classe permet de créer et gérer la case bas droit de notre GUI
@@ -88,5 +89,22 @@ public class CaseBD extends JPanel {
                 }
             }
         }
+    }
+
+    /**
+     * Retourne vrai si le chemin est un fichier
+     * @param path
+     * @return
+     */
+    public static boolean checkPathIsFile(String path){
+        return new File(path).isFile(); 
+    } 
+
+    //GETTER SETTER
+    public void AddMouseListenerJTree(MouseListener ml){
+        jTree.addMouseListener(ml);
+    }
+    public JTree getjTree() {
+        return jTree;
     }
 }
