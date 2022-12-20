@@ -14,7 +14,7 @@ public class CaseHD extends JPanel {
 
     public CaseHD() {
         super();
-        //TODO
+        //TODO Soucis avec le jar file
         imageLabel= new JLabel(new ImageIcon(GUIMeta.toNoImgString));
         imageLabel.setPreferredSize(new Dimension(400, 350));
         imageLabel.add(Box.createRigidArea(new Dimension(100, 0)));

@@ -71,6 +71,7 @@ public class CaseBG extends JPanel {
      * Initialise les icones de notre boutons
      */
     private void InitIcon() {
+        //TODO On aura un soucis avec le jar file.
         imgAnnuler = new ImageIcon(GUIMeta.toAnnulerString);
         imgModifier = new ImageIcon(GUIMeta.toModifierString);
         imgAppliquer = new ImageIcon(GUIMeta.toAppliquerString);

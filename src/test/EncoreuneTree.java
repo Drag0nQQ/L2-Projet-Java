@@ -41,7 +41,6 @@ public class EncoreuneTree extends JFrame{
     public void creatFeuille(DefaultMutableTreeNode noeud, File f){
         DefaultMutableTreeNode fil=new DefaultMutableTreeNode(f.getName());
         if (f.isFile()&&f.getName().endsWith(".odt")){
-            //TODO checker via mimeType
             noeud.add(fil);
         }
         if (f.isDirectory()) {

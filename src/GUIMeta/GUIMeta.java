@@ -17,15 +17,12 @@ import gestionfichier.*;
 public class GUIMeta extends JFrame{
     public static final String ImagePourLeProjetJava="/Users/Laurent/Documents/ImagePourLeProjetJava";
     public static Path dossierTravail = null;
-    public static final String splashscreen=ImagePourLeProjetJava+"/splashScreenB&W.gif";
     /**
-    * Code Hex pour la couleur utilisé
-    */
+     * Code Hex pour la couleur utilisé pour la couleur du background.
+     */
     public static final String mainColor="#3e4e81";
-    public static final String secondaryColor="#576db4";
-    public static final String tertiaryColor="#7997fa";
     /**
-    * Code Hex pour la couleur utilisé
+     * Code Hex pour la couleur utilisé pour la couleur de la font.
     */
     public static final String fontColor="#ffffff";
     /**
@@ -33,15 +30,15 @@ public class GUIMeta extends JFrame{
     */
     public static final String toNoImgString=ImagePourLeProjetJava+"/noImg.png";
     /**
-    * Chemin en String de l'icone 
-    */
+     * Chemin en String de l'icone 
+     */
     public static final String toAnnulerString=ImagePourLeProjetJava+"/signal.png";
     /**
-    * Chemin en String de l'icone 
+     * Chemin en String de l'icone 
     */
     public static final String toModifierString=ImagePourLeProjetJava+"/edit.png";
     /**
-    * Chemin en String de l'icone 
+     * Chemin en String de l'icone 
     */
     public static final String toAppliquerString=ImagePourLeProjetJava+"/checked.png";
     /**
@@ -49,15 +46,16 @@ public class GUIMeta extends JFrame{
     */
     public static final String toClearString=ImagePourLeProjetJava+"/rubber.png";
     /**
-    * Chemin en String de l'icone 
-    */
+     * Chemin en String de l'icone 
+     */
     public static final String toCrayonString=ImagePourLeProjetJava+"/crayon.png";
     /**
-    * Chemin en String de l'icone 
-    */
+     * Chemin en String de l'icone 
+     */
     public static final String toExitString=ImagePourLeProjetJava+"/sortie.png";
     
     private static final String logoString=ImagePourLeProjetJava+"/logo.png";
+    public static final String splashscreen=ImagePourLeProjetJava+"/splashScreenB&W.gif";
     
     private CaseHG caseHG;
     private CaseHD caseHD;
@@ -77,10 +75,12 @@ public class GUIMeta extends JFrame{
     
     public GUIMeta(String title){
         super(title);
+        //Initialisation
         this.chooser = new JFileChooser();
         this.chooseDir = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("OpenDocument Text", "odt");
         chooser.addChoosableFileFilter(filter);
+
         //Cote GAUCHE
         caseHG = new CaseHG();
         
@@ -114,12 +114,16 @@ public class GUIMeta extends JFrame{
         droit.add(caseHD);
         droit.add(caseBD);
         //POUR EXPORTER LES IMAGES EN JAR 
+        /*
         try{
             ImageIcon tmp = new ImageIcon(getClass().getResource("/ImagePourLeProjetJava/edit.png"));
             caseHD.replaceImg(tmp);
         }catch(Exception e){
             
         }
+        */
+
+        //MenuBar
         jMenuBar = new CustomMenuBar();
         jMenuBar.AddActListenerQuitter(new ActionQuitter());
         jMenuBar.AddActListenerOuvrir(new ActionOuvrir());
@@ -132,10 +136,12 @@ public class GUIMeta extends JFrame{
         tout.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         tout.add(gauche);
         tout.add(droit);
-        
+
+        //Main panel
         Container main = super.getContentPane();
         main.add(tout);
         
+        //Misc
         this.setResizable(false);
         this.setLocation(100, 25);
         this.pack();
@@ -176,7 +182,6 @@ public class GUIMeta extends JFrame{
                     caseBG.jbModifierVisible(true);
                     firstTime=false;
                 }
-                //TODO
                 if (modified) {
                     int reponse = JOptionPane.showConfirmDialog(null, "Attention votre travail n'a pas été sauvegarder,\nOuvrir sans sauvegarder ?", "Ouvrir", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     if (reponse==JOptionPane.YES_OPTION){
@@ -184,7 +189,6 @@ public class GUIMeta extends JFrame{
                     }else{
                         new ActionSous().actionPerformed(null);
                     }
-                    
                 }else{
                     OpenFile(file);
                 }
@@ -349,13 +353,13 @@ public class GUIMeta extends JFrame{
                             file = selPath.getLastPathComponent().toString() +File.separator+file;
                         }
                         file= chooseDir.getSelectedFile().getParent()+File.separator+file;
+                        System.out.println(file);
                         if (CaseBD.checkPathIsFile(file)){
                             if (firstTime){
                                 caseBG.jbClearVisible(true);
                                 caseBG.jbModifierVisible(true);
                                 firstTime=false;
                             }
-                            //TODO
                             if (modified) {
                                 int reponse = JOptionPane.showConfirmDialog(null, "Attention votre travail n'a pas été sauvegarder,\nOuvrir sans sauvegarder ?", "Ouvrir", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                                 if (reponse==JOptionPane.YES_OPTION){

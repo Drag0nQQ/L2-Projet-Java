@@ -6,6 +6,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.nio.file.Files;
 /**
  * Cette classe permet de créer et gérer la case bas droit de notre GUI
  */
@@ -37,8 +38,6 @@ public class CaseBD extends JPanel {
         
         //JTree
         noeud = new DefaultMutableTreeNode("Mon Dossier Sélectionné");
-        //TODO devra commencer a vide
-        // creatFeuille(noeud, new File(GUIMeta.dossierJtreeTest));
         jTree = new JTree(noeud);
         jTree.setBackground(Color.decode("#ffffff"));
         panelJTree = new JScrollPane(jTree);
@@ -63,7 +62,7 @@ public class CaseBD extends JPanel {
     * <p>Ajoute à l'arborescence les fichiers en .odt ou dossiers contenant un .odt</p>
     * <p>Fonctionnement :<ul><li>si File est un .odt on l'ajoute au noeud</li> 
     *  <li>si File est un dossier alors on appelle à nouveau creatFeuille </li>
-    *  <li>si le DTM de File est une feuille alors on a forcément un .odt
+    *  <li>si le DMT de File est une feuille alors on a forcément un .odt
     *  sinon ca veut dire qui a un fils qui contient un .odt</li></ul></p>
     * @param noeud DefaultMutableTreeNode
     * @param f File
@@ -71,8 +70,11 @@ public class CaseBD extends JPanel {
     public void creatFeuille(DefaultMutableTreeNode noeud, File f){
         DefaultMutableTreeNode fil=new DefaultMutableTreeNode(f.getName());
         if (f.isFile()&&f.getName().endsWith(".odt")){
-            //TODO checker via mimeType
-            noeud.add(fil);
+            try {
+                if (Files.probeContentType(f.toPath()).contains("vnd.oasis.opendocument.text")){
+                    noeud.add(fil);
+                }
+            } catch (Exception e) {}
         }
         if (f.isDirectory()) {
             File[] liste=f.listFiles();

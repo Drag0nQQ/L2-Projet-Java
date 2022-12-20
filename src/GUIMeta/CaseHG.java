@@ -89,14 +89,14 @@ public class CaseHG extends JPanel {
     
     public void formatTextField(){
         //TAILLE
-        titre = new JTextField(40);
-        auteur = new JTextField(20);
-        sujet = new JTextField(40);
+        titre = new JTextField(50);
+        auteur = new JTextField(50);
+        sujet = new JTextField(50);
         keyword = new JTextField(50);
         date = new JTextField(20);
-        nbMots = new JTextField(5);
-        nbCaracteres = new JTextField(5);
-        nbPages = new JTextField(5);
+        nbMots = new JTextField(30);
+        nbCaracteres = new JTextField(30);
+        nbPages = new JTextField(30);
         images = new JTextArea(6,60);
         lienHypertxt = new JTextArea(6,70);
         
@@ -165,7 +165,6 @@ public class CaseHG extends JPanel {
         jlTitre.setFont(new Font("Arial", Font.BOLD, 18));
         jpTitre.add(jlTitre);
         jpTitre.add(titre);
-        //TODO
         titre.setText("");
         titre.setFont(new Font("Arial", Font.PLAIN, 18));
         jpTitre.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -179,7 +178,6 @@ public class CaseHG extends JPanel {
         jlAuteur.setFont(new Font("Arial", Font.BOLD, 18));
         jpAuteur.add(jlAuteur);
         jpAuteur.add(auteur);
-        //TODO 
         auteur.setText("");
         auteur.setFont(new Font("Arial", Font.PLAIN, 18));
         jpAuteur.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -193,7 +191,6 @@ public class CaseHG extends JPanel {
         jlSujet.setFont(new Font("Arial", Font.BOLD, 18));
         jpSujet.add(jlSujet);
         jpSujet.add(sujet);
-        //TODO
         sujet.setText("");
         sujet.setFont(new Font("Arial", Font.PLAIN, 18));
         jpSujet.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -202,7 +199,6 @@ public class CaseHG extends JPanel {
     
     public void InitPanelKeyword(){
         jpKeyword=new JPanel();
-        //TODO
         keyword.setPreferredSize(new Dimension(75, 25));
         jlKeyword.setForeground(Color.decode(GUIMeta.fontColor));
         jlKeyword.setFont(new Font("Arial", Font.BOLD, 18));
@@ -221,7 +217,6 @@ public class CaseHG extends JPanel {
         jlDate.setFont(new Font("Arial", Font.BOLD, 18));
         jpDate.add(jlDate);
         jpDate.add(date);
-        //TODO
         date.setText("");
         date.setFont(new Font("Arial", Font.PLAIN, 18));
         jpDate.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -235,7 +230,6 @@ public class CaseHG extends JPanel {
         jlNbCaracteres.setFont(new Font("Arial", Font.BOLD, 18));
         jpCaracteres.add(jlNbCaracteres);
         jpCaracteres.add(nbCaracteres);
-        //TODO
         nbCaracteres.setText("");
         nbCaracteres.setFont(new Font("Arial", Font.PLAIN, 18));
         jpCaracteres.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -249,7 +243,6 @@ public class CaseHG extends JPanel {
         jlNbMots.setFont(new Font("Arial", Font.BOLD, 18));
         jpMots.add(jlNbMots);
         jpMots.add(nbMots);
-        //TODO
         nbMots.setText("");
         nbMots.setFont(new Font("Arial", Font.PLAIN, 18));
         jpMots.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -263,7 +256,6 @@ public class CaseHG extends JPanel {
         jlNbPages.setFont(new Font("Arial", Font.BOLD, 18));
         jpPages.add(jlNbPages);
         jpPages.add(nbPages);
-        //TODO
         nbPages.setText("");
         nbPages.setFont(new Font("Arial", Font.PLAIN, 18));
         jpPages.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -278,7 +270,6 @@ public class CaseHG extends JPanel {
         jpImages.add(jlImages);
         jpImages.add(images);
         images.setLineWrap(true);
-        //TODO et en dessous aussi
         images.setText("");
         images.setFont(new Font("Arial", Font.PLAIN, 12));
         jpImages.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -292,7 +283,6 @@ public class CaseHG extends JPanel {
         jpLienHypTxt.add(jlLienHypTxt);
         jpLienHypTxt.add(lienHypertxt);
         lienHypertxt.setLineWrap(true);
-        //TODO
         lienHypertxt.append("");
         lienHypertxt.setFont(new Font("Arial", Font.PLAIN, 12));
         jpLienHypTxt.setLayout(new FlowLayout(FlowLayout.LEFT));
