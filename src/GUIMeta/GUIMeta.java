@@ -15,7 +15,7 @@ import extraction.*;
 import gestionfichier.*;
 
 public class GUIMeta extends JFrame{
-    public static final String ImagePourLeProjetJava="/Users/Laurent/Documents/ImagePourLeProjetJava";
+    public static final String ImagePourLeProjetJava="/Users/axel/Documents/ImagePourLeProjetJava";
     public static Path dossierTravail = null;
     /**
      * Code Hex pour la couleur utilisé pour la couleur du background.
