@@ -17,12 +17,21 @@ import org.xml.sax.SAXException;
 
 
 /**
-* Cette classe permet de manipuler spécifiquement le fichier meta.xml.
-* @author Laurent LIN
-* @author Axel OLIVEIRA
+ * Cette classe permet de manipuler spécifiquement le fichier meta.xml.
+ * @author Laurent LIN
+ * @author Axel OLIVEIRA
 */
 public class ExtractMeta{
     //Attributes
+    public static final String AUTHOR_NODE="meta:initial-creator";
+    public static final String SUBJECT_NODE="dc:subject";
+    public static final String TITLE_NODE="dc:title";
+    public static final String DATE_NODE="meta:creation-date";
+    public static final String STATISTIC_NODE="meta:document-statistic";
+    
+    public static final String PAGE_ATTRIBUTE="meta:page-count";
+    public static final String WORD_ATTRIBUTE="meta:word-count";
+    public static final String CHARACTER_ATTRIBUTE="meta:character-count";
     //Constructors  
     //Methods 
     /**
@@ -83,14 +92,14 @@ public class ExtractMeta{
     }
     
     /**
-     * Modifie le titre du meta.xml dans le dossier temporaire
-     * on cherche la node "dc:title" s'il n'existe pas, on crée
-     *  ce node et on le pose avant le "dc:generator" pour garder
-     *  l'ordre d'apparition.
-     * @param mainDirectory chemin vers le dossier temporaire
-     * @param texte remplace le texte actuel par ce {@code texte}
-     * @see {@link #setSubject(Path, String)} pour modifier le sujet.
-     */
+    * Modifie le titre du meta.xml dans le dossier temporaire
+    * on cherche la node "dc:title" s'il n'existe pas, on crée
+    *  ce node et on le pose avant le "dc:generator" pour garder
+    *  l'ordre d'apparition.
+    * @param mainDirectory chemin vers le dossier temporaire
+    * @param texte remplace le texte actuel par ce {@code texte}
+    * @see {@link #setSubject(Path, String)} pour modifier le sujet.
+    */
     public static void setTitle(Path mainDirectory,String texte){
         String toMetaFile= mainDirectory.toString()+File.separator+"meta.xml";
         File metaFile= new File(toMetaFile);
@@ -129,11 +138,11 @@ public class ExtractMeta{
     }
     
     /**
-     * Permet de changer le sujet du fichier meta.xml, créer le noeud &#60;dc:subject> après le tag "dc:generator" s'il n'existe pas.
-     * @param mainDirectory chemin vers le dossier temporaire du .odt
-     * @param texte texte à mettre à la place de l'ancien texte
-     * @see {@link #setTitle(Path, String)} pour changer le titre.
-     */
+    * Permet de changer le sujet du fichier meta.xml, créer le noeud &#60;dc:subject> après le tag "dc:generator" s'il n'existe pas.
+    * @param mainDirectory chemin vers le dossier temporaire du .odt
+    * @param texte texte à mettre à la place de l'ancien texte
+    * @see {@link #setTitle(Path, String)} pour changer le titre.
+    */
     public static void setSubject(Path mainDirectory,String texte){
         String toMetaFile= mainDirectory.toString()+File.separator+"meta.xml";
         File metaFile= new File(toMetaFile);
@@ -177,167 +186,107 @@ public class ExtractMeta{
         }
     }
     
+    private static String getInfo(Path mainDirectory,String nodeName){
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
+            NodeList offDoc= doc.getElementsByTagName(nodeName);
+            if (offDoc.getLength()>0){
+                return offDoc.item(0).getTextContent();
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return null;
+    }
+
+    private static String getAttributeInfo(Path mainDirectory, String nodeName, String attributeName){
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
+            NodeList offDoc= doc.getElementsByTagName(nodeName);
+            if (offDoc.getLength()>0){
+                return offDoc.item(0).getAttributes().getNamedItem(attributeName).getTextContent();
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return null;   
+    }
+    
     //Getter Setter
     /**
-     * Récupère le nombre de mots du fichier meta.xml.
-     * @param mainDirectory chemin vers le dossier temporaire.
-     * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} du nombre de mots.</li>
-     */
+    * Récupère le nombre de mots du fichier meta.xml.
+    * @param mainDirectory chemin vers le dossier temporaire.
+    * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} du nombre de mots.</li>
+    */
     public static String getnbMots(Path mainDirectory) {
-        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = null;
-        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
-        try {
-            builder= builderFactory.newDocumentBuilder();
-            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
-            NodeList offDoc= doc.getElementsByTagName("meta:document-statistic");
-            if (offDoc.getLength()>0){
-                return offDoc.item(0).getAttributes().getNamedItem("meta:word-count").getTextContent();
-            }
-        }catch (Exception e){
-            return null;
-        }
-        return null;
-        
+        return getAttributeInfo(mainDirectory, STATISTIC_NODE, WORD_ATTRIBUTE);
     }
     /**
-     * Récupère le nombre de caractères du fichier meta.xml.
-     * @param mainDirectory chemin vers le dossier temporaire.
-     * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} du nombre de caractères.</li>
-     */
+    * Récupère le nombre de caractères du fichier meta.xml.
+    * @param mainDirectory chemin vers le dossier temporaire.
+    * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} du nombre de caractères.</li>
+    */
     
     public static String getnbCaracteres(Path mainDirectory){
-        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = null;
-        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
-        try {
-            builder= builderFactory.newDocumentBuilder();
-            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
-            NodeList offDoc= doc.getElementsByTagName("meta:document-statistic");
-            if (offDoc.getLength()>0){
-                return offDoc.item(0).getAttributes().getNamedItem("meta:character-count").getTextContent();
-            }
-        }catch (Exception e){
-            return null;
-        }
-        return null;
-        
+        return getAttributeInfo(mainDirectory, STATISTIC_NODE, CHARACTER_ATTRIBUTE);
     }
-
+    
     /**
-     * Récupère le nombre de pages du fichier meta.xml.
-     * @param mainDirectory chemin vers le dossier temporaire.
-     * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} du nombre de pages.</li>
-     */
+    * Récupère le nombre de pages du fichier meta.xml.
+    * @param mainDirectory chemin vers le dossier temporaire.
+    * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} du nombre de pages.</li>
+    */
     public static String getnbPages(Path mainDirectory){
-        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = null;
-        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
-        try {
-            builder= builderFactory.newDocumentBuilder();
-            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
-            NodeList offDoc= doc.getElementsByTagName("meta:document-statistic");
-            if (offDoc.getLength()>0){
-                return offDoc.item(0).getAttributes().getNamedItem("meta:page-count").getTextContent();
-            }
-        }catch (Exception e){
-            return null;
-        }
-        return null;
-        
+        return getAttributeInfo(mainDirectory, STATISTIC_NODE, PAGE_ATTRIBUTE);
     }
     /**
-     * Récupère le titre du fichier meta.xml.
-     * @param mainDirectory chemin vers le dossier temporaire.
-     * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} du titre.</li>
-     */
+    * Récupère le titre du fichier meta.xml.
+    * @param mainDirectory chemin vers le dossier temporaire.
+    * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} du titre.</li>
+    */
     public static String getTitle(Path mainDirectory){
-        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = null;
-        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
-        try {
-            builder= builderFactory.newDocumentBuilder();
-            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
-            NodeList offDoc= doc.getElementsByTagName("dc:title");
-            if (offDoc.getLength()>0){
-                return offDoc.item(0).getTextContent();
-            }
-        }catch (Exception e){
-            return null;
-        }
-        return null;
+        return getInfo(mainDirectory, TITLE_NODE);
     }
     /**
-     * Récupère le sujet du fichier meta.xml.
-     * @param mainDirectory chemin vers le dossier temporaire.
-     * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} du sujet.</li>
-     */
+    * Récupère le sujet du fichier meta.xml.
+    * @param mainDirectory chemin vers le dossier temporaire.
+    * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} du sujet.</li>
+    */
     public static String getSubject(Path mainDirectory){
-        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = null;
-        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
-        try {
-            builder= builderFactory.newDocumentBuilder();
-            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
-            NodeList offDoc= doc.getElementsByTagName("dc:subject");
-            if (offDoc.getLength()>0){
-                return offDoc.item(0).getTextContent();
-            }
-        }catch (Exception e){
-            return null;
-        }
-        return null;
+        return getInfo(mainDirectory, SUBJECT_NODE);
     }
-
+    
     /**
-     * Récupère la date de création du fichier meta.xml.
-     * @param mainDirectory chemin vers le dossier temporaire.
-     * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} de la date de création.</li>
-     */
+    * Récupère la date de création du fichier meta.xml.
+    * @param mainDirectory chemin vers le dossier temporaire.
+    * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} de la date de création.</li>
+    */
     public static String getCreation_date(Path mainDirectory){
-        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = null;
-        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
-        try {
-            builder= builderFactory.newDocumentBuilder();
-            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
-            NodeList offDoc= doc.getElementsByTagName("meta:creation-date");
-            if (offDoc.getLength()>0){
-                return offDoc.item(0).getTextContent();
-            }
-        }catch (Exception e){
-            return null;
-        }
-        return null;
+        return getInfo(mainDirectory, DATE_NODE);
     }
-
+    
     /**
-     * Récupère l'auteur du fichier meta.xml.
-     * @param mainDirectory chemin vers le dossier temporaire.
-     * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} du nombre de mots.</li>
-     */
+    * Récupère l'auteur du fichier meta.xml.
+    * @param mainDirectory chemin vers le dossier temporaire.
+    * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code String} du nombre de mots.</li>
+    */
     public static String getAuthor(Path mainDirectory){
-        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = null;
-        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
-        try {
-            builder= builderFactory.newDocumentBuilder();
-            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
-            NodeList offDoc= doc.getElementsByTagName("meta:initial-creator");
-            if (offDoc.getLength()>0){
-                return offDoc.item(0).getTextContent();
-            }
-        }catch (Exception e){
-            return null;
-        }
-        return null;
+        return getInfo(mainDirectory, AUTHOR_NODE);
     }
-
+    
     /**
-     * Récupère les mots clés du fichier meta.xml.
-     * @param mainDirectory chemin vers le dossier temporaire.
-     * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code ArrayList} des mots clés.</li>
-     */
+    * Récupère les mots clés du fichier meta.xml.
+    * @param mainDirectory chemin vers le dossier temporaire.
+    * @return {@code null} si on a pas trouvé ce tag ou bien il n'existe pas.<li> {@code ArrayList} des mots clés.</li>
+    */
     public static ArrayList<String> getKeywords(Path mainDirectory){
         DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
@@ -358,27 +307,4 @@ public class ExtractMeta{
         }
         return null;
     }
-    //TODO Pour éviter la redondance de code on peut créer cette méthode suivante avec ces constantes
-    /*
-    public static final String AUTHOR="meta:initial-creator"
-    public static final String SUBJECT="dc:subject"
-    public static final String TITLE="dc:title"
-    public static final String =""
-    public static String getInfo(Path mainDirectory,String nodeName){
-        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = null;
-        String toMetaFile=mainDirectory.toString()+File.separator+"meta.xml";
-        try {
-            builder= builderFactory.newDocumentBuilder();
-            Document doc = builder.parse(new FileInputStream(new File(toMetaFile)));
-            NodeList offDoc= doc.getElementsByTagName("nodeName");
-            if (offDoc.getLength()>0){
-                return offDoc.item(0).getTextContent();
-            }
-        }catch (Exception e){
-            return null;
-        }
-        return null;
-    }
-     */
 }
