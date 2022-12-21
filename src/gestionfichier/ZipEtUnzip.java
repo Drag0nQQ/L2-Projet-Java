@@ -39,7 +39,7 @@ public class ZipEtUnzip {
     }
     /**
     * <p>Supprime le dossier (et sous dossier + fichier) passé en paramètre.</p>
-    * <i>Méthode récursive</i> 
+    * <i>Méthode récursive</i>
     * @param dossierAsupprimer fichier (au sens brut) à supprimer
     * @return
     * True si tout s'est bien passé.
@@ -64,6 +64,7 @@ public class ZipEtUnzip {
     public static void zip(String basePath, File dir, ZipOutputStream zout) throws IOException {
         byte[] buffer = new byte[1024];
         File[] files = dir.listFiles();
+        assert files != null;
         for (File file : files) {
             if (file.isDirectory()) {
                 String path = basePath + file.getName() + "/";

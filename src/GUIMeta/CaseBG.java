@@ -1,8 +1,11 @@
 package GUIMeta;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import javax.swing.*;
 
 /**
@@ -76,10 +79,10 @@ public class CaseBG extends JPanel {
      */
     private void InitIcon() {
         //TODO On aura un soucis avec le jar file.
-        imgAnnuler = new ImageIcon(GUIMeta.toAnnulerString);
-        imgModifier = new ImageIcon(GUIMeta.toModifierString);
-        imgAppliquer = new ImageIcon(GUIMeta.toAppliquerString);
-        imgClear = new ImageIcon(GUIMeta.toClearString);
+        imgAnnuler = getImgFromResource(GUIMeta.toAnnulerString);
+        imgModifier = getImgFromResource(GUIMeta.toModifierString);
+        imgAppliquer = getImgFromResource(GUIMeta.toAppliquerString);
+        imgClear = getImgFromResource(GUIMeta.toClearString);
     }
     
     private void InitAnnuler(){
@@ -174,4 +177,13 @@ public class CaseBG extends JPanel {
      * @param b
      */
     public void jbClearVisible(boolean b){ jbClear.setVisible(b);}
+    private ImageIcon getImgFromResource(String path){
+        URL odtLien = this.getClass().getResource(path);
+        try {
+            assert odtLien != null;
+            BufferedImage icon = ImageIO.read(odtLien);
+            return new ImageIcon(icon);
+        } catch (Exception e){}
+        return null;
+    }
 }

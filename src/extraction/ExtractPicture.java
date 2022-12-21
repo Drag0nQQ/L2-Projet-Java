@@ -31,7 +31,7 @@ public class ExtractPicture {
                 }
             }
             if (picListBis!=null){
-                System.out.println("Nombre d'images: "+picList.length);
+                System.out.println("Nombre d'images: "+picListBis.length);
                 for (File file : picListBis) {
                     System.out.println("Nom: "+file.getName().substring(0,file.getName().lastIndexOf("."))+"\t\tTaille:"+file.length()/1024+"kB"+"\tExt: "+file.getName().substring(file.getName().lastIndexOf(".")+1));
                 }

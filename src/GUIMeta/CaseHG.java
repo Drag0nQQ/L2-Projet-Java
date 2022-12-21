@@ -7,6 +7,7 @@ import extraction.ExtractMeta;
 import extraction.ExtractPicture;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -65,7 +66,9 @@ public class CaseHG extends JPanel {
         }
         
         setKeywordField(kw.toString());
-        setDateField(ExtractMeta.getCreation_date(mainDirectory));
+
+        String date = ExtractMeta.getCreation_date(mainDirectory).substring(0, 10);
+        setDateField(date);
         setnbMotsField(ExtractMeta.getnbMots(mainDirectory));
         setnbPagesField(ExtractMeta.getnbPages(mainDirectory));
         setNbCaracteresField(ExtractMeta.getnbCaracteres(mainDirectory));
@@ -93,7 +96,7 @@ public class CaseHG extends JPanel {
     /**
      * Donne le format des JTextField et JTextArea de la case, avec entre autre la taille, leurs couleurs.
      */
-    public void formatTextField(){
+    private void formatTextField(){
         //TAILLE
         titre = new JTextField(50);
         auteur = new JTextField(50);
@@ -154,12 +157,12 @@ public class CaseHG extends JPanel {
     /**
      * Donne le format (sous forme HTML) des JLabels de la case.
      */
-    public void formatLabel(){
+    private void formatLabel(){
         jlTitre = new JLabel("<HTML><U>Titre:</U></HTML>");
         jlAuteur = new JLabel("<HTML><U>Auteur:</U></HTML>");
         jlSujet = new JLabel("<HTML><U>Sujet:</U></HTML>");
         jlKeyword = new JLabel("<HTML><U>Mots clés:</U></HTML>");
-        jlDate = new JLabel("<HTML><U>Date:</U></HTML>");
+        jlDate = new JLabel("<HTML><U>Date de création:</U></HTML>");
         jlNbMots = new JLabel("<HTML><U>Nombre de mots:</U></HTML>");
         jlNbCaracteres = new JLabel("<HTML><U>Nombre de caractères:</U></HTML>");
         jlNbPages = new JLabel("<HTML><U>Nombre de pages:</U></HTML>");
@@ -167,7 +170,7 @@ public class CaseHG extends JPanel {
         jlLienHypTxt = new JLabel("<HTML><U>Lien(s) hypertexte:</U></HTML>");
     }
 
-    public void InitPanelTitre(){
+    private void InitPanelTitre(){
         jpTitre=new JPanel();
         titre.setPreferredSize(new Dimension(75, 25));
         jlTitre.setForeground(Color.decode(GUIMeta.fontColor));
@@ -179,8 +182,8 @@ public class CaseHG extends JPanel {
         jpTitre.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpTitre.setBackground(Color.decode(GUIMeta.mainColor));
     }
-    
-    public void InitPanelAuteur(){
+
+    private void InitPanelAuteur(){
         jpAuteur=new JPanel();
         auteur.setPreferredSize(new Dimension(75, 25));
         jlAuteur.setForeground(Color.decode(GUIMeta.fontColor));
@@ -193,7 +196,7 @@ public class CaseHG extends JPanel {
         jpAuteur.setBackground(Color.decode(GUIMeta.mainColor));
         
     }
-    public void InitPanelSujet(){
+    private void InitPanelSujet(){
         jpSujet=new JPanel();
         sujet.setPreferredSize(new Dimension(75, 25));
         jlSujet.setForeground(Color.decode(GUIMeta.fontColor));
@@ -205,8 +208,8 @@ public class CaseHG extends JPanel {
         jpSujet.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpSujet.setBackground(Color.decode(GUIMeta.mainColor));
     }
-    
-    public void InitPanelKeyword(){
+
+    private void InitPanelKeyword(){
         jpKeyword=new JPanel();
         keyword.setPreferredSize(new Dimension(75, 25));
         jlKeyword.setForeground(Color.decode(GUIMeta.fontColor));
@@ -218,8 +221,8 @@ public class CaseHG extends JPanel {
         jpKeyword.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpKeyword.setBackground(Color.decode(GUIMeta.mainColor));
     }
-    
-    public void InitPanelDate(){
+
+    private void InitPanelDate(){
         jpDate=new JPanel();
         date.setPreferredSize(new Dimension(75, 25));
         jlDate.setForeground(Color.decode(GUIMeta.fontColor));
@@ -231,8 +234,8 @@ public class CaseHG extends JPanel {
         jpDate.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpDate.setBackground(Color.decode(GUIMeta.mainColor));
     }
-    
-    public void InitPanelCaracteres(){
+
+    private void InitPanelCaracteres(){
         jpCaracteres=new JPanel();
         nbCaracteres.setPreferredSize(new Dimension(75, 25));
         jlNbCaracteres.setForeground(Color.decode(GUIMeta.fontColor));
@@ -244,8 +247,8 @@ public class CaseHG extends JPanel {
         jpCaracteres.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpCaracteres.setBackground(Color.decode(GUIMeta.mainColor));
     }
-    
-    public void InitPanelMots(){
+
+    private void InitPanelMots(){
         jpMots=new JPanel();
         nbMots.setPreferredSize(new Dimension(75, 25));
         jlNbMots.setForeground(Color.decode(GUIMeta.fontColor));
@@ -257,8 +260,8 @@ public class CaseHG extends JPanel {
         jpMots.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpMots.setBackground(Color.decode(GUIMeta.mainColor));
     }
-    
-    public void InitPanelPages(){
+
+    private void InitPanelPages(){
         jpPages=new JPanel();
         nbPages.setPreferredSize(new Dimension(75, 25));
         jlNbPages.setForeground(Color.decode(GUIMeta.fontColor));
@@ -270,8 +273,8 @@ public class CaseHG extends JPanel {
         jpPages.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpPages.setBackground(Color.decode(GUIMeta.mainColor));
     }
-    
-    public void InitPanelImages(){
+
+    private void InitPanelImages(){
         jpImages=new JPanel();
         images.setPreferredSize(new Dimension(400, 60));
         jlImages.setForeground(Color.decode(GUIMeta.fontColor));
@@ -284,8 +287,8 @@ public class CaseHG extends JPanel {
         jpImages.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpImages.setBackground(Color.decode(GUIMeta.mainColor));
     }
-    
-    public void InitPanelLienHypTxt() {
+
+    private void InitPanelLienHypTxt() {
         jpLienHypTxt=new JPanel();
         jlLienHypTxt.setForeground(Color.decode(GUIMeta.fontColor));
         jlLienHypTxt.setFont(new Font("Arial", Font.BOLD, 18));
@@ -318,30 +321,6 @@ public class CaseHG extends JPanel {
     }
     public String getSujetField(){
         return sujet.getText();    
-    }
-    public String getAuteurField(){
-        return auteur.getText();    
-    }
-    public String getDateField(){
-        return date.getText();    
-    }
-    public String getKeywordField(){
-        return keyword.getText();    
-    }
-    public String getNbCaracteresField(){
-        return nbCaracteres.getText();    
-    }
-    public String getnbMotsField(){
-        return nbMots.getText();    
-    }
-    public String getnbPagesField(){
-        return nbPages.getText();    
-    }
-    public String getLienField(){
-        return lienHypertxt.getText();
-    }
-    public String getImageField(){
-        return images.getText();
     }
     
     public void setTitreField(String txt){
@@ -381,4 +360,8 @@ public class CaseHG extends JPanel {
     public void sujetEditable(boolean b) {
         sujet.setEditable(b);
     }
+
+    public void setBorderTitre(Border borderTitre){ titre.setBorder(borderTitre);}
+    public void setBorderSujet(Border borderSujet){ sujet.setBorder(borderSujet);}
+
 }

@@ -85,8 +85,8 @@ public class ExtractContent {
                 if (arrayLink.size()>0) {
                     return arrayLink;
                 }    
-            } catch (SAXException | IOException e) {}
-        }catch (Exception e){}
+            } catch (SAXException | IOException ignored) {}
+        }catch (Exception ignored){}
         return null;
     }
 }

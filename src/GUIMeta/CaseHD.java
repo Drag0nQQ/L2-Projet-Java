@@ -2,6 +2,9 @@ package GUIMeta;
 
 import java.awt.Dimension;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
@@ -15,7 +18,7 @@ public class CaseHD extends JPanel {
     public CaseHD() {
         super();
         //TODO Soucis avec le jar file
-        imageLabel= new JLabel(new ImageIcon(GUIMeta.toNoImgString));
+        imageLabel= new JLabel(getImgFromResource(GUIMeta.toNoImgString));
         imageLabel.setPreferredSize(new Dimension(400, 350));
         imageLabel.add(Box.createRigidArea(new Dimension(100, 0)));
         add(imageLabel);
@@ -30,5 +33,14 @@ public class CaseHD extends JPanel {
         imageLabel.setIcon(imgIcon);
         imageLabel.validate();
         imageLabel.repaint();
+    }
+    private ImageIcon getImgFromResource(String path){
+        URL odtLien = this.getClass().getResource(path);
+        try {
+            assert odtLien != null;
+            BufferedImage icon = ImageIO.read(odtLien);
+            return new ImageIcon(icon);
+        } catch (Exception e){}
+        return null;
     }
 }

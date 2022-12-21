@@ -62,7 +62,7 @@ public class FileAnalyze {
         if (args.length==0){
             return HELP_OPTION;
         }
-        if (args.length%2==0 && args.length/2<=3 && args.length>1){
+        if (args.length % 2 == 0 && args.length / 2 <= 3){
             switch (args[0]) {
                 case "-f":
                 return FILE_OPTION;
@@ -97,7 +97,7 @@ public class FileAnalyze {
     */
     public static int checkModifier(String[] args)throws Exception{
         if (args.length%2==0 && args.length/2<=3 && args.length>1){
-            if (args.length>4) {
+            if (args.length >= 4) {
                 if ((args[2].equalsIgnoreCase("--subject")&&args[4].equalsIgnoreCase("--title"))||args[4].equalsIgnoreCase("--subject")&&args[2].equalsIgnoreCase("--title")) {
                     return SUBJECT_AND_TITLE_OPTION;
                 }

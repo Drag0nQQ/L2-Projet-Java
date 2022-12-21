@@ -71,23 +71,12 @@ public class MdfyList extends JDialog {
                 }
             }
             ois.close();
-        } catch (FileNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } 
     }
     
     public void AddElement(String s){
         dlm.addElement(s);
-    }
-    
-    public void testList(){
-        for (int i = 0; i < 30; i++) {
-            AddElement(new String("Test de fou "+i));
-        }
     }
 }
