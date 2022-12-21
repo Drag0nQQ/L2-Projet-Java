@@ -10,7 +10,6 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.util.Random;
 import java.util.zip.ZipOutputStream;
@@ -20,8 +19,7 @@ import gestionfichier.*;
 
 public class GUIMeta extends JFrame{
     //TODO dat shit dont work
-    public static String ImagePourLeProjetJava="";
-    public static final String LastSaved=ImagePourLeProjetJava+"data.ser";
+    public static final String LastSaved="data.ser";
     public static final String img="/img";
     public static Path dossierTravail = null;
     /**
@@ -35,37 +33,37 @@ public class GUIMeta extends JFrame{
     /**
     * Chemin en String de l'icone 
     */
-    public static final String toNoImgString=ImagePourLeProjetJava+img+"/noImg.png";
+    public static final String toNoImgString=img+"/noImg.png";
     /**
      * Chemin en String de l'icone 
      */
-    public static final String toAnnulerString=ImagePourLeProjetJava+img+"/signal.png";
+    public static final String toAnnulerString=img+"/signal.png";
     /**
      * Chemin en String de l'icone 
     */
-    public static final String toModifierString=ImagePourLeProjetJava+img+"/edit.png";
+    public static final String toModifierString=img+"/edit.png";
     /**
      * Chemin en String de l'icone 
     */
-    public static final String toAppliquerString=ImagePourLeProjetJava+img+"/checked.png";
+    public static final String toAppliquerString=img+"/checked.png";
     /**
     * Chemin en String de l'icone 
     */
-    public static final String toClearString=ImagePourLeProjetJava+img+"/rubber.png";
+    public static final String toClearString=img+"/rubber.png";
     /**
      * Chemin en String de l'icone 
      */
-    public static final String toCrayonString=ImagePourLeProjetJava+img+"/crayon.png";
+    public static final String toCrayonString=img+"/crayon.png";
     /**
      * Chemin en String de l'icone 
      */
-    public static final String toExitString=ImagePourLeProjetJava+img+"/sortie.png";
-    public static final String toFolderString= ImagePourLeProjetJava+img+"/folder.png";
-    public static final String toSmallExitString=ImagePourLeProjetJava+img+"/smallexit.png";
-    public static final String toSaveString=ImagePourLeProjetJava+img+"/save.png";
+    public static final String toExitString=img+"/sortie.png";
+    public static final String toFolderString= img+"/folder.png";
+    public static final String toSmallExitString=img+"/smallexit.png";
+    public static final String toSaveString=img+"/save.png";
 
-    public static final String logoString=ImagePourLeProjetJava+img+"/logoMD.png";
-    public static final String splashscreen=ImagePourLeProjetJava+img+"/loading.gif";
+    public static final String logoString=img+"/logoMD.png";
+    public static final String splashscreen=img+"/loading.gif";
     
     private CaseHG caseHG;
     private CaseHD caseHD;
@@ -87,22 +85,21 @@ public class GUIMeta extends JFrame{
     public GUIMeta(String title){
         super(title);
         //Initialisation
-        try {
-            GUIMeta.ImagePourLeProjetJava = URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(),"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
         this.chooser = new JFileChooser();
         this.chooseDir = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("OpenDocument Text", "odt");
         chooser.addChoosableFileFilter(filter);
         
         //Initialisation des JDialog pour lister les fichiers modifiés
-        newjlist = new MdfyList();
-        newjlist.setVisible(false);
-        oldjlist = new MdfyList();
-        oldjlist.loadDLM();
+        try {
+            newjlist = new MdfyList();
+            newjlist.setVisible(false);
+            oldjlist = new MdfyList();
+            oldjlist.loadDLM();
+        } catch (Exception e) {
+            System.err.println("probleme load data");
+        }
 
         //Cote GAUCHE
         caseHG = new CaseHG();
@@ -183,7 +180,7 @@ public class GUIMeta extends JFrame{
             caseHG.loadMeta(dossierTravail);
             opened = true;
             if (ExtractPicture.getThumbnails(dossierTravail)!=null){
-                caseHD.replaceImg(getImgFromResource(ExtractPicture.getThumbnails(dossierTravail)));
+                caseHD.replaceImg(new ImageIcon(ExtractPicture.getThumbnails(dossierTravail)));
             }else{
                 caseHD.replaceImg(getImgFromResource(GUIMeta.toNoImgString));
             }

@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -56,7 +57,7 @@ public class MdfyList extends JDialog {
     public void loadDLM(){
         try {
             String toImport=null;
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(GUIMeta.LastSaved));
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(getImgFromResource(GUIMeta.LastSaved)));
             try{
                 toImport =(String) ois.readObject();
             }catch (EOFException ex){
@@ -78,5 +79,15 @@ public class MdfyList extends JDialog {
     
     public void AddElement(String s){
         dlm.addElement(s);
+    }
+
+    private String getImgFromResource(String path){
+        URL odtLien = this.getClass().getResource(path);
+        try {
+            assert odtLien != null;
+            
+            return odtLien.toString();
+        } catch (Exception e){}
+        return null;
     }
 }
