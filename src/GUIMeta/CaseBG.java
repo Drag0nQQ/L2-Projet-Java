@@ -4,6 +4,10 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+/**
+ * Cette classe permet de créer et gérer la case bas gauche de notre GUI
+ */
 public class CaseBG extends JPanel {
     private JPanel panelAuDessusBouton, panelEnDessousBouton,panelBouton;
     private ImageIcon imgAnnuler,imgModifier, imgAppliquer, imgClear;

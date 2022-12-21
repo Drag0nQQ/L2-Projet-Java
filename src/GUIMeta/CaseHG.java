@@ -10,6 +10,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
+
+/**
+ * Cette classe permet de créer et gérer la case haut gauche de notre GUI
+ */
 public class CaseHG extends JPanel {
     private JTextField titre,auteur,sujet,keyword,date,nbCaracteres,nbMots,nbPages;
     private JTextArea images,lienHypertxt;
@@ -86,7 +90,9 @@ public class CaseHG extends JPanel {
     }
     
     //Setup
-    
+    /**
+     * Donne le format des JTextField et JTextArea de la case, avec entre autre la taille, leurs couleurs.
+     */
     public void formatTextField(){
         //TAILLE
         titre = new JTextField(50);
@@ -144,7 +150,10 @@ public class CaseHG extends JPanel {
         lienHypertxt.setBackground(Color.decode(GUIMeta.mainColor));
         lienHypertxt.setForeground(Color.decode(GUIMeta.fontColor));
     }
-    
+
+    /**
+     * Donne le format (sous forme HTML) des JLabels de la case.
+     */
     public void formatLabel(){
         jlTitre = new JLabel("<HTML><U>Titre:</U></HTML>");
         jlAuteur = new JLabel("<HTML><U>Auteur:</U></HTML>");
@@ -157,7 +166,7 @@ public class CaseHG extends JPanel {
         jlImages = new JLabel("<HTML><U>Images:</U></HTML>");
         jlLienHypTxt = new JLabel("<HTML><U>Lien(s) hypertexte:</U></HTML>");
     }
-    
+
     public void InitPanelTitre(){
         jpTitre=new JPanel();
         titre.setPreferredSize(new Dimension(75, 25));

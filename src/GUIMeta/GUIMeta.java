@@ -15,7 +15,7 @@ import extraction.*;
 import gestionfichier.*;
 
 public class GUIMeta extends JFrame{
-    public static String ImagePourLeProjetJava="/Users/Laurent/Documents/ImagePourLeProjetJava";
+    public static String ImagePourLeProjetJava="/Users/axel/Documents/ImagePourLeProjetJava";
     public static final String LastSaved="/Users/Laurent/Documents/data.ser";
     public static Path dossierTravail = null;
     /**
