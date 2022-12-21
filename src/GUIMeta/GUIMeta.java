@@ -7,6 +7,7 @@ import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.util.Random;
 import java.util.zip.ZipOutputStream;
@@ -15,8 +16,10 @@ import extraction.*;
 import gestionfichier.*;
 
 public class GUIMeta extends JFrame{
-    public static String ImagePourLeProjetJava="/Users/axel/Documents/ImagePourLeProjetJava";
-    public static final String LastSaved="/Users/Laurent/Documents/data.ser";
+    //TODO dat shit dont work
+    public static String ImagePourLeProjetJava="/Users/Laurent/Documents/ImagePourLeProjetJava";
+    public static final String LastSaved=ImagePourLeProjetJava+"data.ser";
+    public static final String img="/img";
     public static Path dossierTravail = null;
     /**
      * Code Hex pour la couleur utilisé pour la couleur du background.
@@ -29,37 +32,37 @@ public class GUIMeta extends JFrame{
     /**
     * Chemin en String de l'icone 
     */
-    public static final String toNoImgString=ImagePourLeProjetJava+"/noImg.png";
+    public static final String toNoImgString=ImagePourLeProjetJava+img+"/noImg.png";
     /**
      * Chemin en String de l'icone 
      */
-    public static final String toAnnulerString=ImagePourLeProjetJava+"/signal.png";
+    public static final String toAnnulerString=ImagePourLeProjetJava+img+"/signal.png";
     /**
      * Chemin en String de l'icone 
     */
-    public static final String toModifierString=ImagePourLeProjetJava+"/edit.png";
+    public static final String toModifierString=ImagePourLeProjetJava+img+"/edit.png";
     /**
      * Chemin en String de l'icone 
     */
-    public static final String toAppliquerString=ImagePourLeProjetJava+"/checked.png";
+    public static final String toAppliquerString=ImagePourLeProjetJava+img+"/checked.png";
     /**
     * Chemin en String de l'icone 
     */
-    public static final String toClearString=ImagePourLeProjetJava+"/rubber.png";
+    public static final String toClearString=ImagePourLeProjetJava+img+"/rubber.png";
     /**
      * Chemin en String de l'icone 
      */
-    public static final String toCrayonString=ImagePourLeProjetJava+"/crayon.png";
+    public static final String toCrayonString=ImagePourLeProjetJava+img+"/crayon.png";
     /**
      * Chemin en String de l'icone 
      */
-    public static final String toExitString=ImagePourLeProjetJava+"/sortie.png";
-    public static final String toFolderString= ImagePourLeProjetJava+"/folder.png";
-    public static final String toSmallExitString=ImagePourLeProjetJava+"/smallexit.png";
-    public static final String toSaveString=ImagePourLeProjetJava+"/save.png";
+    public static final String toExitString=ImagePourLeProjetJava+img+"/sortie.png";
+    public static final String toFolderString= ImagePourLeProjetJava+img+"/folder.png";
+    public static final String toSmallExitString=ImagePourLeProjetJava+img+"/smallexit.png";
+    public static final String toSaveString=ImagePourLeProjetJava+img+"/save.png";
 
-    public static final String logoString=ImagePourLeProjetJava+"/logoMD.png";
-    public static final String splashscreen=ImagePourLeProjetJava+"/loading.gif";
+    public static final String logoString=ImagePourLeProjetJava+img+"/logoMD.png";
+    public static final String splashscreen=ImagePourLeProjetJava+img+"/loading.gif";
     
     private CaseHG caseHG;
     private CaseHD caseHD;
@@ -81,7 +84,12 @@ public class GUIMeta extends JFrame{
     public GUIMeta(String title){
         super(title);
         //Initialisation
-        
+        try {
+            GUIMeta.ImagePourLeProjetJava = URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(),"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         this.chooser = new JFileChooser();
         this.chooseDir = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("OpenDocument Text", "odt");
