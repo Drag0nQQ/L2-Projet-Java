@@ -15,7 +15,8 @@ import extraction.*;
 import gestionfichier.*;
 
 public class GUIMeta extends JFrame{
-    public static final String ImagePourLeProjetJava="/Users/Laurent/Documents/ImagePourLeProjetJava";
+    public static String ImagePourLeProjetJava="/Users/Laurent/Documents/ImagePourLeProjetJava";
+    public static final String LastSaved="/Users/Laurent/Documents/data.ser";
     public static Path dossierTravail = null;
     /**
      * Code Hex pour la couleur utilisé pour la couleur du background.
@@ -53,15 +54,19 @@ public class GUIMeta extends JFrame{
      * Chemin en String de l'icone 
      */
     public static final String toExitString=ImagePourLeProjetJava+"/sortie.png";
-    
-    private static final String logoString=ImagePourLeProjetJava+"/logo.png";
-    public static final String splashscreen=ImagePourLeProjetJava+"/splashScreenB&W.gif";
+    public static final String toFolderString= ImagePourLeProjetJava+"/folder.png";
+    public static final String toSmallExitString=ImagePourLeProjetJava+"/smallexit.png";
+    public static final String toSaveString=ImagePourLeProjetJava+"/save.png";
+
+    public static final String logoString=ImagePourLeProjetJava+"/logoMD.png";
+    public static final String splashscreen=ImagePourLeProjetJava+"/loading.gif";
     
     private CaseHG caseHG;
     private CaseHD caseHD;
     private CaseBD caseBD;
     private CaseBG caseBG;
     private CustomMenuBar jMenuBar;
+    private MdfyList newjlist,oldjlist;
     
     private boolean modified=false;
     private boolean opened=false;
@@ -70,16 +75,23 @@ public class GUIMeta extends JFrame{
     private JFileChooser chooser,chooseDir;
     
     public GUIMeta(){
-        this("Meta-Stealer.io");
+        this("Meta-Digger.io");
     }
     
     public GUIMeta(String title){
         super(title);
         //Initialisation
+        
         this.chooser = new JFileChooser();
         this.chooseDir = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("OpenDocument Text", "odt");
         chooser.addChoosableFileFilter(filter);
+        
+        //Initialisation des JDialog pour lister les fichiers modifiés
+        newjlist = new MdfyList();
+        newjlist.setVisible(false);
+        oldjlist = new MdfyList();
+        oldjlist.loadDLM();
 
         //Cote GAUCHE
         caseHG = new CaseHG();
@@ -113,14 +125,13 @@ public class GUIMeta extends JFrame{
         droit.setLayout(new BoxLayout(droit, BoxLayout.Y_AXIS));
         droit.add(caseHD);
         droit.add(caseBD);
+
         //POUR EXPORTER LES IMAGES EN JAR 
         /*
         try{
             ImageIcon tmp = new ImageIcon(getClass().getResource("/ImagePourLeProjetJava/edit.png"));
             caseHD.replaceImg(tmp);
-        }catch(Exception e){
-            
-        }
+        }catch(Exception e){}
         */
 
         //MenuBar
@@ -132,15 +143,15 @@ public class GUIMeta extends JFrame{
         jMenuBar.AddActListenerDossier(new ActionDossier());
         this.setJMenuBar(jMenuBar);
         
+        //Main panel
         JPanel tout = new JPanel();
         tout.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         tout.add(gauche);
         tout.add(droit);
 
-        //Main panel
         Container main = super.getContentPane();
         main.add(tout);
-        
+
         //Misc
         this.setResizable(false);
         this.setLocation(100, 25);
@@ -278,6 +289,7 @@ public class GUIMeta extends JFrame{
                     throw new RuntimeException(ex);
                 }
                 modified=false;
+                newjlist.AddElement(chooser.getSelectedFile().getPath());
             }
         }
     }
@@ -297,6 +309,7 @@ public class GUIMeta extends JFrame{
                         throw new RuntimeException(ex);
                     }
                     modified=false;
+                    newjlist.AddElement(chooser.getSelectedFile().getPath());
                 }
             }
         }
@@ -328,6 +341,7 @@ public class GUIMeta extends JFrame{
                 if (opened){
                     ZipEtUnzip.supprDossier(dossierTravail.toFile());
                 }
+                newjlist.saveDLM();
                 System.exit(0);
             }
         }

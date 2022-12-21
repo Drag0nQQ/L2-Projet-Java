@@ -7,13 +7,11 @@ public class TestSplash {
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
+        } catch (Exception e) {}
         JWindow window = new JWindow();
        
         window.getContentPane().add(new JLabel("", new ImageIcon(GUIMeta.splashscreen), SwingConstants.CENTER));
-        window.setBounds(520,300, 526, 296);
+        window.setBounds(520,300, 480, 270);
         window.setVisible(true);
         new GUIMeta();
         window.setVisible(false);

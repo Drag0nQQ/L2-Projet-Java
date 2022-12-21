@@ -1,5 +1,6 @@
 package GUIMeta;
 
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -10,10 +11,10 @@ public class CustomMenuBar extends JMenuBar {
     public CustomMenuBar() {
         super();
         jMenu = new JMenu("Fichier");
-        ouvrir = new JMenuItem("Ouvrir");
-        save = new JMenuItem("Enregistrer");
+        ouvrir = new JMenuItem("Ouvrir",new ImageIcon(GUIMeta.toFolderString));
+        save = new JMenuItem("Enregistrer",new ImageIcon(GUIMeta.toSaveString));
         sous = new JMenuItem("Enregistrer sous");
-        quitter = new JMenuItem("Quitter");
+        quitter = new JMenuItem("Quitter",new ImageIcon(GUIMeta.toSmallExitString));
         dossier = new JMenuItem("Ouvrir dossier");
         //ToolTips
         ouvrir.setToolTipText("Ouvre le fichier sélectionner");

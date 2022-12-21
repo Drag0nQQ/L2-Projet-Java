@@ -185,7 +185,13 @@ public class ExtractMeta{
             System.err.println("Problème lors de la création d'un Document");
         }
     }
-    
+
+    /**
+     * méthode mère pour les sous-méthodes utilisant des nodes
+     * @param mainDirectory chemin vers le dossier temporaire
+     * @param nodeName nom de la balise (voir les constantes)
+     * @return {@code null} si pas trouvé <li>{@code String} de la valeur</li>
+     */
     private static String getInfo(Path mainDirectory,String nodeName){
         DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
@@ -202,7 +208,13 @@ public class ExtractMeta{
         }
         return null;
     }
-
+    /**
+     * méthode mère pour les sous-méthodes utilisant des attributs d'un node
+     * @param mainDirectory chemin vers le dossier temporaire
+     * @param nodeName nom de la balise (voir les constantes)
+     * @param attributeName nom de l'attribut (voir les constantes)
+     * @return {@code null} si pas trouvé <li>{@code String} de la valeur</li>
+     */
     private static String getAttributeInfo(Path mainDirectory, String nodeName, String attributeName){
         DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;

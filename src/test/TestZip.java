@@ -15,8 +15,6 @@ public class TestZip {
             File tmp =new File("C:/Users/Laurent/Desktop/VS Code/impossibleQueCeDossierSAppelleCommeCaVraimentSiJLeTrouveCestChaud");
             ZipEtUnzip.zip("",tmp , zout);
             zout.close();
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
+        } catch (Exception e) {}
     }
 }
