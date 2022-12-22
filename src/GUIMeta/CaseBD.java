@@ -52,6 +52,11 @@ public class CaseBD extends JPanel {
         setBackground(Color.decode(GUIMeta.mainColor));
     }
     
+    
+    /** 
+     * change l'arborescence par le nouveau file passé en paramètre.
+     * @param f dossier passé.
+     */
     public void changeJTree(File f){
         this.noeud.removeAllChildren();
         creatFeuille(noeud, f);
@@ -102,10 +107,20 @@ public class CaseBD extends JPanel {
         return new File(path).isFile(); 
     } 
 
+    
+    /** 
+     * Ajoute un mouselistener à jtree.
+     * @param ml
+     */
     //GETTER SETTER
     public void AddMouseListenerJTree(MouseListener ml){
         jTree.addMouseListener(ml);
     }
+    
+    /** 
+     * retourne la jtree utilisé.
+     * @return JTree
+     */
     public JTree getjTree() {
         return jTree;
     }

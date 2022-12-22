@@ -52,6 +52,10 @@ public class CaseHG extends JPanel {
         setBackground(Color.decode(GUIMeta.mainColor));
     }
     
+    
+    /** 
+     * @param mainDirectory
+     */
     //Methods
     public void loadMeta(Path mainDirectory) {
         setTitreField(ExtractMeta.getTitle(mainDirectory));
@@ -315,48 +319,104 @@ public class CaseHG extends JPanel {
         lienHypertxt.setText("");
     }
     
+    
+    /** 
+     * @return String
+     */
     //Getter Setter and Misc
     public String getTitreField(){
         return titre.getText();    
     }
+    
+    /** 
+     * @return String
+     */
     public String getSujetField(){
         return sujet.getText();    
     }
     
+    
+    /** 
+     * @param txt
+     */
     public void setTitreField(String txt){
         titre.setText(txt);    
     }
+    
+    /** 
+     * @param txt
+     */
     public void setSujetField(String txt){
         sujet.setText(txt);    
     }
+    
+    /** 
+     * @param txt
+     */
     public void setAuteurField(String txt){
         auteur.setText(txt);    
     }
+    
+    /** 
+     * @param txt
+     */
     public void setDateField(String txt){
         date.setText(txt);    
     }
+    
+    /** 
+     * @param txt
+     */
     public void setKeywordField(String txt){
         keyword.setText(txt);    
     }
+    
+    /** 
+     * @param txt
+     */
     public void setNbCaracteresField(String txt){
         nbCaracteres.setText(txt);    
     }
+    
+    /** 
+     * @param txt
+     */
     public void setnbMotsField(String txt){
         nbMots.setText(txt);    
     }
+    
+    /** 
+     * @param txt
+     */
     public void setnbPagesField(String txt){
         nbPages.setText(txt);    
     }
+    
+    /** 
+     * @param txt
+     */
     public void setLienField(String txt){
         lienHypertxt.setText(txt);
     }
+    
+    /** 
+     * @param txt
+     */
     public void setImageField(String txt){
         images.setText(txt);
     }
 
+    
+    /** 
+     * @param b
+     */
     public void titreEditable(boolean b) {
         titre.setEditable(b);
     }
+    
+    /** 
+     * @param b
+     */
     public void sujetEditable(boolean b) {
         sujet.setEditable(b);
     }

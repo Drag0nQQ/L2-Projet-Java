@@ -8,7 +8,9 @@ import javax.swing.JMenuItem;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-
+/**
+ * Classe qui gère le menubar de notre application.
+ */
 public class CustomMenuBar extends JMenuBar {
     private JMenu jMenu;
     private JMenuItem ouvrir,dossier ,save, sous, quitter;
@@ -39,39 +41,90 @@ public class CustomMenuBar extends JMenuBar {
         add(jMenu);
 
     }
+    
+    /** 
+     * Ajoute un actionlistener au bouton quitter.
+     * @param action
+     */
     //Setter
     
     public void AddActListenerQuitter(ActionListener action){
         quitter.addActionListener(action);
     }
 
+    
+    /** 
+     * Ajoute un actionlistener au bouton ouvrir.
+     * @param action
+     */
     public void AddActListenerOuvrir(ActionListener action){
         ouvrir.addActionListener(action);
     }
+    
+    /** 
+     * Ajoute un actionlistener au bouton enregistrer.
+     * @param action
+     */
     public void AddActListenerSave(ActionListener action){
         save.addActionListener(action);
     }
 
+    
+    /** 
+     * Ajoute un actionlistener au bouton enregistrer sous.
+     * @param action
+     */
     public void AddActListenerSous(ActionListener action) {
         sous.addActionListener(action);
     }
 
+    
+    /** 
+     * Ajoute un actionlistener au bouton dossier.
+     * @param action
+     */
     public void AddActListenerDossier(ActionListener action) {
         dossier.addActionListener(action);
     }
+    
+    /**
+     * Retourne le JMenuItem. 
+     * @return JMenuItem
+     */
     //Getter
     public JMenuItem getOuvrir() {
         return ouvrir;
     }
+    
+    /**
+     * Retourne le JMenuItem. 
+     * @return JMenuItem
+     */
     public JMenuItem getSous() {
         return sous;
     }
+    
+    /**
+     * Retourne le JMenuItem. 
+     * @return JMenuItem
+     */
     public JMenuItem getQuitter() {
         return quitter;
     }
+    
+    /**
+     * Retourne le JMenuItem. 
+     * @return JMenuItem
+     */
     public JMenuItem getDossier() {
         return dossier;
     }
+    
+    /** 
+     * Retourne l'image du chemin passée.
+     * @param path chemin vers l'image.
+     * @return ImageIcon
+     */
     private ImageIcon getImgFromResource(String path){
         URL odtLien = this.getClass().getResource(path);
         try {

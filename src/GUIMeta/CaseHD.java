@@ -34,6 +34,12 @@ public class CaseHD extends JPanel {
         imageLabel.validate();
         imageLabel.repaint();
     }
+    
+    /** 
+     * retourne l'image donnée par le path.
+     * @param path chemin vers l'image.
+     * @return ImageIcon
+     */
     private ImageIcon getImgFromResource(String path){
         URL odtLien = this.getClass().getResource(path);
         try {

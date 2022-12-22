@@ -149,6 +149,11 @@ public class MdfyList extends JDialog {
         dlm.addElement(s);
     }
     
+    
+    /** 
+     * @param path
+     * @return ImageIcon
+     */
     private ImageIcon getImgFromResource(String path){
         URL odtLien = this.getClass().getResource(path);
         try {

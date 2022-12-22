@@ -106,16 +106,36 @@ public class CaseBG extends JPanel {
         jbClear.setVerticalTextPosition(AbstractButton.CENTER);
         jbClear.setHorizontalTextPosition(AbstractButton.LEADING);
     }
+    
+    /** 
+     * Ajoute un actionlistener au bouton annuler.
+     * @param action
+     */
     //ADD ACTION LISTENER
     public void AddActListenerAnnuler(ActionListener action) {
         jbAnnuler.addActionListener(action);
     }
+    
+    /** 
+     * Ajoute un actionlistener au bouton Clear.
+     * @param action
+     */
     public void AddActListenerClear(ActionListener action) {
         jbClear.addActionListener(action);
     }
+    
+    /**
+     * Ajoute un actionlistener au bouton appliquer. 
+     * @param action
+     */
     public void AddActListenerAppliquer(ActionListener action) {
         jbAppliquer.addActionListener(action);
     }
+    
+    /**
+     * Ajoute un actionlistener au bouton modifier. 
+     * @param action
+     */
     public void AddActListenerModifier(ActionListener action) {
         jbModifier.addActionListener(action);
     }
@@ -177,6 +197,11 @@ public class CaseBG extends JPanel {
      * @param b
      */
     public void jbClearVisible(boolean b){ jbClear.setVisible(b);}
+    
+    /** 
+     * @param path
+     * @return ImageIcon
+     */
     private ImageIcon getImgFromResource(String path){
         URL odtLien = this.getClass().getResource(path);
         try {

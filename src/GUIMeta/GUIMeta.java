@@ -20,6 +20,9 @@ import gestionfichier.*;
 public class GUIMeta extends JFrame{
     //TODO dat shit dont work
     public static final String LastSaved="data.ser";
+    /**
+     * Racine de nos assets.
+     */
     public static final String img="/img";
     public static Path dossierTravail = null;
     /**
@@ -58,11 +61,25 @@ public class GUIMeta extends JFrame{
      * Chemin en String de l'icone 
      */
     public static final String toExitString=img+"/sortie.png";
+    /**
+     * Chemin en String de l'icone 
+     */
     public static final String toFolderString= img+"/folder.png";
+    /**
+     * Chemin en String de l'icone 
+     */
     public static final String toSmallExitString=img+"/smallexit.png";
+    /**
+     * Chemin en String de l'icone 
+     */
     public static final String toSaveString=img+"/save.png";
-
+    /**
+     * Chemin en String de l'icone 
+     */
     public static final String logoString=img+"/logoMD.png";
+    /**
+     * Chemin en String du gif
+     */
     public static final String splashscreen=img+"/loading.gif";
     
     private CaseHG caseHG;
@@ -134,14 +151,6 @@ public class GUIMeta extends JFrame{
         droit.add(caseHD);
         droit.add(caseBD);
 
-        //POUR EXPORTER LES IMAGES EN JAR 
-        /*
-        try{
-            ImageIcon tmp = new ImageIcon(getClass().getResource("/ImagePourLeProjetJava/edit.png"));
-            caseHD.replaceImg(tmp);
-        }catch(Exception e){}
-        */
-
         //MenuBar
         jMenuBar = new CustomMenuBar();
         jMenuBar.AddActListenerQuitter(new ActionQuitter());
@@ -170,6 +179,10 @@ public class GUIMeta extends JFrame{
         this.setVisible(true);
     }
 
+    
+    /** 
+     * @param file
+     */
     private void OpenFile(File file){
         if (opened) {
             ZipEtUnzip.supprDossier(dossierTravail.toFile());
@@ -411,6 +424,11 @@ public class GUIMeta extends JFrame{
             }   
         }
     }
+    
+    /** 
+     * @param path
+     * @return ImageIcon
+     */
     private ImageIcon getImgFromResource(String path){
         URL odtLien = this.getClass().getResource(path);
         try {

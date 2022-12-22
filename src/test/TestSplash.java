@@ -3,10 +3,12 @@ package test;
 import GUIMeta.GUIMeta;
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * Permet de lancer le GUI avec splash screen.
+ */
 public class TestSplash {
     
-    public TestSplash() throws InterruptedException {
+    public TestSplash()  {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {}
@@ -27,12 +29,21 @@ public class TestSplash {
         }
         window.setBounds(520,300, 480, 270);
         window.setVisible(true);
-        Thread.sleep(1500);
-        new GUIMeta();
+        try {
+            Thread.sleep(300);
+            new GUIMeta();
+        } catch (InterruptedException e) {
+            System.err.println("Soucis lors du chargement de l'appli.");
+        }
         window.setVisible(false);
         window.dispose();
     }
-    public static void main(String[] args) throws InterruptedException {
+    
+    /** 
+     * Main
+     * @param args
+     */
+    public static void main(String[] args) {
         new TestSplash();
     }
 }
