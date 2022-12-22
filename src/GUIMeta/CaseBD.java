@@ -11,8 +11,10 @@ import java.nio.file.Files;
  * Cette classe permet de créer et gérer la case bas droit de notre GUI
  */
 public class CaseBD extends JPanel {
+    private static final String TAILLE="Taille (Ko): ";
+    private static final String EXTENSION="Extension: ";
     private JPanel auDessusBD;
-    private JLabel jlAuDessusBD;
+    private JLabel jlAuDessusBD,jlTaille,jlExt;
     private JScrollPane panelJTree;
     private JPanel enDessousBD;
     private DefaultMutableTreeNode noeud;
@@ -33,8 +35,16 @@ public class CaseBD extends JPanel {
         
         //JPanel du dessous
         enDessousBD = new JPanel();
+        jlTaille = new JLabel(TAILLE);
+        jlTaille.setFont(new Font("Arial", Font.PLAIN, 13));
+        jlExt = new JLabel(EXTENSION);
+        jlExt.setFont(new Font("Arial", Font.PLAIN, 13));
+        enDessousBD.add(jlTaille);
+        enDessousBD.add(Box.createHorizontalStrut(20));
+        enDessousBD.add(jlExt);
         enDessousBD.setPreferredSize(new Dimension(277, 40));
         enDessousBD.setBackground(Color.decode(GUIMeta.mainColor));
+        enDessousBD.setBackground(Color.decode("#c5c9d9"));
         
         //JTree
         noeud = new DefaultMutableTreeNode("Mon Dossier Sélectionné");
@@ -123,5 +133,19 @@ public class CaseBD extends JPanel {
      */
     public JTree getjTree() {
         return jTree;
+    }
+    /**
+     * Change le texte du label Taille
+     * @param txt String
+     */
+    public void setTaille(String txt){
+        jlTaille.setText(TAILLE+txt);
+    }
+    /**
+     * CHange le texte du label Extension
+     * @param txt String
+     */
+    public void setExt(String txt){
+        jlExt.setText(EXTENSION+txt);
     }
 }

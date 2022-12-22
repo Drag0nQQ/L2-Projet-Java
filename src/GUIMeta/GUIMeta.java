@@ -421,6 +421,21 @@ public class GUIMeta extends JFrame{
                         }
                     }
                 }
+                if (e.getClickCount()==1){
+                    assert selPath != null;
+                    String file = selPath.getLastPathComponent().toString();
+                    if (chooseDir.getSelectedFile()!=null){
+                        for (int i = selPath.getPathCount();i>2;i--){
+                            selPath = selPath.getParentPath();
+                            file = selPath.getLastPathComponent().toString() + File.separator+file;
+                        }
+                        file= chooseDir.getSelectedFile().getParent()+File.separator+file;
+                        if (CaseBD.checkPathIsFile(file)){
+                            caseBD.setTaille(String.valueOf((new File(file).length())/1024));
+                            caseBD.setExt(new File(file).getName().substring(new File(file).getName().lastIndexOf(".")));
+                        }
+                    }
+                }
             }   
         }
     }
