@@ -6,9 +6,9 @@ import java.awt.*;
 /**
  * Permet de lancer le GUI avec splash screen.
  */
-public class TestSplash {
+public class GUI {
     
-    public TestSplash()  {
+    public GUI()  {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {}
@@ -44,6 +44,6 @@ public class TestSplash {
      * @param args
      */
     public static void main(String[] args) {
-        new TestSplash();
+        new GUI();
     }
 }
