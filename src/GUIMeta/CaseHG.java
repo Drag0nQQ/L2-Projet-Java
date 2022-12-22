@@ -173,7 +173,9 @@ public class CaseHG extends JPanel {
         jlImages = new JLabel("<HTML><U>Images:</U></HTML>");
         jlLienHypTxt = new JLabel("<HTML><U>Lien(s) hypertexte:</U></HTML>");
     }
-
+    /**
+     * Initialise le panel du Titre en lui donnant sa dimension, ses couleurs, sa police d'écriture
+     */
     private void InitPanelTitre(){
         jpTitre=new JPanel();
         titre.setPreferredSize(new Dimension(75, 25));
@@ -187,6 +189,9 @@ public class CaseHG extends JPanel {
         jpTitre.setBackground(Color.decode(GUIMeta.mainColor));
     }
 
+    /**
+     * Initialise le panel de l'Auteur en lui donnant sa dimension, ses couleurs, sa police d'écriture
+     */
     private void InitPanelAuteur(){
         jpAuteur=new JPanel();
         auteur.setPreferredSize(new Dimension(75, 25));
@@ -200,6 +205,10 @@ public class CaseHG extends JPanel {
         jpAuteur.setBackground(Color.decode(GUIMeta.mainColor));
         
     }
+
+    /**
+     * Initialise le panel du Sujet en lui donnant sa dimension, ses couleurs, sa police d'écriture
+     */
     private void InitPanelSujet(){
         jpSujet=new JPanel();
         sujet.setPreferredSize(new Dimension(75, 25));
@@ -213,6 +222,9 @@ public class CaseHG extends JPanel {
         jpSujet.setBackground(Color.decode(GUIMeta.mainColor));
     }
 
+    /**
+     * Initialise le panel Keyword en lui donnant sa dimension, ses couleurs, sa police d'écriture
+     */
     private void InitPanelKeyword(){
         jpKeyword=new JPanel();
         keyword.setPreferredSize(new Dimension(75, 25));
@@ -226,6 +238,9 @@ public class CaseHG extends JPanel {
         jpKeyword.setBackground(Color.decode(GUIMeta.mainColor));
     }
 
+    /**
+     * Initialise le panel de la Date en lui donnant sa dimension, ses couleurs, sa police d'écriture
+     */
     private void InitPanelDate(){
         jpDate=new JPanel();
         date.setPreferredSize(new Dimension(75, 25));
@@ -239,6 +254,9 @@ public class CaseHG extends JPanel {
         jpDate.setBackground(Color.decode(GUIMeta.mainColor));
     }
 
+    /**
+     * Initialise le panel Caracteres en lui donnant sa dimension, ses couleurs, sa police d'écriture
+     */
     private void InitPanelCaracteres(){
         jpCaracteres=new JPanel();
         nbCaracteres.setPreferredSize(new Dimension(75, 25));
@@ -252,6 +270,9 @@ public class CaseHG extends JPanel {
         jpCaracteres.setBackground(Color.decode(GUIMeta.mainColor));
     }
 
+    /**
+     * Initialise le panel Mots en lui donnant sa dimension, ses couleurs, sa police d'écriture
+     */
     private void InitPanelMots(){
         jpMots=new JPanel();
         nbMots.setPreferredSize(new Dimension(75, 25));
@@ -265,6 +286,9 @@ public class CaseHG extends JPanel {
         jpMots.setBackground(Color.decode(GUIMeta.mainColor));
     }
 
+    /**
+     * Initialise le panel Pages en lui donnant sa dimension, ses couleurs, sa police d'écriture
+     */
     private void InitPanelPages(){
         jpPages=new JPanel();
         nbPages.setPreferredSize(new Dimension(75, 25));
@@ -278,6 +302,9 @@ public class CaseHG extends JPanel {
         jpPages.setBackground(Color.decode(GUIMeta.mainColor));
     }
 
+    /**
+     * Initialise le panel Images en lui donnant sa dimension, ses couleurs, sa police d'écriture
+     */
     private void InitPanelImages(){
         jpImages=new JPanel();
         images.setPreferredSize(new Dimension(400, 60));
@@ -292,6 +319,9 @@ public class CaseHG extends JPanel {
         jpImages.setBackground(Color.decode(GUIMeta.mainColor));
     }
 
+    /**
+     * Initialise le panel LienHypertexte en lui donnant sa dimension, ses couleurs, sa police d'écriture
+     */
     private void InitPanelLienHypTxt() {
         jpLienHypTxt=new JPanel();
         jlLienHypTxt.setForeground(Color.decode(GUIMeta.fontColor));
@@ -304,8 +334,10 @@ public class CaseHG extends JPanel {
         jpLienHypTxt.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpLienHypTxt.setBackground(Color.decode(GUIMeta.mainColor));
     }
-    
-    //Clear
+
+    /**
+     * Cette méthode permet de vider tout les champs d'écritures de la case haut gauche (HG).
+     */
     public void TextFieldclear(){
         titre.setText("");
         auteur.setText("");
