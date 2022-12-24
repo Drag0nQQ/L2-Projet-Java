@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.zip.ZipOutputStream;
 
@@ -246,8 +247,10 @@ public class GUIMeta extends JFrame{
         public void actionPerformed(ActionEvent e) {
             caseHG.titreEditable(true);
             caseHG.sujetEditable(true);
+            caseHG.keywordEditable(true);
             caseHG.setBorderTitre(BorderFactory.createLineBorder(Color.decode("#ffffff")));
             caseHG.setBorderSujet(BorderFactory.createLineBorder(Color.decode("#ffffff")));
+            caseHG.setBorderKeyword(BorderFactory.createLineBorder(Color.decode("#ffffff")));
             caseBG.jbAnnulerVisible(true);
             caseBG.jbModifierVisible(false);
             caseBG.jbAppliquerVisible(true);
@@ -266,10 +269,13 @@ public class GUIMeta extends JFrame{
                 caseBG.jbClearVisible(true);
                 caseHG.setTitreField(ExtractMeta.getTitle(dossierTravail));
                 caseHG.setSujetField(ExtractMeta.getSubject(dossierTravail));
+                caseHG.setKeywordField(ExtractMeta.getKeywordsAsString(dossierTravail));
                 caseHG.titreEditable(false);
                 caseHG.sujetEditable(false);
+                caseHG.keywordEditable(false);
                 caseHG.setBorderTitre(BorderFactory.createLineBorder(Color.decode(GUIMeta.mainColor)));
                 caseHG.setBorderSujet(BorderFactory.createLineBorder(Color.decode(GUIMeta.mainColor)));
+                caseHG.setBorderKeyword(BorderFactory.createLineBorder(Color.decode(GUIMeta.mainColor)));
                 JOptionPane.showMessageDialog(caseBG.getJbAnnuler(), "L'annulation des changements a bien été faite.", "Annulation des changements", JOptionPane.PLAIN_MESSAGE, getImgFromResource(GUIMeta.toCrayonString));
             }
         }
@@ -282,10 +288,18 @@ public class GUIMeta extends JFrame{
             if (reponse == JOptionPane.YES_OPTION){
                 caseHG.titreEditable(false);
                 caseHG.sujetEditable(false);
+                caseHG.keywordEditable(false);
+                caseHG.setBorderKeyword(BorderFactory.createLineBorder(Color.decode(GUIMeta.mainColor)));
                 caseHG.setBorderTitre(BorderFactory.createLineBorder(Color.decode(GUIMeta.mainColor)));
                 caseHG.setBorderSujet(BorderFactory.createLineBorder(Color.decode(GUIMeta.mainColor)));
                 ExtractMeta.setTitle(dossierTravail, caseHG.getTitreField());
                 ExtractMeta.setSubject(dossierTravail, caseHG.getSujetField());
+                ArrayList<String> tmp = new ArrayList<String>();
+                String[] keyword = caseHG.getKeywordField().split(",");
+                for (int i = 0; i < keyword.length; i++) {
+                    tmp.add(keyword[i]);
+                }
+                ExtractMeta.setKeyword(dossierTravail, tmp);
                 JOptionPane.showMessageDialog(null, "Les changements ont bien été effectués.", "Changements effectués", JOptionPane.OK_OPTION, getImgFromResource(GUIMeta.toAppliquerString));
                 modified=true;
                 caseBG.jbClearVisible(true);
@@ -297,6 +311,8 @@ public class GUIMeta extends JFrame{
                 caseHG.setSujetField(ExtractMeta.getSubject(dossierTravail));
                 caseHG.titreEditable(false);
                 caseHG.sujetEditable(false);
+                caseHG.keywordEditable(false);
+                caseHG.setBorderKeyword(BorderFactory.createLineBorder(Color.decode(GUIMeta.mainColor)));
                 caseHG.setBorderTitre(BorderFactory.createLineBorder(Color.decode(GUIMeta.mainColor)));
                 caseHG.setBorderSujet(BorderFactory.createLineBorder(Color.decode(GUIMeta.mainColor)));
                 JOptionPane.showMessageDialog(null, "Vous devrez réactiver la modification si vous voulez changer quelque chose.", "Refus de l'application des changements", JOptionPane.OK_OPTION, getImgFromResource(GUIMeta.toCrayonString));

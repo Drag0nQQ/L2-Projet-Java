@@ -17,12 +17,18 @@ public class CustomMenuBar extends JMenuBar {
     public CustomMenuBar() {
         super();
         jMenu = new JMenu("Fichier");
-        ouvrir = new JMenuItem("Ouvrir", getImgFromResource(GUIMeta.toFolderString));
-        save = new JMenuItem("Enregistrer",getImgFromResource(GUIMeta.toSaveString));
+        ouvrir = new JMenuItem("Ouvrir");
+        save = new JMenuItem("Enregistrer");
         sous = new JMenuItem("Enregistrer sous");
-        quitter = new JMenuItem("Quitter",getImgFromResource(GUIMeta.toSmallExitString));
+        quitter = new JMenuItem("Quitter");
         dossier = new JMenuItem("Ouvrir dossier");
+
+        //InitIcon
+        ouvrir.setIcon(getImgFromResource(GUIMeta.toFolderString));
+        save.setIcon(getImgFromResource(GUIMeta.toSaveString));
+        quitter.setIcon(getImgFromResource(GUIMeta.toSmallExitString));
         //ToolTips
+        
         ouvrir.setToolTipText("Ouvre le fichier sélectionner");
         quitter.setToolTipText("Permet de quitter la fenêtre");
         save.setToolTipText("Enregistre les changements dans le fichier actuel");

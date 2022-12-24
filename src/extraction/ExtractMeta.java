@@ -17,9 +17,9 @@ import org.xml.sax.SAXException;
 
 
 /**
- * Cette classe permet de manipuler spécifiquement le fichier meta.xml.
- * @author Laurent LIN
- * @author Axel OLIVEIRA
+* Cette classe permet de manipuler spécifiquement le fichier meta.xml.
+* @author Laurent LIN
+* @author Axel OLIVEIRA
 */
 public class ExtractMeta{
     //Attributes
@@ -27,6 +27,7 @@ public class ExtractMeta{
     public static final String SUBJECT_NODE="dc:subject";
     public static final String TITLE_NODE="dc:title";
     public static final String DATE_NODE="meta:creation-date";
+    public static final String KEYWORD_NODE="meta:keyword";
     public static final String STATISTIC_NODE="meta:document-statistic";
     
     public static final String PAGE_ATTRIBUTE="meta:page-count";
@@ -136,6 +137,58 @@ public class ExtractMeta{
             System.err.println("Problème lors de la création d'un Document");
         }
     }
+    /**
+    * Ajoute les keywords et écrase les anciens
+    * @param mainDirectory Chemin vers le dossier temporaire.
+    * @param texte ArrayList<String> des keywords.
+    */
+    public static void setKeyword(Path mainDirectory,ArrayList<String> texte){
+        String toMetaFile= mainDirectory.toString()+File.separator+"meta.xml";
+        File metaFile= new File(toMetaFile);
+        DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        try {
+            builder= builderFactory.newDocumentBuilder();
+            try {
+                Document doc = builder.parse(new FileInputStream(metaFile));
+                NodeList offDoc= doc.getElementsByTagName(KEYWORD_NODE);
+                if (offDoc.getLength()>0) {
+                    while (offDoc.getLength() > 0) {
+                        Node node = offDoc.item(0);
+                        node.getParentNode().removeChild(node);
+                    }
+                    for (String string : texte) {
+                        NodeList addNode=doc.getElementsByTagName("office:meta");
+                        Element temp= doc.createElement(KEYWORD_NODE);
+                        temp.setTextContent(string);
+                        addNode.item(0).insertBefore(temp, addNode.item(0).getChildNodes().item(3));
+                    }
+                }else{
+                    NodeList addNode=doc.getElementsByTagName("office:meta");
+                    if (addNode.getLength()>0) {
+                        for (String string : texte) {
+                            Element temp= doc.createElement(KEYWORD_NODE);
+                            temp.setTextContent(string);
+                            addNode.item(0).insertBefore(temp, addNode.item(0).getChildNodes().item(3));  
+                        }
+                    }
+                }
+                try {
+                    Transformer transform= TransformerFactory.newInstance().newTransformer();
+                    transform.setOutputProperty(OutputKeys.METHOD, "xml");
+                    transform.transform(new DOMSource(doc), new StreamResult(metaFile));
+                } catch (TransformerException e) {
+                    System.err.println("Problème rencontré lors de la configuration de l'exporter");
+                    e.printStackTrace();
+                }
+            } catch (SAXException | IOException e) {
+                System.err.println("Problème lors de l'ouverture du fichier");
+            }
+            
+        } catch (ParserConfigurationException e) {
+            System.err.println("Problème lors de la création d'un Document");
+        }
+    }
     
     /**
     * Permet de changer le sujet du fichier meta.xml, créer le noeud &#60;dc:subject> après le tag "dc:generator" s'il n'existe pas.
@@ -185,13 +238,13 @@ public class ExtractMeta{
             System.err.println("Problème lors de la création d'un Document");
         }
     }
-
+    
     /**
-     * méthode mère pour les sous-méthodes utilisant des nodes
-     * @param mainDirectory chemin vers le dossier temporaire
-     * @param nodeName nom de la balise (voir les constantes)
-     * @return {@code null} si pas trouvé <li>{@code String} de la valeur</li>
-     */
+    * méthode mère pour les sous-méthodes utilisant des nodes
+    * @param mainDirectory chemin vers le dossier temporaire
+    * @param nodeName nom de la balise (voir les constantes)
+    * @return {@code null} si pas trouvé <li>{@code String} de la valeur</li>
+    */
     private static String getInfo(Path mainDirectory,String nodeName){
         DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
@@ -209,12 +262,12 @@ public class ExtractMeta{
         return null;
     }
     /**
-     * méthode mère pour les sous-méthodes utilisant des attributs d'un node
-     * @param mainDirectory chemin vers le dossier temporaire
-     * @param nodeName nom de la balise (voir les constantes)
-     * @param attributeName nom de l'attribut (voir les constantes)
-     * @return {@code null} si pas trouvé <li>{@code String} de la valeur</li>
-     */
+    * méthode mère pour les sous-méthodes utilisant des attributs d'un node
+    * @param mainDirectory chemin vers le dossier temporaire
+    * @param nodeName nom de la balise (voir les constantes)
+    * @param attributeName nom de l'attribut (voir les constantes)
+    * @return {@code null} si pas trouvé <li>{@code String} de la valeur</li>
+    */
     private static String getAttributeInfo(Path mainDirectory, String nodeName, String attributeName){
         DocumentBuilderFactory builderFactory =DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
@@ -318,5 +371,19 @@ public class ExtractMeta{
             return null;
         }
         return null;
+    }
+    /**
+     * Récupère les keywords sous la forme String.
+     * @param mainDirectory chemin vers le dossier temporaire.
+     * @return String 
+     */
+    public static String getKeywordsAsString(Path mainDirectory){
+        ArrayList<String> keyword = getKeywords(mainDirectory);
+        String res = "";
+        for (String string : keyword) {
+            res+= string +", " ;
+        }
+        res = res.substring(0,res.lastIndexOf(","));
+        return res;
     }
 }

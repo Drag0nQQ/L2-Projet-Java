@@ -61,21 +61,14 @@ public class CaseHG extends JPanel {
         setTitreField(ExtractMeta.getTitle(mainDirectory));
         setAuteurField(ExtractMeta.getAuthor(mainDirectory));
         setSujetField(ExtractMeta.getSubject(mainDirectory));
-        ArrayList<String> al=ExtractMeta.getKeywords(mainDirectory);
-        StringBuilder kw= new StringBuilder();
-        if (al!=null){
-            for (String tmp : al) {
-                kw.append(tmp).append(", ");
-            }
-        }
-        
-        setKeywordField(kw.toString());
-
+        setKeywordField(ExtractMeta.getKeywordsAsString(mainDirectory));
         String date = ExtractMeta.getCreation_date(mainDirectory).substring(0, 10);
         setDateField(date);
         setnbMotsField(ExtractMeta.getnbMots(mainDirectory));
         setnbPagesField(ExtractMeta.getnbPages(mainDirectory));
         setNbCaracteresField(ExtractMeta.getnbCaracteres(mainDirectory));
+        StringBuilder kw;
+        ArrayList<String> al;
         kw = new StringBuilder();
         al=ExtractContent.getLink(mainDirectory);
         if (al!=null){
@@ -125,6 +118,14 @@ public class CaseHG extends JPanel {
         images.setEditable(false);
         lienHypertxt.setEditable(false);
         
+        //CYCLE TAB
+        auteur.setFocusCycleRoot(false);
+        date.setFocusCycleRoot(false);
+        nbMots.setFocusCycleRoot(false);
+        nbCaracteres.setFocusCycleRoot(false);
+        nbPages.setFocusCycleRoot(false);
+        images.setFocusCycleRoot(false);
+        lienHypertxt.setFocusCycleRoot(false);
         //COULEUR
         titre.setBackground(Color.decode(GUIMeta.mainColor));
         titre.setForeground(Color.decode(GUIMeta.fontColor));
@@ -366,8 +367,13 @@ public class CaseHG extends JPanel {
     public String getSujetField(){
         return sujet.getText();    
     }
-    
-    
+    /**
+     * 
+     * @return
+     */
+    public String getKeywordField() {
+        return keyword.getText();
+    }
     /** 
      * @param txt
      */
@@ -452,8 +458,11 @@ public class CaseHG extends JPanel {
     public void sujetEditable(boolean b) {
         sujet.setEditable(b);
     }
-
+    public void keywordEditable(boolean b) {
+        keyword.setEditable(b);
+    }
     public void setBorderTitre(Border borderTitre){ titre.setBorder(borderTitre);}
     public void setBorderSujet(Border borderSujet){ sujet.setBorder(borderSujet);}
+    public void setBorderKeyword(Border borderSujet){ keyword.setBorder(borderSujet);}
 
 }
