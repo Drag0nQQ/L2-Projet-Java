@@ -10,8 +10,14 @@ import java.util.zip.ZipOutputStream;
 import extraction.*;
 import files.*;
 import gestionfichier.ZipEtUnzip;
-
-public class TestCLI {
+/**
+ * Permet de lancer le CLI.
+ */
+public class CLI {
+    
+    /** 
+     * @param args
+     */
     public static void main(String[] args) {
         int i = FileAnalyze.checkOption(args);
         switch (i) {

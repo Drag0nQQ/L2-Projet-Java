@@ -1,3 +1,7 @@
 bin/
 L2-Projet-Java
 .gitignore
+src/img/
+data.ser
+L2-Projet-Java-Laurent.jar
+javadoc/

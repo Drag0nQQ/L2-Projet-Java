@@ -10,15 +10,15 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 /**
-* Cette classe permet de manipuler les fichiers zip et plus généralement les fichiers dans le sens brut
+* Cette classe permet de manipuler les fichiers zip et plus généralement les fichiers dans le sens brut.
 */
 public class ZipEtUnzip {
     /**
-    * <p>Dézip un fichier et le stocke dans un dossier (crée le dossier s'il n'existe pas)</p>
-    * <p><i>Problème de l'attaque Zip Slip résolu en comparant le chemin avant et après normalisation (retire les "./" et "../")</i></p>
-    * @param is InputStream of the file/directory
-    * @param targetDir Save all the files in this directory
-    * @throws IOException tried to open a non-existant file or directory
+    * <p>Dézip un fichier et le stocke dans un dossier (crée le dossier s'il n'existe pas).</p>
+    * <p><i>Problème de l'attaque Zip Slip résolu en comparant le chemin avant et après normalisation (retire les "./" et "../").</i></p>
+    * @param is InputStream du file/dossier.
+    * @param targetDir Sauvegarde tous les files dans ce dossier.
+    * @throws IOException si on ouvre un fichier ou dossier non-existant.
     */
     public static void unzip(InputStream is, Path targetDir) throws IOException {
         targetDir = targetDir.toAbsolutePath();
@@ -38,13 +38,12 @@ public class ZipEtUnzip {
         }
     }
     /**
-    * <p>Supprime le dossier (et sous dossier + fichier) passé en paramètre</p>
-    * <i>Méthode récursive</i> 
+    * <p>Supprime le dossier (et sous dossier + fichier) passé en paramètre.</p>
+    * <i>Méthode récursive</i>
     * @param dossierAsupprimer fichier (au sens brut) à supprimer
-    * @return <ul>
-    * <li>True si tout s'est bien passé</li>
-    * <li>False s'il reste des fichiers dans le dossier</li>
-    * </ul>
+    * @return
+    * True si tout s'est bien passé.
+    * <li>False s'il reste des fichiers dans le dossier.</li>
     */
     public static boolean supprDossier(File dossierAsupprimer) {
         File[] allContents = dossierAsupprimer.listFiles();
@@ -57,14 +56,15 @@ public class ZipEtUnzip {
     }
     /**
      * Permet de mettre le contenu d'un dossier dans un fichier zip.
-     * @param basePath pour garder la hiérachie dossiers, sous dossiers et fichiers
-     * @param dir chemin vers le dossier à zip
-     * @param zout sortie du fichier vers ce chemin
-     * @throws IOException apparait lors d'un soucis d'ouverture du fichier
+     * @param basePath pour garder la hiérachie dossiers, sous dossiers et fichiers.
+     * @param dir chemin vers le dossier à zip.
+     * @param zout sortie du fichier vers ce chemin.
+     * @throws IOException apparait lors d'un soucis d'ouverture du fichier.
      */
     public static void zip(String basePath, File dir, ZipOutputStream zout) throws IOException {
         byte[] buffer = new byte[1024];
         File[] files = dir.listFiles();
+        assert files != null;
         for (File file : files) {
             if (file.isDirectory()) {
                 String path = basePath + file.getName() + "/";
