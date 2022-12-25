@@ -47,4 +47,4 @@ Pour utiliser la version graphique, il est nécessaire de naviguer vers le répe
 - [@Drag0nQQ aka Axel](https://github.com/Drag0nQQ)
 - [@Raygunito aka Laurent](https://github.com/Raygunito)
 
-![badge](https://raster.shields.io/badge/Projet%20Java-Too%20easy-success)
+![badge](https://img.shields.io/badge/Projet%20Java-Too%20easy-success)
