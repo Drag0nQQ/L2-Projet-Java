@@ -105,7 +105,7 @@ public class MdfyList extends JDialog {
             ois.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("data.ser non trouvé ou bien première fois que vous lancez le logiciel.");
         }
     }
     /**
