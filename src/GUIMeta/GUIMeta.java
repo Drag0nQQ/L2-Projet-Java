@@ -186,7 +186,9 @@ public class GUIMeta extends JFrame{
 
     
     /** 
-     * @param file
+     * Supprime l'ancien dossier si on a ouvert un document avant, génére un nouveau dossier unique, procède au unzip du document, charge les infos sur l'interface (+ miniature s'il existe)
+     * si l'on rencontre une exception un dialogue s'ouvre avec le message d'erreur.
+     * @param file File du document
      */
     private void OpenFile(File file){
         if (opened) {

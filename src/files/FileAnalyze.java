@@ -50,6 +50,10 @@ public class FileAnalyze {
     */
     public static final int SUBJECT_AND_TITLE_OPTION=6;
     /**
+     * Utilisé dans {@link #checkModifier(String[])}
+     */
+    public static final int NONE_OPTION=7;
+    /**
     * Filtre et renvoie l'option sélectionné sous forme de int
     * @param args : String[]
     * @return <ul>
@@ -109,6 +113,7 @@ public class FileAnalyze {
                 }
                 throw new IllegalArgumentException("FileAnalyze.checkModifier erreur : Aucun des 3 options, utiliser l'option [-h] pour plus d'information.");
             }
+            if(args.length==2){return NONE_OPTION;}
         }
         throw new IOException("No option found or incorrect syntax use [-h] option.");
     }
