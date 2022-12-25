@@ -4,7 +4,7 @@
 
 # Meta-Digger.io
 
-Ce projet est réalisé par Axel OLIVEIRA et Laurent LIN, étudiants en L2-I à Cergy-Paris Université. Ce projet met en application les connaissances acquises dans le UE "Programmation orientée Objet".
+Ce projet est réalisé par Axel OLIVEIRA et Laurent LIN, étudiants en L2-I à Cergy-Paris Université. Ce projet met en application les connaissances acquises dans l'UE "Programmation orientée Objet & Java".
 
 ## Introduction
 Ce projet vise à la création d'une application bureautique sur les fichiers OpenDocument. L'intégralité du code est en Java.
@@ -31,13 +31,14 @@ Usage: `java -jar CLI.jar <option> [path] [args] [text]`
     * `-d` : précise que ce `[path]` est un répertoire
 * `[path]` : devrait être le chemin absolu (ou relatif) vers le fichier ou répertoire
 * `[args]` : **seulement** pour l'option `<-f>` : précise quel meta tag on modifie.
-    * `--title` : set title meta tag to `[text]`
-    * `--subject` : set subject meta tag to `[text]`
-* `[text]`: replace the current text with this new text (expected one after each modifiers)
+    * `--title` : défini le tag "title" à `[text]`
+    * `--subject` : défini le tag "subject" à `[text]`
+* `[text]`: remplace le texte actuel par ce nouveau texte (expected un après chaque modificateur)
 
 ### Utilisation de la version graphique
 
-La version graphique de l'application offre les mêmes possibilités, à l'exception de l'exploration d'un répertoire qui se fait via un menu n'affichant que les images. Pour utiliser la version graphique, il est nécessaire de naviguer vers le répertoire ou est situé le fichier `gui.jar`. L'appel de ce dernier se fait par la commande : `java -jar gui.jar`
+La version graphique de l'application offre les mêmes possibilités, à l'exception de l'exploration d'un répertoire qui se fait via une arborescence n'affichant que les documents odt.
+Pour utiliser la version graphique, il est nécessaire de naviguer vers le répertoire où est situé le fichier `GUI.jar`. L'appel de ce dernier se fait par la commande : `java -jar GUI.jar`
 
 
 ## Authors
