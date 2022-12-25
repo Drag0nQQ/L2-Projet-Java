@@ -19,7 +19,11 @@ public class CaseBG extends JPanel {
     
     public CaseBG() {
         super();
-        InitIcon();
+        try {
+            InitIcon();
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la récupération des icones des boutons");
+        }
         InitAnnuler();
         InitModifier();
         InitClear();

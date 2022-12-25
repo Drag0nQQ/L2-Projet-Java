@@ -174,7 +174,11 @@ public class GUIMeta extends JFrame{
         this.setResizable(false);
         this.setLocation(100, 25);
         this.pack();
-        this.setIconImage(getImgFromResource(logoString).getImage());
+        try{
+            this.setIconImage(getImgFromResource(logoString).getImage());
+        }catch(Exception e){
+            System.err.println("Logo pas trouvé.");
+        }
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new ActionWindowClosing());
         this.setVisible(true);
@@ -194,7 +198,7 @@ public class GUIMeta extends JFrame{
             caseHG.loadMeta(dossierTravail);
             opened = true;
             if (ExtractPicture.getThumbnails(dossierTravail)!=null){
-                caseHD.replaceImg(new ImageIcon(ExtractPicture.getThumbnails(dossierTravail)));
+                caseHD.replaceImg(new ImageIcon(new ImageIcon(ExtractPicture.getThumbnails(dossierTravail)).getImage().getScaledInstance(210, 297, Image.SCALE_SMOOTH)));
             }else{
                 caseHD.replaceImg(getImgFromResource(GUIMeta.toNoImgString));
             }
@@ -390,7 +394,11 @@ public class GUIMeta extends JFrame{
                 if (opened){
                     ZipEtUnzip.supprDossier(dossierTravail.toFile());
                 }
-                newjlist.saveDLM();
+                try {
+                    newjlist.saveDLM();
+                } catch (Exception save) {
+                    System.err.println("Soucis lors de la sauvegarde de la liste des fichiers modifiés par Meta-Digger.io");
+                }
                 System.exit(0);
             }
         }
