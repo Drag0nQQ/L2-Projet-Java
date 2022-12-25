@@ -102,18 +102,18 @@ public class FileAnalyze {
     public static int checkModifier(String[] args)throws Exception{
         if (args.length%2==0 && args.length/2<=3 && args.length>1){
             if (args.length >= 4) {
-                if ((args[2].equalsIgnoreCase("--subject")&&args[4].equalsIgnoreCase("--title"))||args[4].equalsIgnoreCase("--subject")&&args[2].equalsIgnoreCase("--title")) {
-                    return SUBJECT_AND_TITLE_OPTION;
-                }
                 if ((args[2].equalsIgnoreCase("--subject")&& args.length==4)){
                     return SUBJECT_OPTION;
                 }
                 if (args[2].equalsIgnoreCase("--title")&& args.length==4){
                     return TITLE_OPTION;
                 }
+                if ((args[2].equalsIgnoreCase("--subject")&&args[4].equalsIgnoreCase("--title"))||args[4].equalsIgnoreCase("--subject")&&args[2].equalsIgnoreCase("--title")) {
+                    return SUBJECT_AND_TITLE_OPTION;
+                }
                 throw new IllegalArgumentException("FileAnalyze.checkModifier erreur : Aucun des 3 options, utiliser l'option [-h] pour plus d'information.");
             }
-            if(args.length==2){return NONE_OPTION;}
+            return NONE_OPTION;
         }
         throw new IOException("No option found or incorrect syntax use [-h] option.");
     }
