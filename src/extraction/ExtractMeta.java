@@ -380,10 +380,12 @@ public class ExtractMeta{
     public static String getKeywordsAsString(Path mainDirectory){
         ArrayList<String> keyword = getKeywords(mainDirectory);
         String res = "";
-        for (String string : keyword) {
-            res+= string +", " ;
+        if (keyword!=null){
+            for (String string : keyword) {
+                res+= string +", " ;
+            }
+            res = res.substring(0,res.lastIndexOf(","));
         }
-        res = res.substring(0,res.lastIndexOf(","));
         return res;
     }
 }
