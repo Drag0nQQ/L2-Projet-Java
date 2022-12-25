@@ -51,12 +51,15 @@ public class CLI {
                             break;
                     }
                     FileAnalyze.showFile(dossierTravail.toString());
-                    try {
-                        ZipOutputStream fin= new ZipOutputStream(new FileOutputStream(new File(Path.of(args[1]).getParent().toString()+"/Copie_"+Path.of(args[1]).getFileName())));
-                        ZipEtUnzip.zip("",new File(dossierTravail.toString()),fin); 
-                        fin.close();  
-                    } catch (Exception e) {
-                        System.err.println("Fichier de sortie erroné.");
+                    if(j!=FileAnalyze.NONE_OPTION){
+                        try {
+                            ZipOutputStream fin= new ZipOutputStream(new FileOutputStream(new File(Path.of(args[1]).toAbsolutePath().toString())));
+                            ZipEtUnzip.zip("",new File(dossierTravail.toString()),fin); 
+                            fin.close();  
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.err.println("Fichier de sortie erroné.");
+                        }
                     }
                     ZipEtUnzip.supprDossier(new File(dossierTravail.toString()));
                 } catch (Exception e) {
