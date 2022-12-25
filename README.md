@@ -39,6 +39,7 @@ Une fois dans le bon répertoire, l'appel se fait avec la commande suivante :  `
 ### Utilisation de la version graphique
 
 La version graphique de l'application offre les mêmes possibilités, offrant en plus la modification des mots clés, ainsi que l'exploration d'un répertoire qui se fait via une arborescence n'affichant que les documents odt.\
+*Indication : lors de la fermeture du logiciel, un fichier `data.ser` se crée, ne vous affolez pas, c'est notre système de cache pour vous lister l'ensemble des documents modifiés par notre programme la dernière fois que vous avez lancé.*
 Pour utiliser la version graphique, il est nécessaire de naviguer vers le répertoire où est situé le fichier `GUI.jar`. L'appel de ce dernier se fait par la commande : `java -jar GUI.jar`
 
 
