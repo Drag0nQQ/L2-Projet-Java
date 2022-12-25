@@ -198,7 +198,7 @@ public class GUIMeta extends JFrame{
             caseHG.loadMeta(dossierTravail);
             opened = true;
             if (ExtractPicture.getThumbnails(dossierTravail)!=null){
-                caseHD.replaceImg(new ImageIcon(ExtractPicture.getThumbnails(dossierTravail)));
+                caseHD.replaceImg(new ImageIcon(new ImageIcon(ExtractPicture.getThumbnails(dossierTravail)).getImage().getScaledInstance(210, 297, Image.SCALE_SMOOTH)));
             }else{
                 caseHD.replaceImg(getImgFromResource(GUIMeta.toNoImgString));
             }
